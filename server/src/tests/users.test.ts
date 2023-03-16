@@ -49,11 +49,12 @@ describe("users", () => {
     expect(res.body.length).toBe(users.length);
     console.log({ body: res.body });
 
-    res.body?.forEach((user) => {
-      expect(user).toHaveProperty("_id");
+    res.body?.forEach((user: any) => {
+      expect(user).toHaveProperty("id");
       expect(user).toHaveProperty("name");
       expect(user).toHaveProperty("email");
       expect(user).toHaveProperty("role");
+      expect(user).not.toHaveProperty("password");
     });
   });
 });
