@@ -63,6 +63,7 @@ export const menuItems = [
 export const initDb = async () => {
   await models.Restaurant.deleteMany({});
   await models.User.deleteMany({});
+  await models.Menu.deleteMany({});
 
   const usersObj = users.map((user) => new models.User(user));
   const usersPromiseArr = usersObj.map((user) => user.save());
