@@ -31,6 +31,9 @@ userSchema.set("toJSON", {
     delete returnedObject._id;
     delete returnedObject.__v;
     delete returnedObject.password;
+    if (returnedObject.role !== "business") {
+      delete returnedObject.restaurants;
+    }
   },
 });
 

@@ -42,6 +42,34 @@ describe("users", () => {
       .post("/users")
       .send(user)
       .expect("Content-Type", /application\/json/)
-      .expect(201);
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.name).toBe(user.name);
+        expect(res.body.email).toBe(user.email);
+        expect(res.body.role).toBe(user.role);
+        expect(res.body).not.toHaveProperty("password");
+        expect(res.body).not.toHaveProperty("restaurants");
+      });
+  });
+
+  test("add business user", async () => {
+    const user = {
+      name: "test",
+      email: "test",
+      password: "test",
+      role: "business",
+    };
+    await api
+      .post("/users")
+      .send(user)
+      .expect("Content-Type", /application\/json/)
+      .expect(201)
+      .expect((res) => {
+        expect(res.body.name).toBe(user.name);
+        expect(res.body.email).toBe(user.email);
+        expect(res.body.role).toBe(user.role);
+        expect(res.body).not.toHaveProperty("password");
+        expect(res.body).toHaveProperty("restaurants");
+      });
   });
 });
