@@ -34,6 +34,7 @@ export const restaurants = [
     name: "restaurant1",
     description: "description1",
     address: "address1",
+    image: "path/to/image",
   },
 ];
 
