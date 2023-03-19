@@ -1,5 +1,6 @@
 import express from "express";
 import models from "../model";
+import User from "../model/user";
 
 const router = express.Router();
 
@@ -18,15 +19,17 @@ router.post("/", async (req, res) => {
   // TODO: add verification w/ zod
 
   try {
-    const user = await models.User.create({
+    const user = new User({
       name,
       email,
       password,
       role,
     });
-    res.json(user);
+    const newUser = await user.save();
+    res.status(201).json(newUser);
   } catch (err) {
     console.log({ err });
+    res.status(500).json({ message: err.message });
   }
 });
 
