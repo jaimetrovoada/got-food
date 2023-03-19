@@ -2,13 +2,16 @@ import mongoose, { Document, Model } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-interface IRestaurant extends Document {
+// TODO: add field for image path
+export interface IRestaurant extends Document {
   name: string;
   description: string;
   address: string;
+  menu: string[];
+  owner: string;
 }
 
-const RestaurantSchema = new Schema({
+const restaurantSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -21,8 +24,28 @@ const RestaurantSchema = new Schema({
     type: String,
     required: true,
   },
+  menu: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Menu",
+      required: true,
+    },
+  ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
-const Restaurant = mongoose.model<IRestaurant>("Restaurant", RestaurantSchema);
+restaurantSchema.set("toJSON", {
+  transform: (_, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
+const Restaurant = mongoose.model<IRestaurant>("Restaurant", restaurantSchema);
 
 export default Restaurant;
