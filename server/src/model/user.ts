@@ -3,15 +3,15 @@ import mongoose, { Document } from "mongoose";
 const Schema = mongoose.Schema;
 
 // TODO: add restaurants field, optional only for business role
-export interface IUser extends Document {
+export interface IUser {
   name: string;
   email: string;
   password: string;
   role: "admin" | "customer" | "business";
-  restaurants?: string[];
+  restaurants?: mongoose.Schema.Types.ObjectId[];
 }
 
-const userSchema = new Schema({
+const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },

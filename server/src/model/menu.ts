@@ -1,23 +1,26 @@
 import mongoose, { Document } from "mongoose";
 
-interface IMenu extends Document {
+interface IMenu {
   name: string;
   description: string;
   price: number;
   category: string;
   image: string;
-  restaurant: string;
+  restaurant: mongoose.Schema.Types.ObjectId;
 }
 
 const Schema = mongoose.Schema;
 
-const menuSchema = new Schema({
+const menuSchema = new Schema<IMenu>({
   name: { type: String, required: true },
   description: { type: String, required: true },
   price: { type: Number, required: true },
   category: { type: String, required: true },
   image: { type: String, required: true },
-  restaurant: { type: String, required: true },
+  restaurant: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
 });
 
 menuSchema.set("toJSON", {

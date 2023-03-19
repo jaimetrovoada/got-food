@@ -3,15 +3,15 @@ import mongoose, { Document, Model } from "mongoose";
 const Schema = mongoose.Schema;
 
 // TODO: add field for image path
-export interface IRestaurant extends Document {
+export interface IRestaurant {
   name: string;
   description: string;
   address: string;
-  menu: string[];
-  owner: string;
+  menuItems: mongoose.Schema.Types.ObjectId[];
+  owner: mongoose.Schema.Types.ObjectId;
 }
 
-const restaurantSchema = new Schema({
+const restaurantSchema = new Schema<IRestaurant>({
   name: {
     type: String,
     required: true,
@@ -24,7 +24,7 @@ const restaurantSchema = new Schema({
     type: String,
     required: true,
   },
-  menu: [
+  menuItems: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Menu",
