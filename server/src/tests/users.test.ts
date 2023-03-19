@@ -1,35 +1,9 @@
 import supertest from "supertest";
 import app from "../app";
 import User from "../model/user";
+import { users } from "./helpers";
 
 const TIMEOUT = 100_000;
-
-const users = [
-  {
-    name: "user1",
-    email: "1@1.com",
-    password: "123456",
-    role: "customer",
-  },
-  {
-    name: "user2",
-    email: "2@2.com",
-    password: "123456",
-    role: "customer",
-  },
-  {
-    name: "user3",
-    email: "3@3.com",
-    password: "123456",
-    role: "business",
-  },
-  {
-    name: "user4",
-    email: "4@4.com",
-    password: "123456",
-    role: "business",
-  },
-];
 
 const api = supertest(app);
 describe("users", () => {
@@ -42,12 +16,11 @@ describe("users", () => {
 
     await Promise.all(usersPromiseArr);
   }, TIMEOUT);
-  test("can add users", async () => {
+  test("can get users", async () => {
     const res = await api.get("/users");
 
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(users.length);
-    console.log({ body: res.body });
 
     res.body?.forEach((user: any) => {
       expect(user).toHaveProperty("id");
@@ -56,5 +29,19 @@ describe("users", () => {
       expect(user).toHaveProperty("role");
       expect(user).not.toHaveProperty("password");
     });
+  });
+
+  test("can add users", async () => {
+    const user = {
+      name: "test",
+      email: "test",
+      password: "test",
+      role: "customer",
+    };
+    await api
+      .post("/users")
+      .send(user)
+      .expect("Content-Type", /application\/json/)
+      .expect(201);
   });
 });
