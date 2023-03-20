@@ -2,13 +2,12 @@ import mongoose, { Document } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-// TODO: add restaurants field, optional only for business role
 export interface IUser {
   name: string;
   email: string;
   password: string;
   role: "admin" | "customer" | "business";
-  restaurants?: mongoose.Schema.Types.ObjectId[];
+  restaurants?: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new Schema<IUser>({

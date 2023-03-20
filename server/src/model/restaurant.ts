@@ -6,8 +6,8 @@ export interface IRestaurant {
   name: string;
   description: string;
   address: string;
-  menuItems: mongoose.Schema.Types.ObjectId[];
-  owner: mongoose.Schema.Types.ObjectId;
+  menuItems: mongoose.Types.ObjectId[];
+  owner: mongoose.Types.ObjectId;
   image: string;
 }
 
