@@ -52,22 +52,20 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/menu", async (req, res) => {
   try {
-    const menu = await models.Menu.find({ restaurant: req.params.id });
-
-    // group menu by category
-    let groupedMenu: Record<string, {}[]> = {};
-
-    menu.forEach((item) => {
-      if (groupedMenu[item.category]) {
-        groupedMenu[item.category].push(item);
-      } else {
-        groupedMenu[item.category] = [item];
+    const restaurant = await models.Restaurant.findById(req.params.id).populate(
+      "menuItems",
+      {
+        name: 1,
+        description: 1,
+        price: 1,
+        category: 1,
+        image: 1,
       }
-    });
+    );
 
-    // console.log({ groupedMenu });
+    const menu = restaurant.menuItems;
 
-    res.json(groupedMenu);
+    res.json(menu);
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
