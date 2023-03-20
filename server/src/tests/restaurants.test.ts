@@ -2,19 +2,17 @@ import supertest from "supertest";
 import { initDb } from "./helpers";
 import app from "../app";
 import path from "path";
+import models from "../model";
 
 const TIMEOUT = 100_000;
 const api = supertest(app);
 
+beforeEach(async () => {
+  await initDb();
+}, TIMEOUT);
 describe("restaurants", () => {
-  beforeEach(async () => {
-    await initDb();
-  }, TIMEOUT);
-
   test("should get all restaurants", async () => {
     const res = await api.get("/restaurants");
-
-    console.log({ res: res.body });
 
     expect(res.status).toBe(200);
     expect(res.body.length).toBe(1);
@@ -41,5 +39,19 @@ describe("restaurants", () => {
     expect(res.body).toHaveProperty("menuItems");
     expect(res.body).toHaveProperty("image");
     expect(res.body.image).toBe("public/images/logo.png");
+  });
+});
+
+describe("menu", () => {
+  test("can get menu items", async () => {
+    const restaurant = await models.Restaurant.findOne({ name: "restaurant1" });
+
+    // console.log({ id: restaurant.id });
+    const res = await api.get(`/restaurants/${restaurant.id}/menu`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("drinks");
+    expect(res.body).toHaveProperty("dessert");
+    expect(res.body.drinks.length).toBe(2);
+    expect(res.body.dessert.length).toBe(1);
   });
 });
