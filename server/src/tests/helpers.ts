@@ -1,6 +1,5 @@
 import Menu from "../model/menu";
 import models from "../model";
-import mongoose from "mongoose";
 
 export const users = [
   {
@@ -27,6 +26,12 @@ export const users = [
     password: "123456",
     role: "business",
   },
+  {
+    name: "admin",
+    email: "admin@rest.com",
+    password: "123456",
+    role: "admin",
+  },
 ];
 
 export const restaurants = [
@@ -44,21 +49,21 @@ export const menuItems = [
     description: "description1",
     price: 10,
     category: "drinks",
-    image: "image1",
+    image: "path/to/image",
   },
   {
     name: "menuItem2",
     description: "description1",
     price: 10,
     category: "dessert",
-    image: "image1",
+    image: "path/to/image",
   },
   {
     name: "menuItem3",
     description: "description1",
     price: 10,
     category: "drinks",
-    image: "image1",
+    image: "path/to/image",
   },
 ];
 export const initDb = async () => {
