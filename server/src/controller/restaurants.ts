@@ -55,14 +55,17 @@ router.get("/:id/menu", async (req, res) => {
     const menu = await models.Menu.find({ restaurant: req.params.id });
 
     // group menu by category
-    const groupedMenu = menu.reduce((acc, curr) => {
-      const key = curr.category;
-      if (!acc[key]) {
-        acc[key] = [];
+    let groupedMenu: Record<string, {}[]> = {};
+
+    menu.forEach((item) => {
+      if (groupedMenu[item.category]) {
+        groupedMenu[item.category].push(item);
+      } else {
+        groupedMenu[item.category] = [item];
       }
-      acc[key].push(curr);
-      return acc;
     });
+
+    // console.log({ groupedMenu });
 
     res.json(groupedMenu);
   } catch (err) {
