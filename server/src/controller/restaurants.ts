@@ -1,7 +1,8 @@
-import express from "express";
+import express, { Request } from "express";
 import models from "../model";
 import multer from "multer";
 import { z } from "zod";
+import middleware from "../utils/middleware";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -91,25 +92,31 @@ router.get("/:id/menu", async (req, res) => {
   }
 });
 
-router.post("/", upload.single("logo"), async (req, res) => {
-  try {
-    const vRestaurant = Restaurant.parse({
-      name: req.body.name,
-      description: req.body.description,
-      address: req.body.address,
-      owner: req.user._id,
-      menuItems: req.body.menuItems,
-      image: req.file.path.split("public").pop(),
-    });
+router.post(
+  "/",
+  upload.single("logo"),
+  middleware.userExtractor,
+  async (req: Request, res) => {
+    const { user } = req;
+    try {
+      const vRestaurant = Restaurant.parse({
+        name: req.body.name,
+        description: req.body.description,
+        address: req.body.address,
+        owner: user._id,
+        menuItems: req.body.menuItems,
+        image: req.file.path.split("public").pop(),
+      });
 
-    const restaurant = new models.Restaurant(vRestaurant);
+      const restaurant = new models.Restaurant(vRestaurant);
 
-    res.status(201).json(restaurant);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+      res.status(201).json(restaurant);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+      console.log({ err });
+    }
   }
-});
+);
 
 router.post("/:id/menu", upload.single("food"), async (req, res) => {
   try {
@@ -120,9 +127,7 @@ router.post("/:id/menu", upload.single("food"), async (req, res) => {
       price: req.body.price,
       category: req.body.category,
       image: req.file.destination + "/" + req.file.filename,
-      
-    })
-    
+    });
 
     const menuItem = new models.Menu(vMenuItem);
 
@@ -134,27 +139,33 @@ router.post("/:id/menu", upload.single("food"), async (req, res) => {
   }
 });
 
-router.put("/:id", upload.single("logo"), async (req, res) => {
-  try {
-    const vRestaurant = Restaurant.parse({
-      name: req.body.name,
-      description: req.body.description,
-      address: req.body.address,
-      owner: req.user._id,
-      menuItems: req.body.menuItems,
-    });
+router.put(
+  "/:id",
+  upload.single("logo"),
+  middleware.userExtractor,
+  async (req: Request, res) => {
+    const { user } = req;
+    try {
+      const vRestaurant = Restaurant.parse({
+        name: req.body.name,
+        description: req.body.description,
+        address: req.body.address,
+        owner: user._id,
+        menuItems: req.body.menuItems,
+      });
 
-    const restaurant = await models.Restaurant.findByIdAndUpdate(
-      req.params.id,
-      vRestaurant
-    );
+      const restaurant = await models.Restaurant.findByIdAndUpdate(
+        req.params.id,
+        vRestaurant
+      );
 
-    res.json(restaurant);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+      res.json(restaurant);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+      console.log({ err });
+    }
   }
-});
+);
 export default router;
 
 // TODO: allow multiple file upload
