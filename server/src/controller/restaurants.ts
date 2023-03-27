@@ -135,6 +135,27 @@ router.post("/:id/menu", upload.single("food"), async (req, res) => {
   }
 });
 
+router.put("/:id", upload.single("logo"), async (req, res) => {
+  try {
+    const vRestaurant = Restaurant.parse({
+      name: req.body.name,
+      description: req.body.description,
+      address: req.body.address,
+      owner: req.body.owner,
+      menuItems: req.body.menuItems,
+    });
+
+    const restaurant = await models.Restaurant.findByIdAndUpdate(
+      req.params.id,
+      vRestaurant
+    );
+
+    res.json(restaurant);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log({ err });
+  }
+});
 export default router;
 
 // TODO: allow multiple file upload
