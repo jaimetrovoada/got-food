@@ -97,7 +97,7 @@ router.post("/", upload.single("logo"), async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
-      owner: req.body.owner,
+      owner: req.user._id,
       menuItems: req.body.menuItems,
       image: req.file.path.split("public").pop(),
     });
@@ -140,7 +140,7 @@ router.put("/:id", upload.single("logo"), async (req, res) => {
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
-      owner: req.body.owner,
+      owner: req.user._id,
       menuItems: req.body.menuItems,
     });
 
@@ -159,4 +159,3 @@ export default router;
 
 // TODO: allow multiple file upload
 // TODO: add images to different folders according to restaurant
-// TODO: add put request for updating restaurant info
