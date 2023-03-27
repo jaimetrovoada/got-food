@@ -1,4 +1,3 @@
-import { Request } from "express";
 import mongoose, { Document } from "mongoose";
 
 interface IUser extends Document {
@@ -12,7 +11,7 @@ interface IUser extends Document {
 declare global {
   namespace Express {
     interface Request {
-      user: IUser;
+      user?: IUser | undefined;
     }
   }
 }
