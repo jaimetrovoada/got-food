@@ -20,17 +20,16 @@ const MenuItem = z.object({
   price: z.number(),
   category: z.string(),
   image: z.string(),
+  restaurant: z.any(),
 });
 
 const Restaurant = z.object({
   name: z.string(),
   description: z.string(),
   address: z.string(),
-  owner: z.object({
-    name: z.string(),
-    email: z.string().email(),
-  }),
+  owner: z.any(),
   menuItems: z.array(MenuItem),
+  image: z.string(),
 });
 
 router.get("/", async (req, res) => {
