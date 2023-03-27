@@ -1,6 +1,7 @@
 import express from "express";
 import models from "../model";
 import multer from "multer";
+import { z } from "zod";
 
 const router = express.Router();
 const storage = multer.diskStorage({
@@ -12,6 +13,25 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
+const MenuItem = z.object({
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  category: z.string(),
+  image: z.string(),
+});
+
+const Restaurant = z.object({
+  name: z.string(),
+  description: z.string(),
+  address: z.string(),
+  owner: z.object({
+    name: z.string(),
+    email: z.string().email(),
+  }),
+  menuItems: z.array(MenuItem),
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -74,16 +94,16 @@ router.get("/:id/menu", async (req, res) => {
 
 router.post("/", upload.single("logo"), async (req, res) => {
   try {
-    const _restaurant = {
+    const vRestaurant = Restaurant.parse({
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
-      menuItems: [],
-      // owner: req.body.owner,
-      image: req.file.destination + "/" + req.file.filename,
-    };
+      owner: req.body.owner,
+      menuItems: req.body.menuItems,
+      image: req.file.path.split("public").pop(),
+    });
 
-    const restaurant = new models.Restaurant(_restaurant);
+    const restaurant = new models.Restaurant(vRestaurant);
 
     res.status(201).json(restaurant);
   } catch (err) {
@@ -94,16 +114,18 @@ router.post("/", upload.single("logo"), async (req, res) => {
 
 router.post("/:id/menu", upload.single("food"), async (req, res) => {
   try {
-    const _menuItem = {
+    const vMenuItem = MenuItem.parse({
       restaurant: req.params.id,
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
       category: req.body.category,
       image: req.file.destination + "/" + req.file.filename,
-    };
+      
+    })
+    
 
-    const menuItem = new models.Menu(_menuItem);
+    const menuItem = new models.Menu(vMenuItem);
 
     await menuItem.save();
     res.status(201).json(menuItem);
