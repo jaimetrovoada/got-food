@@ -1,6 +1,6 @@
 import express from "express";
 import models from "../model";
-import User from "../model/user";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -11,19 +11,22 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const name = req.body.name;
-  const email = req.body.email;
-  const password = req.body.password;
-  const role = req.body.role;
+  const reqUser = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    role: req.body.role,
+  };
 
-  // TODO: add verification w/ zod
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(reqUser.password, saltRounds);
 
   try {
-    const user = new User({
-      name,
-      email,
-      password,
-      role,
+    const user = new models.User({
+      name: reqUser.name,
+      email: reqUser.email,
+      passwordHash,
+      role: reqUser.role,
     });
     const newUser = await user.save();
     res.status(201).json(newUser);

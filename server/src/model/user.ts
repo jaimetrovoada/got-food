@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 export interface IUser {
   name: string;
   email: string;
-  password: string;
+  passwordHash: string;
   role: "admin" | "customer" | "business";
   restaurants?: mongoose.Types.ObjectId[];
 }
@@ -13,7 +13,7 @@ export interface IUser {
 const userSchema = new Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true },
-  password: { type: String, required: true },
+  passwordHash: { type: String, required: true },
   role: { type: String, required: true },
   restaurants: [
     {
@@ -29,7 +29,7 @@ userSchema.set("toJSON", {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-    delete returnedObject.password;
+    delete returnedObject.passwordHash;
     if (returnedObject.role !== "business") {
       delete returnedObject.restaurants;
     }
