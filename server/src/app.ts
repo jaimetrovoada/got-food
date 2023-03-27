@@ -3,13 +3,15 @@ import mongoose from "mongoose";
 import config from "./utils/config";
 import routes from "./controller";
 import middleware from "./utils/middleware";
+import morgan from "morgan";
 
 const app = express();
 
 mongoose.connect(config.MONGODB_URI);
 
 app.use(express.json());
-app.use(middleware.userExtractor)
+app.use(morgan("tiny"));
+app.use(middleware.userExtractor);
 
 app.use("/restaurants", routes.restaurants);
 app.use("/users", routes.users);
