@@ -7,13 +7,14 @@ import config from "../utils/config";
 
 const router = express.Router();
 
+// TODO: remove this route ⬇️⬇️⬇️
 router.get("/", async (req, res) => {
   const users = await models.User.find({ role: ["customer", "business"] });
 
   res.json(users);
 });
 
-router.post("/", async (req, res) => {
+router.post("/register", async (req, res) => {
   const User = z.object({
     name: z.string(),
     email: z.string().email(),
@@ -92,6 +93,42 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// TODO: add put request for updating user info
+router.put("/:id", async (req, res) => {
+  const User = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
+    role: z.enum(["customer", "business"]),
+  });
+
+  const userId = req.params.id;
+  try {
+    const validatedUser = User.parse({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+    });
+
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
+
+    const updatedUser = await models.User.findByIdAndUpdate(
+      userId, {
+        name: validatedUser.name,
+        email: validatedUser.email,
+        passwordHash,
+        role: validatedUser.role,
+      }
+    )
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    console.log({ err });
+    res.status(500).json({ error: err });
+  }
+});
 
 export default router;
