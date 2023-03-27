@@ -7,6 +7,7 @@ const config = {
     process.env.NODE_ENV === "test"
       ? process.env.TEST_MONGODB_URI
       : process.env.MONGODB_URI,
+  JWT_SECRET: process.env.SECRET,
 };
 
 export default config;

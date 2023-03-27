@@ -2,6 +2,8 @@ import express from "express";
 import models from "../model";
 import bcrypt from "bcrypt";
 import { z } from "zod";
+import jwt from "jsonwebtoken";
+import config from "../utils/config";
 
 const router = express.Router();
 
@@ -40,6 +42,50 @@ router.post("/", async (req, res) => {
     });
     const newUser = await user.save();
     res.status(201).json(newUser);
+  } catch (err) {
+    console.log({ err });
+    res.status(500).json({ error: err });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  const User = z.object({
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
+  });
+
+  try {
+    const validatedUser = User.parse({
+      email: req.body.email,
+      password: req.body.password,
+    });
+
+    const user = await models.User.findOne({ email: validatedUser.email });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const passwordMatch = await bcrypt.compare(
+      validatedUser.password,
+      user.passwordHash
+    );
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    const payload = {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const token = jwt.sign(payload, config.JWT_SECRET);
+
+    res.status(200).json({ token });
   } catch (err) {
     console.log({ err });
     res.status(500).json({ error: err });
