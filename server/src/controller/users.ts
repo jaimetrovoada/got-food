@@ -1,6 +1,7 @@
 import express from "express";
 import models from "../model";
 import bcrypt from "bcrypt";
+import { z } from "zod";
 
 const router = express.Router();
 
@@ -11,28 +12,37 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const reqUser = {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    role: req.body.role,
-  };
-
-  const saltRounds = 10;
-  const passwordHash = await bcrypt.hash(reqUser.password, saltRounds);
+  const User = z.object({
+    name: z.string(),
+    email: z.string().email(),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" }),
+    role: z.enum(["customer", "business"]),
+  });
 
   try {
+    const validatedUser = User.parse({
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role,
+    });
+
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
+
     const user = new models.User({
-      name: reqUser.name,
-      email: reqUser.email,
+      name: validatedUser.name,
+      email: validatedUser.email,
       passwordHash,
-      role: reqUser.role,
+      role: validatedUser.role,
     });
     const newUser = await user.save();
     res.status(201).json(newUser);
   } catch (err) {
     console.log({ err });
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ error: err });
   }
 });
 
