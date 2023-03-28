@@ -7,6 +7,7 @@ import logger from "./utils/logger";
 import admin from "firebase-admin";
 import { applicationDefault } from "firebase-admin/app";
 import middleware from "./utils/middleware";
+import cors from "cors";
 
 const app = express();
 
@@ -26,6 +27,7 @@ admin.initializeApp({
 
 export const bucket = admin.storage().bucket();
 
+app.use(cors())
 app.use(express.json());
 app.use(morgan("tiny"));
 
