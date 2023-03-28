@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { initDb } from "../utils/testHelpers";
+import testHelpers from "../utils/testHelpers";
 import app from "../app";
 import path from "path";
 import models from "../model";
@@ -8,7 +8,7 @@ const TIMEOUT = 100_000;
 const api = supertest(app);
 
 beforeEach(async () => {
-  await initDb();
+  await testHelpers.initDb();
 }, TIMEOUT);
 describe("restaurants", () => {
   test("should get all restaurants", async () => {

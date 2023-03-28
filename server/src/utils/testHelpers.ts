@@ -1,8 +1,7 @@
 import Menu from "../model/menu";
 import models from "../model";
-import mongoose from "mongoose";
 
-export const users = [
+const users = [
   {
     name: "user1",
     email: "1@1.com",
@@ -35,7 +34,7 @@ export const users = [
   },
 ];
 
-export const restaurants = [
+const restaurants = [
   {
     name: "restaurant1",
     description: "description1",
@@ -44,7 +43,7 @@ export const restaurants = [
   },
 ];
 
-export const menuItems = [
+const menuItems = [
   {
     name: "menuItem1",
     description: "description1",
@@ -67,10 +66,15 @@ export const menuItems = [
     image: "path/to/image",
   },
 ];
-export const initDb = async () => {
-  await models.Restaurant.deleteMany({});
+
+const emptyDb = async () => {
   await models.User.deleteMany({});
+  await models.Restaurant.deleteMany({});
   await models.Menu.deleteMany({});
+}
+
+const initDb = async () => {
+ await emptyDb()
 
   const usersObj = users.map((user) => new models.User(user));
   const usersPromiseArr = usersObj.map((user) => user.save());
@@ -97,5 +101,9 @@ export const initDb = async () => {
   _restaurants[0].menuItems = _restaurants[0].menuItems.concat(menuItemsId);
 
   await _restaurants[0].save();
-  // console.log({ restaurant: _restaurants[0] });
+};
+
+export default {
+  initDb,
+  emptyDb
 };

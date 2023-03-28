@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import app from "../app";
-import { initDb, users } from "../utils/testHelpers";
+import testHelpers from "../utils/testHelpers";
 
 const TIMEOUT = 100_000;
 
@@ -9,14 +9,14 @@ const TIMEOUT = 100_000;
 const api = supertest(app);
 describe("users", () => {
   beforeEach(async () => {
-    initDb();
+    testHelpers.initDb();
   }, TIMEOUT);
 
   test("can get users", async () => {
     const res = await api.get("/users");
 
     expect(res.status).toBe(200);
-    expect(res.body.length).toBe(users.length - 1);
+    expect(res.body.length).toBe(4);
 
     res.body?.forEach((user: any) => {
       expect(user).toHaveProperty("id");
