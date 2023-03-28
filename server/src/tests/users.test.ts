@@ -1,8 +1,10 @@
 import supertest from "supertest";
 import app from "../app";
-import { initDb, users } from "./helpers";
+import { initDb, users } from "../utils/testHelpers";
 
 const TIMEOUT = 100_000;
+
+// TODO: refactor tests
 
 const api = supertest(app);
 describe("users", () => {

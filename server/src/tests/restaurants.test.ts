@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { initDb } from "./helpers";
+import { initDb } from "../utils/testHelpers";
 import app from "../app";
 import path from "path";
 import models from "../model";
@@ -38,7 +38,7 @@ describe("restaurants", () => {
     expect(res.body).not.toHaveProperty("owner");
     expect(res.body).toHaveProperty("menuItems");
     expect(res.body).toHaveProperty("image");
-    expect(res.body.image).toBe("public/images/logo.png");
+    expect(res.body.image).toBe("/images/logo.png");
   });
 });
 
