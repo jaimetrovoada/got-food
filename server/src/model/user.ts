@@ -6,7 +6,7 @@ export interface IUser {
   name: string;
   email: string;
   passwordHash: string;
-  role: "admin" | "customer" | "business";
+  role: "customer" | "business";
   restaurants?: mongoose.Types.ObjectId[];
 }
 
