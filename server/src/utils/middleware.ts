@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import model from "../model";
 import logger from "./logger";
 import { ZodError } from "zod";
+import config from "./config";
 
 const userExtractor = async (
   req: Request,
@@ -16,7 +17,7 @@ const userExtractor = async (
   }
 
   try {
-    const decoded = jwt.verify(userToken, process.env.JWT_SECRET) as {
+    const decoded = jwt.verify(userToken, config.JWT_SECRET) as {
       id: string;
       email: string;
       role: string;
