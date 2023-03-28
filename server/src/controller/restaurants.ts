@@ -1,4 +1,4 @@
-import express, { Request } from "express";
+import express from "express";
 import models from "../model";
 import multer from "multer";
 import { z } from "zod";
@@ -23,8 +23,8 @@ const Restaurant = z.object({
   description: z.string(),
   address: z.string(),
   owner: z.any(),
-  menuItems: z.array(MenuItem),
-  image: z.string(),
+  menuItems: z.array(MenuItem).optional(),
+  logo: z.string().url(),
 });
 
 router.get("/", async (req, res) => {
@@ -73,7 +73,7 @@ router.get("/:id/menu", async (req, res) => {
         description: 1,
         price: 1,
         category: 1,
-        image: 1,
+        logo: 1,
       }
     );
 
@@ -90,16 +90,29 @@ router.post(
   "/",
   upload.single("logo"),
   middleware.userExtractor,
-  async (req: Request, res) => {
+  async (req, res) => {
     const { user } = req;
     try {
+      const file = bucket.file(req.file.originalname);
+      let firebaseImgUrl = "";
+
+      file.createWriteStream().end(req.file.buffer);
+      file
+        .getSignedUrl({
+          action: "read",
+          expires: "03-09-2491",
+        })
+        .then((url) => {
+          firebaseImgUrl = url[0];
+        });
+
       const vRestaurant = Restaurant.parse({
         name: req.body.name,
         description: req.body.description,
         address: req.body.address,
         owner: user._id,
         menuItems: req.body.menuItems,
-        image: req.file.path.split("public").pop(),
+        logo: firebaseImgUrl,
       });
 
       const restaurant = new models.Restaurant(vRestaurant);
@@ -137,7 +150,7 @@ router.put(
   "/:id",
   upload.single("logo"),
   middleware.userExtractor,
-  async (req: Request, res) => {
+  async (req, res) => {
     const { user } = req;
     try {
       const vRestaurant = Restaurant.parse({
@@ -163,4 +176,3 @@ router.put(
 export default router;
 
 // TODO: allow multiple file upload
-// TODO: add images to different folders according to restaurant
