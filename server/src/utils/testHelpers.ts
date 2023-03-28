@@ -1,5 +1,6 @@
 import Menu from "../model/menu";
 import models from "../model";
+import supertest from "supertest";
 
 const users = [
   {
@@ -71,10 +72,10 @@ const emptyDb = async () => {
   await models.User.deleteMany({});
   await models.Restaurant.deleteMany({});
   await models.Menu.deleteMany({});
-}
+};
 
 const initDb = async () => {
- await emptyDb()
+  await emptyDb();
 
   const usersObj = users.map((user) => new models.User(user));
   const usersPromiseArr = usersObj.map((user) => user.save());
@@ -103,7 +104,31 @@ const initDb = async () => {
   await _restaurants[0].save();
 };
 
+const userCreation = async (
+  api: supertest.SuperTest<supertest.Test>,
+  user: {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+  }
+) => {
+  return await api.post("/users/register").send(user);
+};
+
+const userLogin = async (
+  api: supertest.SuperTest<supertest.Test>,
+  user: {
+    email: string;
+    password: string;
+  }
+) => {
+  return await api.post("/users/login").send(user);
+};
+
 export default {
   initDb,
-  emptyDb
+  emptyDb,
+  userCreation,
+  userLogin,
 };

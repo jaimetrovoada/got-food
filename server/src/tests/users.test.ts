@@ -54,7 +54,7 @@ describe("users", () => {
       role: "admin",
     };
 
-    const res = await api.post("/users/register").send(user);
+    const res = await testHelpers.userCreation(api, user);
 
     expect(res.body.error[0]).toContain("Password");
     expect(res.body.error[1]).toContain(
@@ -71,9 +71,9 @@ describe("users", () => {
       role: "customer",
     };
 
-    await api.post("/users/register").send(user);
+    await testHelpers.userCreation(api, user);
 
-    const res = await api.post("/users/login").send({
+    const res = await testHelpers.userLogin(api, {
       email: user.email,
       password: user.password,
     });
