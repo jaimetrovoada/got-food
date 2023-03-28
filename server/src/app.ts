@@ -6,6 +6,7 @@ import morgan from "morgan";
 import logger from "./utils/logger";
 import admin from "firebase-admin";
 import { applicationDefault } from "firebase-admin/app";
+import middleware from "./utils/middleware";
 
 const app = express();
 
@@ -32,9 +33,10 @@ app.use("/restaurants", routes.restaurants);
 app.use("/users", routes.users);
 
 app.use("/ping", (req, res) => {
-  res.send("pong");
+  res.send({ message: "pong" });
 });
-//console.log({ dir: path.join(__dirname, "../public") });
-app.use("/", express.static("public"));
+
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
 export default app;
