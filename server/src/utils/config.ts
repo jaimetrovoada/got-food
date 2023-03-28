@@ -8,6 +8,7 @@ const config = {
       ? process.env.TEST_MONGODB_URI
       : process.env.MONGODB_URI,
   JWT_SECRET: process.env.SECRET,
+  FIREBASE_BUCKET: process.env.FIREBASE_BUCKET,
 };
 
 export default config;

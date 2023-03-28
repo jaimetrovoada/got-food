@@ -4,6 +4,8 @@ import config from "./utils/config";
 import routes from "./controller";
 import morgan from "morgan";
 import logger from "./utils/logger";
+import admin from "firebase-admin";
+import { applicationDefault } from "firebase-admin/app";
 
 const app = express();
 
@@ -15,6 +17,13 @@ mongoose
   .catch((err) => {
     logger.error("Could not connect to MongoDB", err);
   });
+
+admin.initializeApp({
+  credential: applicationDefault(),
+  storageBucket: config.FIREBASE_BUCKET,
+});
+
+export const bucket = admin.storage().bucket();
 
 app.use(express.json());
 app.use(morgan("tiny"));
