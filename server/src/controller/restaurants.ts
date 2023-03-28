@@ -3,17 +3,11 @@ import models from "../model";
 import multer from "multer";
 import { z } from "zod";
 import middleware from "../utils/middleware";
+import { bucket } from "../app";
+import logger from "../utils/logger";
 
 const router = express.Router();
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "." + file.originalname.split(".").pop());
-  },
-});
-const upload = multer({ storage: storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 const MenuItem = z.object({
   name: z.string(),
