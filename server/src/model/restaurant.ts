@@ -8,7 +8,7 @@ export interface IRestaurant {
   address: string;
   menuItems: mongoose.Types.ObjectId[];
   owner: mongoose.Types.ObjectId;
-  image: string;
+  logo: string;
 }
 
 const restaurantSchema = new Schema<IRestaurant>({
@@ -36,7 +36,7 @@ const restaurantSchema = new Schema<IRestaurant>({
     ref: "User",
     required: true,
   },
-  image: {
+  logo: {
     type: String,
     required: true,
   },
