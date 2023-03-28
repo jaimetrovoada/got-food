@@ -7,7 +7,7 @@ const config = {
     process.env.NODE_ENV === "test"
       ? process.env.TEST_MONGODB_URI
       : process.env.MONGODB_URI,
-  JWT_SECRET: process.env.SECRET,
+  JWT_SECRET: process.env.JWT_SECRET,
   FIREBASE_BUCKET: process.env.FIREBASE_BUCKET,
 };
 
