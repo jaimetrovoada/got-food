@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
   res.json(users);
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
   const User = z.object({
     name: z.string(),
     email: z.string().email(),
@@ -44,12 +44,11 @@ router.post("/register", async (req, res) => {
     const newUser = await user.save();
     res.status(201).json(newUser);
   } catch (err) {
-    console.log({ err });
-    res.status(500).json({ error: err });
+    next(err);
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
   const User = z.object({
     email: z.string().email(),
     password: z
@@ -88,12 +87,11 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({ token });
   } catch (err) {
-    console.log({ err });
-    res.status(500).json({ error: err });
+    next(err);
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", async (req, res, next) => {
   const User = z.object({
     name: z.string(),
     email: z.string().email(),
@@ -115,19 +113,16 @@ router.put("/:id", async (req, res) => {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
 
-    const updatedUser = await models.User.findByIdAndUpdate(
-      userId, {
-        name: validatedUser.name,
-        email: validatedUser.email,
-        passwordHash,
-        role: validatedUser.role,
-      }
-    )
+    const updatedUser = await models.User.findByIdAndUpdate(userId, {
+      name: validatedUser.name,
+      email: validatedUser.email,
+      passwordHash,
+      role: validatedUser.role,
+    });
 
     res.status(200).json(updatedUser);
   } catch (err) {
-    console.log({ err });
-    res.status(500).json({ error: err });
+    next(err);
   }
 });
 
