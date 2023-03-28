@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import models from "../model";
 import multer from "multer";
 import { z } from "zod";
@@ -22,7 +22,7 @@ const Restaurant = z.object({
   name: z.string(),
   description: z.string(),
   address: z.string(),
-  owner: z.any(),
+  // owner: z.any(),
   menuItems: z.array(MenuItem).optional(),
   logo: z.string().url(),
 });
@@ -88,39 +88,37 @@ router.get("/:id/menu", async (req, res) => {
 
 router.post(
   "/",
-  upload.single("logo"),
   middleware.userExtractor,
-  async (req, res) => {
+  upload.single("logo"),
+  async (req: Request, res: Response, next: NextFunction) => {
     const { user } = req;
     try {
       const file = bucket.file(req.file.originalname);
-      let firebaseImgUrl = "";
 
       file.createWriteStream().end(req.file.buffer);
-      file
-        .getSignedUrl({
-          action: "read",
-          expires: "03-09-2491",
-        })
-        .then((url) => {
-          firebaseImgUrl = url[0];
-        });
+      const firebaseImgUrl = await file.getSignedUrl({
+        action: "read",
+        expires: "03-09-2491",
+      });
 
       const vRestaurant = Restaurant.parse({
         name: req.body.name,
         description: req.body.description,
         address: req.body.address,
-        owner: user._id,
-        menuItems: req.body.menuItems,
-        logo: firebaseImgUrl,
+        menuItems: req.body.menuItems || [],
+        logo: firebaseImgUrl[0],
       });
 
-      const restaurant = new models.Restaurant(vRestaurant);
+      const restaurant = new models.Restaurant({
+        ...vRestaurant,
+        owner: user._id,
+      });
 
-      res.status(201).json(restaurant);
+      const result = await restaurant.save();
+
+      res.status(201).json(result);
     } catch (err) {
-      res.status(500).json({ message: err.message });
-      console.log({ err });
+      next(err);
     }
   }
 );
