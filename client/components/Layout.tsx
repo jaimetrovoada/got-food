@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import Toasts from "./Toasts";
+import { ToastsProvider } from "@/hooks";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -14,9 +16,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="flex flex-col border-b p-4">
         <Link href="/">got food?</Link>
       </header>
-      <main className="flex flex-1 flex-col items-center justify-center">
-        {children}
-      </main>
+      <ToastsProvider>
+        <main className="flex flex-1 flex-col items-center justify-center">
+          {children}
+        </main>
+        <Toasts />
+      </ToastsProvider>
     </>
   );
 };
