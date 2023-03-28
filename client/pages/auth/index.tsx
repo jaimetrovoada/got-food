@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import authService from "@/services/authService";
+import { useToasts } from "@/hooks";
+import { AxiosError } from "axios";
 
 interface RegisterFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -111,6 +113,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
 const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
+  const { setSuccessMsg, setErrorMsg } = useToasts();
 
   const [registerFormState, setRegisterFormState] = useState<{
     name: string;
@@ -132,11 +135,20 @@ const Auth = () => {
   });
 
   const registerFormHandlers = {
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit: async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       console.log({ registerFormState });
-      // authService.register(registerFormState);
+      try {
+        const res = await authService.register(registerFormState);
+        console.log({ res });
+        if (res.status === 201) {
+          setSuccessMsg("Registration Complete");
+        }
+      } catch (err) {
+        console.log({ err });
+        setErrorMsg("Something went wrong, please try again");
+      }
     },
 
     handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,11 +177,20 @@ const Auth = () => {
   };
 
   const loginFormHandlers = {
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => {
+    handleSubmit: async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       console.log({ loginFormState });
-      // authService.login(loginFormState);
+      try {
+        const res = await authService.login(loginFormState);
+        console.log({ res });
+        if (res.status === 200) {
+          setSuccessMsg("Login Complete");
+        }
+      } catch (err) {
+        console.log({ err });
+        if (err instanceof AxiosError) setErrorMsg(err.response?.data?.error);
+      }
     },
     handleEmailInput: (e: React.ChangeEvent<HTMLInputElement>) => {
       const email = e.target.value;
