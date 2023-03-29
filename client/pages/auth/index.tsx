@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import authService from "@/services/authService";
 import { useToasts } from "@/hooks";
 import { AxiosError } from "axios";
+import { useRouter } from "next/router";
 
 interface RegisterFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -115,6 +116,8 @@ const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
   const { setSuccessMsg, setErrorMsg } = useToasts();
 
+  const router = useRouter();
+
   const [registerFormState, setRegisterFormState] = useState<{
     name: string;
     email: string;
@@ -144,6 +147,7 @@ const Auth = () => {
         console.log({ res });
         if (res.status === 201) {
           setSuccessMsg("Registration Complete");
+          setView("login");
         }
       } catch (err) {
         console.log({ err });
@@ -186,6 +190,9 @@ const Auth = () => {
         console.log({ res });
         if (res.status === 200) {
           setSuccessMsg("Login Complete");
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          localStorage.setItem("token", JSON.stringify(res.data.token));
+          router.push("/users/" + res.data.user.id);
         }
       } catch (err) {
         console.log({ err });
