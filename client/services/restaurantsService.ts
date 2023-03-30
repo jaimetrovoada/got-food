@@ -1,4 +1,18 @@
 import axios from "axios";
+import useSWR from "swr";
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  description: string;
+  address: string;
+  menuItems: [];
+  owner: {
+    name: string;
+    email: string;
+  };
+  logo: string;
+}
 
 const createRestaurant = async (payload: {
   name: string;
@@ -20,4 +34,19 @@ const createRestaurant = async (payload: {
   };
 };
 
-export default { createRestaurant };
+const useRestaurants = () => {
+  const fetcher = (url: string) =>
+    axios.get<Restaurant[]>(url).then((res) => res.data);
+
+  const { data, isLoading, error } = useSWR(
+    "http://localhost:3001/restaurants",
+    fetcher
+  );
+  return {
+    restaurants: data,
+    isLoading,
+    isError: error,
+  };
+};
+
+export default { createRestaurant, useRestaurants };
