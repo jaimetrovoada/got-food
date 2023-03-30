@@ -1,17 +1,5 @@
-import React, { useCallback, useState, createContext, useContext } from "react";
-
-interface Toast {
-  type: "success" | "error" | "info";
-  message: string;
-}
-
-const ToastsContext = createContext<{
-  toast: { message: string; type: "error" | "success" | "info" };
-  setMessage: React.Dispatch<React.SetStateAction<Toast>>;
-}>({
-  toast: { message: "", type: "info" },
-  setMessage: () => {},
-});
+import { ToastsContext } from "@/contexts/ToastsProvider";
+import { useCallback, useState, useContext, useEffect } from "react";
 
 export const useToasts = () => {
   const context = useContext(ToastsContext);
@@ -39,16 +27,4 @@ export const useToasts = () => {
   }, []);
 
   return { message, type, setSuccessMsg, setErrorMsg, setInfoMsg };
-};
-
-export const ToastsProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [toast, setToast] = useState<Toast>({ type: "info", message: "" });
-
-  return (
-    <ToastsContext.Provider value={{ toast, setMessage: setToast }}>
-      {children}
-    </ToastsContext.Provider>
-  );
 };

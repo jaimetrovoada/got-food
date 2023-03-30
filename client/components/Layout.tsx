@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import Toasts from "./Toasts";
-import { ToastsProvider } from "@/hooks";
+import ToastsProvider from "@/contexts/ToastsProvider";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
