@@ -6,7 +6,7 @@ interface Restaurant {
   name: string;
   description: string;
   address: string;
-  menuItems: [];
+  menuItems: MenuItem[];
   owner: {
     name: string;
     email: string;
@@ -58,6 +58,22 @@ const useRestaurants = () => {
   };
 };
 
+const useRestaurant = (restaurantId: string) => {
+  const fetcher = (url: string) =>
+    axios.get<Restaurant>(url).then((res) => res.data);
+
+  const { data, isLoading, error } = useSWR(
+    `http://localhost:3001/restaurants/${restaurantId}`,
+    fetcher
+  );
+
+  return {
+    restaurant: data,
+    isLoading,
+    isError: error,
+  };
+};
+
 const useRestaurantMenu = (restaurantId: string) => {
   const fetcher = (url: string) =>
     axios.get<MenuItem[]>(url).then((res) => res.data);
@@ -74,4 +90,40 @@ const useRestaurantMenu = (restaurantId: string) => {
   };
 };
 
-export default { createRestaurant, useRestaurants, useRestaurantMenu };
+const addMenuItem = async (
+  restaurantId: string,
+  payload: {
+    name: string;
+    description: string;
+    price: number;
+    category: string;
+    image: File | undefined;
+  }
+) => {
+  const token = JSON.parse(localStorage.getItem("token") || "{}");
+
+  console.log({ payload });
+  const res = await axios.post(
+    `http://localhost:3001/restaurants/${restaurantId}/menu`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  return {
+    menuItem: res.data,
+    status: res.status,
+  };
+};
+
+export default {
+  createRestaurant,
+  addMenuItem,
+  useRestaurants,
+  useRestaurantMenu,
+  useRestaurant,
+};
