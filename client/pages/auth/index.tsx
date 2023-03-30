@@ -3,114 +3,8 @@ import authService from "@/services/authService";
 import { useToasts } from "@/hooks";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-
-interface RegisterFormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleEmailInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePasswordInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRoleInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-interface LoginFormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleEmailInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePasswordInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const RegisterForm: React.FC<RegisterFormProps> = ({
-  handleSubmit,
-  handleNameInput,
-  handleEmailInput,
-  handlePasswordInput,
-  handleRoleInput,
-}) => {
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        name:{" "}
-        <input
-          type="text"
-          name="name"
-          className="border"
-          onChange={handleNameInput}
-        />
-      </div>
-      <div>
-        email:{" "}
-        <input
-          type="email"
-          name="email"
-          className="border"
-          onChange={handleEmailInput}
-        />
-      </div>
-      <div>
-        password:{" "}
-        <input
-          type="password"
-          name="password"
-          className="border"
-          onChange={handlePasswordInput}
-        />
-      </div>
-      <div>
-        business: yes{" "}
-        <input
-          type="radio"
-          name="role"
-          value="yes"
-          onChange={handleRoleInput}
-        />
-        no{" "}
-        <input
-          type="radio"
-          name="role"
-          value="no"
-          defaultChecked
-          onChange={handleRoleInput}
-        />
-      </div>
-
-      <button type="submit" className="rounded-xl border bg-slate-500 p-2">
-        submit
-      </button>
-    </form>
-  );
-};
-
-const LoginForm: React.FC<LoginFormProps> = ({
-  handleEmailInput,
-  handlePasswordInput,
-  handleSubmit,
-}) => {
-  return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        email:{" "}
-        <input
-          type="email"
-          name="email"
-          className="border"
-          onChange={handleEmailInput}
-        />
-      </div>
-      <div>
-        password:{" "}
-        <input
-          type="password"
-          name="password"
-          className="border"
-          onChange={handlePasswordInput}
-        />
-      </div>
-
-      <button type="submit" className="rounded-xl border bg-slate-500 p-2">
-        submit
-      </button>
-    </form>
-  );
-};
+import RegisterForm from "@/components/Forms/RegisterForm";
+import LoginForm from "@/components/Forms/LoginForm";
 
 const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
@@ -137,11 +31,12 @@ const Auth = () => {
     password: "",
   });
 
+  console.log({ registerFormState });
+
   const registerFormHandlers = {
     handleSubmit: async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
-      console.log({ registerFormState });
       try {
         const res = await authService.register(registerFormState);
         console.log({ res });
@@ -174,8 +69,9 @@ const Auth = () => {
       });
     },
     handleRoleInput: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const checked = e.target.checked;
       setRegisterFormState((prev) => {
-        return { ...prev, role: "business" };
+        return { ...prev, role: checked ? "business" : "customer" };
       });
     },
   };
