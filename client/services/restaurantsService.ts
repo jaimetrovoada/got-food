@@ -1,7 +1,7 @@
 import axios from "axios";
 import useSWR from "swr";
 
-export interface Restaurant {
+interface Restaurant {
   id: string;
   name: string;
   description: string;
@@ -12,6 +12,15 @@ export interface Restaurant {
     email: string;
   };
   logo: string;
+}
+
+interface MenuItem {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
 }
 
 const createRestaurant = async (payload: {
@@ -49,4 +58,20 @@ const useRestaurants = () => {
   };
 };
 
-export default { createRestaurant, useRestaurants };
+const useRestaurantMenu = (restaurantId: string) => {
+  const fetcher = (url: string) =>
+    axios.get<MenuItem[]>(url).then((res) => res.data);
+
+  const { data, isLoading, error } = useSWR(
+    `http://localhost:3001/restaurants/${restaurantId}/menu`,
+    fetcher
+  );
+
+  return {
+    menu: data,
+    isLoading,
+    isError: error,
+  };
+};
+
+export default { createRestaurant, useRestaurants, useRestaurantMenu };
