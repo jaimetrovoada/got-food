@@ -17,7 +17,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Link href="/">got food?</Link>
       </header>
       <ToastsProvider>
-        <main className="flex flex-1 flex-col items-center justify-center">
+        <main className="container mx-auto flex flex-1 flex-col items-center justify-center">
           {children}
         </main>
         <Toasts />
@@ -27,3 +27,5 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
+
+// TODO: add login/logout button
