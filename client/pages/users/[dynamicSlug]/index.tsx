@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import restaurantsService from "@/services/restaurantsService";
 import userService from "@/services/userService";
@@ -82,8 +82,18 @@ const UserPage = () => {
   const router = useRouter();
   const slug = router.query.dynamicSlug as string;
   console.log({ slug });
-  const user: { name: string; email: string; role: string; id: string } =
-    JSON.parse(localStorage.getItem("user") || "{}");
+  const [user, setUser] = useState<
+    | {
+        name: string;
+        email: string;
+        role: string;
+        id: string;
+      }
+    | undefined
+  >(undefined);
+  useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+  }, []);
 
   const { restaurants, isLoading, error } =
     userService.useUserRestaurants(slug);
@@ -143,8 +153,8 @@ const UserPage = () => {
   }
   return (
     <div>
-      Hi {user.name}
-      {user.role === "business" ? <RestaurantForm {...formHandlers} /> : null}
+      Hi {user?.name}
+      {user?.role === "business" ? <RestaurantForm {...formHandlers} /> : null}
       <div className="flex flex-col gap-4">
         <h3>your restaurants</h3>
 
