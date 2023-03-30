@@ -73,7 +73,7 @@ router.get("/:id/menu", async (req, res) => {
         description: 1,
         price: 1,
         category: 1,
-        logo: 1,
+        image: 1,
       }
     );
 
