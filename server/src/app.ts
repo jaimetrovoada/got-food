@@ -31,10 +31,10 @@ app.use(cors())
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use("/restaurants", routes.restaurants);
-app.use("/users", routes.users);
+app.use("/api/restaurants", routes.restaurants);
+app.use("/api/users", routes.users);
 
-app.use("/ping", (req, res) => {
+app.use("/api/ping", (req, res) => {
   res.send({ message: "pong" });
 });
 
