@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import restaurantsService from "@/services/restaurantsService";
+import userService from "@/services/userService";
 import { useToasts } from "@/hooks";
+import Link from "next/link";
 
 interface FormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -78,9 +80,13 @@ const RestaurantForm: React.FC<FormProps> = ({
 };
 const UserPage = () => {
   const router = useRouter();
-  console.log({ pid: router.query.slug });
+  const slug = router.query.dynamicSlug as string;
+  console.log({ slug });
   const user: { name: string; email: string; role: string; id: string } =
     JSON.parse(localStorage.getItem("user") || "{}");
+
+  const { restaurants, isLoading, error } =
+    userService.useUserRestaurants(slug);
 
   const { setSuccessMsg, setErrorMsg } = useToasts();
   const [formState, setFormState] = useState<FormData>({
@@ -128,12 +134,36 @@ const UserPage = () => {
       }
     },
   };
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+  if (error) {
+    console.log({ error });
+    return <div>something went wrong</div>;
+  }
   return (
     <div>
       Hi {user.name}
       {user.role === "business" ? <RestaurantForm {...formHandlers} /> : null}
+      <div className="flex flex-col gap-4">
+        <h3>your restaurants</h3>
+
+        <div className="flex flex-col gap-4">
+          {restaurants?.map((restaurant) => (
+            <Link
+              href={`/users/${slug}/restaurants/${restaurant.id}`}
+              className="rounded-2xl border p-2 text-xl font-bold"
+              key={restaurant.id}
+            >
+              {restaurant.name}
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
 
 export default UserPage;
+
+// TODO: add list of restaurants belonging to user
