@@ -2,16 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import restaurantsService from "@/services/restaurantsService";
 import userService from "@/services/userService";
-import { useToasts } from "@/hooks";
+import { useLocalStorage, useToasts } from "@/hooks";
 import Link from "next/link";
-
-interface FormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleNameInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDescInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleAddrInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleLogoUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
+import RestaurantForm from "@/components/Forms/RestaurantForm";
 
 interface FormData {
   name: string;
@@ -20,77 +13,19 @@ interface FormData {
   logo: File | undefined;
 }
 
-const RestaurantForm: React.FC<FormProps> = ({
-  handleSubmit,
-  handleAddrInput,
-  handleDescInput,
-  handleLogoUpload,
-  handleNameInput,
-}) => {
-  return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <label htmlFor="nameInput">
-        Name:
-        <input
-          type="text"
-          name="name"
-          id="nameInput"
-          className="border"
-          onChange={handleNameInput}
-        />
-      </label>
-      <label htmlFor="descInput">
-        Description:
-        <input
-          type="text"
-          name="description"
-          id="descInput"
-          className="border"
-          onChange={handleDescInput}
-        />
-      </label>
-      <label htmlFor="addrInput">
-        Address:
-        <input
-          type="text"
-          name="address"
-          id="addrInput"
-          className="border"
-          onChange={handleAddrInput}
-        />
-      </label>
-      <label htmlFor="logoUpload">
-        Add logo
-        <input
-          type="file"
-          name="logo"
-          accept="image/*"
-          title="add your logo"
-          multiple={false}
-          id="logoUpload"
-          className="border"
-          onChange={handleLogoUpload}
-        />
-      </label>
-      <button type="submit" className="rounded-xl border bg-slate-500 p-2">
-        submit
-      </button>
-    </form>
-  );
-};
+interface IUser {
+  name: string;
+  email: string;
+  role: string;
+  id: string;
+}
+
 const UserPage = () => {
   const router = useRouter();
   const slug = router.query.dynamicSlug as string;
   console.log({ slug });
-  const [user, setUser] = useState<
-    | {
-        name: string;
-        email: string;
-        role: string;
-        id: string;
-      }
-    | undefined
-  >(undefined);
+
+  const [user, setUser] = useState<IUser | undefined>(undefined);
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user") || "{}"));
   }, []);
