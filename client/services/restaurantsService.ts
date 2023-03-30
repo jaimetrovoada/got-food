@@ -1,5 +1,6 @@
 import axios from "axios";
 import useSWR from "swr";
+import config from "@/utils/config";
 
 interface Restaurant {
   id: string;
@@ -31,12 +32,16 @@ const createRestaurant = async (payload: {
 }) => {
   const token = JSON.parse(localStorage.getItem("token") || "{}");
   console.log({ token, payload });
-  const res = await axios.post("http://localhost:3001/restaurants", payload, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  const res = await axios.post(
+    `${config.BACKEND_URL}/api/restaurants`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
   return {
     restaurant: res.data,
     status: res.status,
@@ -48,7 +53,7 @@ const useRestaurants = () => {
     axios.get<Restaurant[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
-    "http://localhost:3001/restaurants",
+    `${config.BACKEND_URL}/api/restaurants`,
     fetcher
   );
   return {
@@ -63,7 +68,7 @@ const useRestaurant = (restaurantId: string) => {
     axios.get<Restaurant>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
-    `http://localhost:3001/restaurants/${restaurantId}`,
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
     fetcher
   );
 
@@ -79,7 +84,7 @@ const useRestaurantMenu = (restaurantId: string) => {
     axios.get<MenuItem[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
-    `http://localhost:3001/restaurants/${restaurantId}/menu`,
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
     fetcher
   );
 
@@ -104,7 +109,7 @@ const addMenuItem = async (
 
   console.log({ payload });
   const res = await axios.post(
-    `http://localhost:3001/restaurants/${restaurantId}/menu`,
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
     payload,
     {
       headers: {

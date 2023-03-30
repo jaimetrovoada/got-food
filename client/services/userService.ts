@@ -1,5 +1,6 @@
 import axios from "axios";
 import useSWR from "swr";
+import config from "@/utils/config";
 
 interface IUserRestaurants {
   id: string;
@@ -11,7 +12,7 @@ const useUserRestaurants = (id: string) => {
     axios.get<IUserRestaurants[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
-    `http://localhost:3001/users/${id}/restaurants`,
+    `${config.BACKEND_URL}/api/users/${id}/restaurants`,
     fetcher
   );
 

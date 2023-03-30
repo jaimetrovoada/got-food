@@ -1,8 +1,11 @@
 import axios from "axios";
+import config from "@/utils/config";
 
-const baseUrl = "http://localhost:3001";
 const login = async (credentials: { email: string; password: string }) => {
-  const res = await axios.post(baseUrl + "/users/login", credentials);
+  const res = await axios.post(
+    `${config.BACKEND_URL}/api/users/login`,
+    credentials
+  );
 
   return { data: res.data, status: res.status };
 };
@@ -13,7 +16,10 @@ const register = async (payload: {
   password: string;
   role: "customer" | "business";
 }) => {
-  const res = await axios.post(baseUrl + "/users/register", payload);
+  const res = await axios.post(
+    `${config.BACKEND_URL}/api/users/register`,
+    payload
+  );
 
   return { data: res.data, status: res.status };
 };
