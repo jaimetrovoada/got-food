@@ -7,11 +7,14 @@ import config from "../utils/config";
 
 const router = express.Router();
 
-// TODO: remove this route ⬇️⬇️⬇️
-router.get("/", async (req, res) => {
-  const users = await models.User.find({ role: ["customer", "business"] });
+router.get("/:id/restaurants", async (req, res) => {
+  const id = req.params.id;
+  const user = await models.User.findById(id).populate("restaurants", {
+    name: 1,
+  });
+  const restaurants = user.restaurants;
 
-  res.json(users);
+  res.json(restaurants);
 });
 
 router.post("/register", async (req, res, next) => {
