@@ -1,5 +1,5 @@
 import restaurantsService from "@/services/restaurantsService";
-import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Restaurants = () => {
@@ -14,7 +14,11 @@ const Restaurants = () => {
   return (
     <div className="flex flex-col gap-4">
       {restaurants?.map((restaurant) => (
-        <div key={restaurant.id} className="flex flex-row rounded-2xl border">
+        <Link
+          href={`/restaurants/${restaurant.id}`}
+          key={restaurant.id}
+          className="flex flex-row rounded-2xl border"
+        >
           <img
             src={restaurant.logo}
             alt={restaurant.name + " " + "logo"}
@@ -26,7 +30,7 @@ const Restaurants = () => {
             <h3 className="text-2xl font-bold">{restaurant.name}</h3>
             <p className="text-gray-500">{restaurant.description}</p>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
