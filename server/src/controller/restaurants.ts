@@ -4,7 +4,6 @@ import multer from "multer";
 import { z } from "zod";
 import middleware from "../utils/middleware";
 import { bucket } from "../app";
-import logger from "../utils/logger";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -14,15 +13,13 @@ const MenuItem = z.object({
   description: z.string(),
   price: z.number(),
   category: z.string(),
-  image: z.string(),
-  restaurant: z.any(),
+  image: z.string().url(),
 });
 
 const Restaurant = z.object({
   name: z.string(),
   description: z.string(),
   address: z.string(),
-  // owner: z.any(),
   menuItems: z.array(MenuItem).optional(),
   logo: z.string().url(),
 });
@@ -115,6 +112,8 @@ router.post(
       });
 
       const result = await restaurant.save();
+      user.restaurants = user.restaurants.concat(result._id);
+      await user.save();
 
       res.status(201).json(result);
     } catch (err) {
@@ -123,20 +122,34 @@ router.post(
   }
 );
 
-router.post("/:id/menu", upload.single("food"), async (req, res) => {
+router.post("/:id/menu", upload.single("image"), async (req, res) => {
   try {
+    const file = bucket.file(req.file.originalname);
+
+    file.createWriteStream().end(req.file.buffer);
+    const firebaseImgUrl = await file.getSignedUrl({
+      action: "read",
+      expires: "03-09-2491",
+    });
+    const priceSchema = z.coerce.number();
     const vMenuItem = MenuItem.parse({
       restaurant: req.params.id,
       name: req.body.name,
       description: req.body.description,
-      price: req.body.price,
+      price: priceSchema.parse(req.body.price),
       category: req.body.category,
-      image: req.file.destination + "/" + req.file.filename,
+      image: firebaseImgUrl[0],
     });
 
-    const menuItem = new models.Menu(vMenuItem);
+    const restaurant = await models.Restaurant.findById(req.params.id);
+    const menuItem = new models.Menu({
+      ...vMenuItem,
+      restaurant: restaurant._id,
+    });
 
-    await menuItem.save();
+    const result = await menuItem.save();
+    restaurant.menuItems = restaurant.menuItems.concat(result._id);
+    await restaurant.save();
     res.status(201).json(menuItem);
   } catch (err) {
     res.status(500).json({ message: err.message });
