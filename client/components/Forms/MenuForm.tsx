@@ -1,5 +1,5 @@
 import React from "react";
-import Form, { FormImageInput, FormInput } from "./Form";
+import Form from "./Form";
 
 interface MenuFormProps {
   handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -20,27 +20,27 @@ const MenuForm = ({
 }: MenuFormProps) => {
   return (
     <Form handleSubmit={handleSubmit}>
-      <FormInput name="name" id="name" handleChange={handleNameChange} />
+      <Form.Input name="name" id="name" handleChange={handleNameChange} />
 
-      <FormInput
+      <Form.Input
         name="description"
         id="description"
         handleChange={handleDescriptionChange}
       />
 
-      <FormInput
+      <Form.Input
         type="number"
         name="price"
         id="price"
         handleChange={handlePriceChange}
       />
-      <FormInput
+      <Form.Input
         name="category"
         id="category"
         handleChange={handleCategoryChange}
       />
 
-      <FormImageInput
+      <Form.ImageInput
         name="image"
         id="image"
         handleChange={handleImageChange}

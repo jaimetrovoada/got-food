@@ -5,19 +5,19 @@ interface FormProps {
   children: React.ReactNode;
 }
 
-interface FormInputProps {
+interface InputProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: React.HTMLInputTypeAttribute;
   name: string;
   id: string;
 }
 
-export const FormInput = ({
+export const Input = ({
   handleChange,
   type = "text",
   name,
   id,
-}: FormInputProps) => {
+}: InputProps) => {
   const capName = name.charAt(0).toUpperCase() + name.slice(1);
   return (
     <div className="flex flex-col">
@@ -33,11 +33,7 @@ export const FormInput = ({
   );
 };
 
-export const FormImageInput = ({
-  handleChange,
-  name,
-  id,
-}: FormInputProps) => {
+export const ImageInput = ({ handleChange, name, id }: InputProps) => {
   const capName = name.charAt(0).toUpperCase() + name.slice(1);
   return (
     <div className="flex flex-col">
@@ -72,5 +68,8 @@ const Form = ({ handleSubmit, children }: FormProps) => {
     </form>
   );
 };
+
+Form.Input = Input;
+Form.ImageInput = ImageInput;
 
 export default Form;

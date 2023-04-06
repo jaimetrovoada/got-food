@@ -1,5 +1,5 @@
 import React from "react";
-import Form, { FormInput } from "./Form";
+import Form from "./Form";
 
 interface RegisterFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -18,16 +18,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 }) => {
   return (
     <Form handleSubmit={handleSubmit}>
-      <FormInput name="name" id="name" handleChange={handleNameInput} />
+      <Form.Input name="name" id="name" handleChange={handleNameInput} />
 
-      <FormInput
+      <Form.Input
         type="email"
         name="email"
         id="email"
         handleChange={handleEmailInput}
       />
 
-      <FormInput
+      <Form.Input
         type="password"
         name="password"
         id="password"

@@ -1,5 +1,5 @@
 import React from "react";
-import Form, { FormInput, FormImageInput } from "./Form";
+import Form from "./Form";
 
 interface FormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -18,14 +18,14 @@ const RestaurantForm: React.FC<FormProps> = ({
   return (
     <Form handleSubmit={handleSubmit}>
       <p className="text-2xl font-bold">Add New Restaurant</p>
-      <FormInput handleChange={handleNameInput} name="name" id="name" />
-      <FormInput
+      <Form.Input handleChange={handleNameInput} name="name" id="name" />
+      <Form.Input
         handleChange={handleDescInput}
         name="description"
         id="description"
       />
-      <FormInput handleChange={handleAddrInput} name="address" id="address" />
-      <FormImageInput handleChange={handleLogoUpload} name="logo" id="logo" />
+      <Form.Input handleChange={handleAddrInput} name="address" id="address" />
+      <Form.ImageInput handleChange={handleLogoUpload} name="logo" id="logo" />
     </Form>
   );
 };
