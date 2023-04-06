@@ -4,6 +4,7 @@ import multer from "multer";
 import { z } from "zod";
 import middleware from "../utils/middleware";
 import { bucket } from "../app";
+import { nanoid } from "nanoid/async";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -90,7 +91,9 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const { user } = req;
     try {
-      const file = bucket.file(req.file.originalname);
+      const id = await nanoid();
+      const imgname = id + "." + req.file.mimetype.split("/")[1];
+      const file = bucket.file(imgname);
 
       file.createWriteStream().end(req.file.buffer);
       const firebaseImgUrl = await file.getSignedUrl({
@@ -124,7 +127,9 @@ router.post(
 
 router.post("/:id/menu", upload.single("image"), async (req, res) => {
   try {
-    const file = bucket.file(req.file.originalname);
+    const id = await nanoid();
+    const imgname = id + "." + req.file.mimetype.split("/")[1];
+    const file = bucket.file(imgname);
 
     file.createWriteStream().end(req.file.buffer);
     const firebaseImgUrl = await file.getSignedUrl({
