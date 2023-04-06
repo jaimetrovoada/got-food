@@ -13,12 +13,32 @@
   "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
+    "plugin:node/recommended",
+    "plugin:security/recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
+    // "prettier/@typescript-eslint",
     "prettier",
     "plugin:prettier/recommended"
   ],
   "rules": {
-    // add your custom rules here
+    "node/no-unsupported-features/es-syntax": [
+      "error",
+      {
+        "version": ">=16.0.0",
+        "ignores": ["modules"]
+      }
+    ],
+    "node/no-missing-import": [
+      "error",
+      {
+        "tryExtensions": [".js", ".json", ".node", ".ts"]
+      }
+    ],
+    "node/no-unpublished-import": [
+      "warn",
+      {
+        "tryExtensions": [".js", ".json", ".node", ".ts"]
+      }
+    ]
   }
 }

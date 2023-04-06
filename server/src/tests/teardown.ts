@@ -1,3 +1,4 @@
+/* eslint-disable no-process-exit */
 module.exports = () => {
-    process.exit(0);
-}
+  process.exit(0);
+};
