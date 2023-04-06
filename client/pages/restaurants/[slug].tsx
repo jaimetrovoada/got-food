@@ -1,4 +1,4 @@
-import Card from "@/components/Card";
+import ItemCard from "@/components/Card";
 import restaurantsService, { MenuItem } from "@/services/restaurantsService";
 import { useRouter } from "next/router";
 import React from "react";
@@ -58,22 +58,13 @@ const Restaurant = () => {
             category === undefined ? item : item.category === category
           )
           ?.map((item) => (
-            <Card key={item.id}>
-              <div className="flex flex-row gap-2">
-                <Image
-                  src={item.image}
-                  alt={`image of the dish - ${item.name}`}
-                  width={50}
-                  height={50}
-                  className="h-auto w-auto rounded-tl-2xl rounded-bl-2xl object-cover"
-                />
-                <div className="flex flex-col gap-2 p-2">
-                  <p className="text-xl font-bold">{item.name}</p>
-                  <p className="text-gray-500">{item.description}</p>
-                </div>
-              </div>
-              <p className="p-2 text-lg font-bold">${item.price}</p>
-            </Card>
+            <ItemCard
+              key={item.id}
+              name={item.name}
+              description={item.description}
+              imageUrl={item.image}
+              price={item.price}
+            />
           ))
       ) : (
         <div>No menu</div>

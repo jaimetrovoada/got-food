@@ -1,6 +1,8 @@
+import ItemCard from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
 import { useToasts } from "@/hooks";
 import restaurantsService from "@/services/restaurantsService";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
@@ -11,7 +13,6 @@ interface FormData {
   category: string;
   image: File | undefined;
 }
-
 
 const UserRestaurant = () => {
   const { setSuccessMsg, setErrorMsg } = useToasts();
@@ -92,8 +93,8 @@ const UserRestaurant = () => {
     <div className="flex flex-col gap-4">
       <MenuForm {...formHandlers} />
       <div>
-        <img
-          src={restaurant?.logo}
+        <Image
+          src={restaurant?.logo as string}
           alt=""
           width={50}
           height={50}
@@ -103,19 +104,13 @@ const UserRestaurant = () => {
         <p>{restaurant?.description}</p>
         <p>{restaurant?.address}</p>
         {menu?.map((item) => (
-          <div key={item.id} className="flex flex-row rounded-xl border">
-            <img
-              src={item.image}
-              alt=""
-              width={50}
-              height={50}
-              className="aspect-square rounded-tl-xl rounded-bl-xl object-cover"
-            />
-            <div className="p-2">
-              <p className="text-xl font-bold">{item.name}</p>
-              <p className="text-gray-500">{item.description}</p>
-            </div>
-          </div>
+          <ItemCard
+            key={item.id}
+            name={item.name}
+            description={item.description}
+            imageUrl={item.image}
+            price={item.price}
+          />
         ))}
       </div>
     </div>

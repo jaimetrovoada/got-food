@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import restaurantsService from "@/services/restaurantsService";
 import userService from "@/services/userService";
-import { useLocalStorage, useToasts } from "@/hooks";
-import Link from "next/link";
+import { useToasts } from "@/hooks";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
+import { LinkCard } from "@/components/Card";
 
 interface FormData {
   name: string;
@@ -95,13 +95,11 @@ const UserPage = () => {
 
         <div className="flex flex-col gap-4">
           {restaurants?.map((restaurant) => (
-            <Link
+            <LinkCard
               href={`/users/${slug}/restaurants/${restaurant.id}`}
-              className="rounded-2xl border p-2 text-xl font-bold"
               key={restaurant.id}
-            >
-              {restaurant.name}
-            </Link>
+              name={restaurant.name}
+            />
           ))}
         </div>
       </div>
