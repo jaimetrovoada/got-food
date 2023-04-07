@@ -46,6 +46,11 @@ const Auth = () => {
         }
       } catch (err) {
         console.log({ err });
+        if (err instanceof AxiosError) {
+          if (err.response?.status === 409) {
+            return setErrorMsg(err.response?.data?.error);
+          }
+        }
         setErrorMsg("Something went wrong, please try again");
       }
     },

@@ -4,6 +4,7 @@ import model from "../model";
 import logger from "./logger";
 import { ZodError } from "zod";
 import config from "./config";
+import { MongoServerError } from "mongodb";
 
 const userExtractor = async (
   req: Request,
@@ -50,12 +51,17 @@ const errorHandler = (
   logger.error({
     message: `${req.method} ${req.url}`,
     body: req.body,
-    error: error.message,
+    error: { error },
   });
 
   if (error instanceof ZodError) {
     const messages = error.errors.map((err) => err.message);
     return res.status(400).send({ error: messages });
+  } else if (error instanceof MongoServerError) {
+    if (error.code === 11000) {
+      return res.status(409).send({ error: "Email already exists" });
+    }
+    return res.status(409).send({ error: error.message });
   }
 
   next(error);
