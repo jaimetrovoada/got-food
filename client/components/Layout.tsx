@@ -1,10 +1,36 @@
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Toasts from "./Toasts";
 import ToastsProvider from "@/contexts/ToastsProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/reducers/store";
+import { setAuth } from "@/reducers/authReducers";
+import { useToasts } from "@/hooks";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user);
+  console.log({ user });
+  const { setSuccessMsg } = useToasts();
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("user");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
+      dispatch(
+        setAuth({
+          name: user.name,
+          email: user.email,
+          id: user.id,
+          token: user.token,
+        })
+      );
+      setSuccessMsg(`logged in as ${user.name}`);
+    }
+  }, []);
+
+
   return (
     <>
       <Head>
@@ -17,7 +43,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Link href="/">got food?</Link>
         <Link
           href="/auth"
-          className="rounded-lg border text-slate-600 p-1 shadow-md"
+          className="rounded-lg border p-2 text-slate-600 shadow-md"
         >
           Login{" "}
         </Link>
