@@ -6,6 +6,11 @@ import { useRouter } from "next/router";
 import RegisterForm from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
 
+export enum Role {
+  BUSINESS = "business",
+  CUSTOMER = "customer",
+}
+
 const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
   const { setSuccessMsg, setErrorMsg } = useToasts();
@@ -73,10 +78,9 @@ const Auth = () => {
         return { ...prev, password };
       });
     },
-    handleRoleInput: (e: React.ChangeEvent<HTMLInputElement>) => {
-      const checked = e.target.checked;
+    handleRoleInput: (role: Role) => {
       setRegisterFormState((prev) => {
-        return { ...prev, role: checked ? "business" : "customer" };
+        return { ...prev, role: role };
       });
     },
   };
