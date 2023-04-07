@@ -5,6 +5,8 @@ import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import RegisterForm from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/reducers/authReducers";
 
 export enum Role {
   BUSINESS = "business",
@@ -14,6 +16,8 @@ export enum Role {
 const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
   const { setSuccessMsg, setErrorMsg } = useToasts();
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
 
@@ -95,8 +99,18 @@ const Auth = () => {
         console.log({ res });
         if (res.status === 200) {
           setSuccessMsg("Login Complete");
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          localStorage.setItem("token", JSON.stringify(res.data.token));
+          localStorage.setItem(
+            "user",
+            JSON.stringify({ ...res.data.user, token: res.data.token })
+          );
+          dispatch(
+            setAuth({
+              id: res.data.user.id,
+              name: res.data.user.name,
+              email: res.data.user.email,
+              token: res.data.token,
+            })
+          );
           router.push("/users/" + res.data.user.id);
         }
       } catch (err) {
