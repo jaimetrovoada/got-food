@@ -5,14 +5,17 @@ import Toasts from "./Toasts";
 import ToastsProvider from "@/contexts/ToastsProvider";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/reducers/store";
-import { setAuth } from "@/reducers/authReducers";
+import { removeAuth, setAuth } from "@/reducers/authReducers";
 import { useToasts } from "@/hooks";
+import { useRouter } from "next/router";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   console.log({ user });
   const { setSuccessMsg } = useToasts();
+
+  const router = useRouter();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("user");
@@ -30,7 +33,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-
+  const handleLogout = () => {
+    window.localStorage.removeItem("user");
+    dispatch(removeAuth());
+    router.replace("/");
+  };
   return (
     <>
       <Head>
@@ -41,12 +48,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </Head>
       <header className="flex flex-row justify-between border-b p-4">
         <Link href="/">got food?</Link>
-        <Link
-          href="/auth"
-          className="rounded-lg border p-2 text-slate-600 shadow-md"
-        >
-          Login{" "}
-        </Link>
+        <div>
+          <Link
+            href="/auth"
+            className="rounded-lg border p-2 text-slate-600 shadow-md"
+          >
+            Login{" "}
+          </Link>
+          <button
+            className="rounded-xl border p-2 shadow-md"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </header>
       <ToastsProvider>
         <main className="container mx-auto flex flex-1 flex-col items-center justify-center">
@@ -59,5 +74,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default Layout;
-
-// TODO: add login/logout button
