@@ -24,13 +24,14 @@ export interface MenuItem {
   image: string;
 }
 
+const token = JSON.parse(localStorage.getItem("token") || "{}")?.token;
+
 const createRestaurant = async (payload: {
   name: string;
   description: string;
   address: string;
   logo: File | undefined;
 }) => {
-  const token = JSON.parse(localStorage.getItem("token") || "{}");
   console.log({ token, payload });
   const res = await axios.post(
     `${config.BACKEND_URL}/api/restaurants`,
@@ -105,8 +106,6 @@ const addMenuItem = async (
     image: File | undefined;
   }
 ) => {
-  const token = JSON.parse(localStorage.getItem("token") || "{}");
-
   console.log({ payload });
   const res = await axios.post(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
