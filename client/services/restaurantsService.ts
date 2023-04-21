@@ -24,7 +24,10 @@ export interface MenuItem {
   image: string;
 }
 
-const token = JSON.parse(localStorage.getItem("token") || "{}")?.token;
+let token: Record<string, any>;
+if (typeof window !== "undefined") {
+  token = JSON.parse(localStorage.getItem("token") || "{}")?.token;
+}
 
 const createRestaurant = async (payload: {
   name: string;
