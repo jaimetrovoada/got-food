@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../Button";
 
 interface FormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -58,12 +59,12 @@ const Form = ({ handleSubmit, children }: FormProps) => {
     >
       {children}
       <div>
-        <button type="submit" className="rounded-xl border bg-blue-500 p-2">
+        <Button type="submit" className="bg-blue-500 p-2">
           Submit
-        </button>
-        <button type="reset" className="rounded-xl border bg-red-500 p-2">
+        </Button>
+        <Button type="reset" className="bg-red-500 p-2">
           Reset
-        </button>
+        </Button>
       </div>
     </form>
   );

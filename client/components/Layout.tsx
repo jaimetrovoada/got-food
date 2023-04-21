@@ -8,6 +8,7 @@ import { RootState } from "@/reducers/store";
 import { removeAuth, setAuth } from "@/reducers/authReducers";
 import { useToasts } from "@/hooks";
 import { useRouter } from "next/router";
+import Button from "./Button";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
@@ -49,18 +50,18 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <header className="flex flex-row justify-between border-b p-4">
         <Link href="/">got food?</Link>
         <div>
-          <Link
-            href="/auth"
-            className="rounded-lg border p-2 text-slate-600 shadow-md"
-          >
-            Login{" "}
-          </Link>
-          <button
-            className="rounded-xl border p-2 shadow-md"
-            onClick={handleLogout}
-          >
+          {user.id ? (
+            <Button as={Link} href={`/users/${user.id}`} kind="secondary">
+              Logged in as {user.name}
+            </Button>
+          ) : (
+            <Button as={Link} href="/auth" kind="secondary">
+              Login
+            </Button>
+          )}
+          <Button kind="secondary" onClick={handleLogout}>
             Logout
-          </button>
+          </Button>
         </div>
       </header>
       <ToastsProvider>
