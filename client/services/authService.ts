@@ -1,8 +1,26 @@
 import axios from "axios";
 import config from "@/utils/config";
 
-const login = async (credentials: { email: string; password: string }) => {
-  const res = await axios.post(
+enum UserRole {
+  CUSTOMER = "customer",
+  BUSINESS = "business",
+}
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  restaurants: string[];
+}
+interface LoginRes {
+  user: User;
+  token: string;
+}
+
+const login = async (credentials: Record<"email" | "password", string>) => {
+  console.log({ credentials });
+  const res = await axios.post<LoginRes>(
     `${config.BACKEND_URL}/api/users/login`,
     credentials
   );
