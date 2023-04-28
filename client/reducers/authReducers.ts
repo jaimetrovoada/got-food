@@ -5,6 +5,7 @@ export interface UserState {
   email: string;
   id: string;
   token: string;
+  role: string;
 }
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   email: "",
   id: "",
   token: "",
+  role: "",
 };
 const authSlice = createSlice({
   name: "user",
@@ -22,12 +24,14 @@ const authSlice = createSlice({
       state.email = action.payload.email;
       state.id = action.payload.id;
       state.token = action.payload.token;
+      state.role = action.payload.role;
     },
     removeAuth: (state) => {
       state.name = "";
       state.email = "";
       state.id = "";
       state.token = "";
+      state.role = "";
     },
   },
 });

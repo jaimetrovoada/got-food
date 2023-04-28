@@ -28,6 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           email: user.email,
           id: user.id,
           token: user.token,
+          role: user.role,
         })
       );
       setSuccessMsg(`logged in as ${user.name}`);

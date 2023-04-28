@@ -109,6 +109,7 @@ const Auth = () => {
               name: res.data.user.name,
               email: res.data.user.email,
               token: res.data.token,
+              role: res.data.user.role,
             })
           );
           router.push("/users/" + res.data.user.id);
