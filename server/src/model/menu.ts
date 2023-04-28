@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-interface IMenu {
+interface IMenu extends Document {
   name: string;
   description: string;
   price: number;

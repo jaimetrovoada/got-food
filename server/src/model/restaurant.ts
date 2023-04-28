@@ -1,8 +1,8 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export interface IRestaurant {
+export interface IRestaurant extends Document {
   name: string;
   description: string;
   address: string;
