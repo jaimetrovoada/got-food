@@ -1,12 +1,15 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "./Button";
 
-interface ItemCarProps {
+interface ItemCardProps {
+  id: string;
   name: string;
   imageUrl: string;
   description: string;
   price: number;
+  addToCart?: (price: number, name: string, id: string) => void;
 }
 interface LinkCardProps {
   href: string;
@@ -15,7 +18,14 @@ interface LinkCardProps {
   description?: string;
 }
 
-const ItemCard = ({ name, imageUrl, description, price }: ItemCarProps) => {
+const ItemCard = ({
+  name,
+  id,
+  imageUrl,
+  description,
+  price,
+  addToCart,
+}: ItemCardProps) => {
   return (
     <div className="flex flex-row items-center justify-between rounded-2xl border shadow-md">
       <div className="flex flex-row gap-2">
@@ -31,7 +41,10 @@ const ItemCard = ({ name, imageUrl, description, price }: ItemCarProps) => {
           <p className="text-gray-500">{description}</p>
         </div>
       </div>
-      {price && <p className="p-2 text-lg font-bold">${price}</p>}
+      <p className="p-2 text-lg font-bold">${price}</p>
+      {addToCart && (
+        <Button onClick={() => addToCart(price, name, id)}>+</Button>
+      )}
     </div>
   );
 };
