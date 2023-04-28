@@ -1,10 +1,12 @@
 import ItemCard from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
 import { useToasts } from "@/hooks";
+import { RootState } from "@/reducers/store";
 import restaurantsService from "@/services/restaurantsService";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 interface FormData {
   name: string;
@@ -18,6 +20,7 @@ const UserRestaurant = () => {
   const { setSuccessMsg, setErrorMsg } = useToasts();
   const router = useRouter();
   const slug = router.query.slug as string;
+  const user = useSelector((state: RootState) => state.user);
 
   const { restaurant, isLoading, isError } =
     restaurantsService.useRestaurant(slug);
@@ -38,7 +41,11 @@ const UserRestaurant = () => {
       event.preventDefault();
       console.log("handleSubmit");
       try {
-        const res = await restaurantsService.addMenuItem(slug, formData);
+        const res = await restaurantsService.addMenuItem(
+          user.token,
+          slug,
+          formData
+        );
         console.log({ res });
         if (res.status === 201) {
           setSuccessMsg("Item added");
@@ -106,6 +113,7 @@ const UserRestaurant = () => {
         {menu?.map((item) => (
           <ItemCard
             key={item.id}
+            id={item.id}
             name={item.name}
             description={item.description}
             imageUrl={item.image}
