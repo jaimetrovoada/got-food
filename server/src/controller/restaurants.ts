@@ -25,6 +25,17 @@ const Restaurant = z.object({
   logo: z.string().url(),
 });
 
+const Order = z.object({
+  tableNumber: z.string(),
+  items: z.array(
+    z.object({
+      itemName: z.string(),
+      amount: z.number(),
+    })
+  ),
+  totalPrice: z.number(),
+});
+
 router.get("/", async (req, res) => {
   try {
     const restaurants = await models.Restaurant.find({})
@@ -156,6 +167,27 @@ router.post("/:id/menu", upload.single("image"), async (req, res) => {
     restaurant.menuItems = restaurant.menuItems.concat(result._id);
     await restaurant.save();
     res.status(201).json(menuItem);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log({ err });
+  }
+});
+
+router.post("/:id/order", async (req, res) => {
+  try {
+    const vOrder = Order.parse({
+      tableNumber: req.body.tableNumber,
+      items: req.body.items,
+      totalPrice: req.body.totalPrice,
+    });
+
+    const order = new models.Order({
+      ...vOrder,
+      restaurant: req.params.id,
+    });
+    const result = await order.save();
+
+    res.json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
