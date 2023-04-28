@@ -126,10 +126,40 @@ const addMenuItem = async (
   };
 };
 
+const placeOrder = async (
+  restaurantId: string,
+  token: string,
+  items: {
+    itemId: string;
+    amount: number;
+  }[],
+  totalPrice: number
+) => {
+  const res = await axios.post(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/order`,
+    {
+      tableNumber: 1,
+      items,
+      totalPrice,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return {
+    order: res.data,
+    status: res.status,
+  };
+};
+
 export default {
   createRestaurant,
   addMenuItem,
   useRestaurants,
   useRestaurantMenu,
   useRestaurant,
+  placeOrder,
 };
