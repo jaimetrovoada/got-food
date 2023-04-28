@@ -9,6 +9,7 @@ interface IItem {
 
 interface IOrder extends Document {
   restaurant: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
   tableNumber: string;
   items: IItem[];
   totalPrice: number;
@@ -17,6 +18,10 @@ interface IOrder extends Document {
 
 const orderSchema = new Schema<IOrder>({
   restaurant: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },

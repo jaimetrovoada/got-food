@@ -26,10 +26,10 @@ const Restaurant = z.object({
 });
 
 const Order = z.object({
-  tableNumber: z.string(),
+  tableNumber: z.number(),
   items: z.array(
     z.object({
-      itemName: z.string(),
+      itemId: z.string(),
       amount: z.number(),
     })
   ),
@@ -173,7 +173,7 @@ router.post("/:id/menu", upload.single("image"), async (req, res) => {
   }
 });
 
-router.post("/:id/order", async (req, res) => {
+router.post("/:id/order", middleware.userExtractor, async (req, res) => {
   try {
     const vOrder = Order.parse({
       tableNumber: req.body.tableNumber,
@@ -183,11 +183,12 @@ router.post("/:id/order", async (req, res) => {
 
     const order = new models.Order({
       ...vOrder,
+      user: req.user._id,
       restaurant: req.params.id,
     });
     const result = await order.save();
 
-    res.json(result);
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
