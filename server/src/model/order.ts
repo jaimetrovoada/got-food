@@ -40,6 +40,14 @@ const orderSchema = new Schema<IOrder>({
   },
 });
 
+orderSchema.set("toJSON", {
+  transform: (_, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
 const Order = mongoose.model<IOrder>("Order", orderSchema);
 
 export default Order;
