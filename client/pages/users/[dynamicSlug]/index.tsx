@@ -5,6 +5,8 @@ import userService from "@/services/userService";
 import { useToasts } from "@/hooks";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import { LinkCard } from "@/components/Card";
+import { RootState } from "@/reducers/store";
+import { useSelector } from "react-redux";
 
 interface FormData {
   name: string;
@@ -25,10 +27,7 @@ const UserPage = () => {
   const slug = router.query.dynamicSlug as string;
   console.log({ slug });
 
-  const [user, setUser] = useState<IUser | undefined>(undefined);
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user") || "{}"));
-  }, []);
+  const user = useSelector((state: RootState) => state.user);
 
   const { restaurants, isLoading, error } =
     userService.useUserRestaurants(slug);
@@ -45,7 +44,10 @@ const UserPage = () => {
       e.preventDefault();
       console.log("handleSubmit");
       try {
-        const res = await restaurantsService.createRestaurant(formState);
+        const res = await restaurantsService.createRestaurant(
+          user.token,
+          formState
+        );
         console.log({ res });
         if (res.status === 201) {
           setSuccessMsg("Restaurant created");

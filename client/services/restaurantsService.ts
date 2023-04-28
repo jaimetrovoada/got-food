@@ -24,17 +24,15 @@ export interface MenuItem {
   image: string;
 }
 
-let token: Record<string, any>;
-if (typeof window !== "undefined") {
-  token = JSON.parse(localStorage.getItem("token") || "{}")?.token;
-}
-
-const createRestaurant = async (payload: {
-  name: string;
-  description: string;
-  address: string;
-  logo: File | undefined;
-}) => {
+const createRestaurant = async (
+  token: string,
+  payload: {
+    name: string;
+    description: string;
+    address: string;
+    logo: File | undefined;
+  }
+) => {
   console.log({ token, payload });
   const res = await axios.post(
     `${config.BACKEND_URL}/api/restaurants`,
@@ -100,6 +98,7 @@ const useRestaurantMenu = (restaurantId: string) => {
 };
 
 const addMenuItem = async (
+  token: string,
   restaurantId: string,
   payload: {
     name: string;
