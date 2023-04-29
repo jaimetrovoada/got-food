@@ -50,6 +50,15 @@ const createRestaurant = async (
   };
 };
 
+const getRestaurants = async () => {
+  const res = await axios.get<Restaurant[]>(
+    `${config.BACKEND_URL}/api/restaurants`
+  );
+  return {
+    restaurants: res.data,
+    status: res.status,
+  };
+};
 const useRestaurants = () => {
   const fetcher = (url: string) =>
     axios.get<Restaurant[]>(url).then((res) => res.data);
@@ -65,6 +74,15 @@ const useRestaurants = () => {
   };
 };
 
+const getRestaurant = async (restaurantId: string) => {
+  const res = await axios.get<Restaurant>(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}`
+  );
+  return {
+    restaurant: res.data,
+    status: res.status,
+  };
+};
 const useRestaurant = (restaurantId: string) => {
   const fetcher = (url: string) =>
     axios.get<Restaurant>(url).then((res) => res.data);
@@ -78,6 +96,16 @@ const useRestaurant = (restaurantId: string) => {
     restaurant: data,
     isLoading,
     isError: error,
+  };
+};
+
+const getMenu = async (restaurantId: string) => {
+  const res = await axios.get<MenuItem[]>(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`
+  );
+  return {
+    menu: res.data,
+    status: res.status,
   };
 };
 
@@ -156,10 +184,13 @@ const placeOrder = async (
 };
 
 export default {
+  getRestaurants,
   createRestaurant,
   addMenuItem,
   useRestaurants,
+  getMenu,
   useRestaurantMenu,
+  getRestaurant,
   useRestaurant,
   placeOrder,
 };
