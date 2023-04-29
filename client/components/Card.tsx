@@ -60,16 +60,17 @@ export const LinkCard = ({
   return (
     <Link href={href} className="flex flex-row rounded-2xl border">
       {imageUrl && (
-        <Image
-          src={imageUrl}
-          alt={name + " " + "logo"}
-          width={50}
-          height={50}
-          className="h-auto w-auto rounded-tl-2xl rounded-bl-2xl object-cover"
-        />
+        <div className="relative w-full max-w-[80px]">
+          <Image
+            src={imageUrl}
+            alt={name + " " + "logo"}
+            fill
+            className="h-auto overflow-hidden rounded-tl-2xl rounded-bl-2xl object-cover"
+          />
+        </div>
       )}
       <div className="p-2">
-        <h3 className="text-2xl font-bold">{name}</h3>
+        <h3 className="text-2xl font-bold underline">{name}</h3>
         {description && <p className="text-gray-500">{description}</p>}
       </div>
     </Link>
