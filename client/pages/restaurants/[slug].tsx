@@ -1,6 +1,5 @@
 import ItemCard from "@/components/Card";
 import restaurantsService, { MenuItem } from "@/services/restaurantsService";
-import { useRouter } from "next/router";
 import React from "react";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,14 +11,11 @@ import {
 } from "@/reducers/cartSlice";
 import Button from "@/components/Button";
 import { useToasts } from "@/hooks";
+import { InferGetStaticPropsType } from "next";
 
-const Restaurant = () => {
-  const router = useRouter();
-  const slug = router.query.slug as string;
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-  const { menu, isLoading, isError } =
-    restaurantsService.useRestaurantMenu(slug);
-  const { restaurant } = restaurantsService.useRestaurant(slug);
+const Restaurant = ({ menu, restaurant }: Props) => {
 
   const cart = useSelector(
     (state: RootState) => state.cart[restaurant?.id as string]
@@ -72,7 +68,7 @@ const Restaurant = () => {
   const handleCheckout = async () => {
     try {
       const res = await restaurantsService.placeOrder(
-        slug,
+        restaurant.id,
         user.token,
         cart.items.map((item) => {
           return { itemId: item.id, amount: item.amount };
@@ -93,15 +89,6 @@ const Restaurant = () => {
       setErrorMsg("Something went wrong, please try again");
     }
   };
-
-  if (isError) {
-    console.log({ isError });
-    return <div>Error</div>;
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div>
@@ -142,7 +129,7 @@ const Restaurant = () => {
         <div>No menu</div>
       )}
       <section className="mt-4">
-        <h1>Cart = ${cart?.totalPrice}</h1>
+        <h1>Cart = ${cart?.totalPrice || 0}</h1>
         {cart?.items.length ? (
           <>
             {cart.items.map((item) => (
@@ -173,3 +160,30 @@ const Restaurant = () => {
 };
 
 export default Restaurant;
+
+export async function getStaticPaths() {
+  const { restaurants } = await restaurantsService.getRestaurants();
+
+  const paths = restaurants.map((restaurant) => ({
+    params: { slug: restaurant.id },
+  }));
+
+  return {
+    paths,
+    fallback: "blocking",
+  };
+}
+
+export async function getStaticProps({
+  params: { slug },
+}: {
+  params: { slug: string };
+}) {
+  const { menu } = await restaurantsService.getMenu(slug);
+  const { restaurant } = await restaurantsService.getRestaurant(slug);
+
+  return {
+    props: { menu, restaurant },
+    revalidate: 60,
+  };
+}
