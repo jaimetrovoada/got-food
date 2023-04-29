@@ -51,8 +51,13 @@ const cartSlice = createSlice({
       if (itemIndex !== -1) {
         const itemPrice = state[restaurantId].items[itemIndex].price;
         const itemQuantity = state[restaurantId].items[itemIndex].amount;
-        state[restaurantId].items.splice(itemIndex, 1);
-        state[restaurantId].totalPrice -= itemPrice * itemQuantity;
+        if (itemQuantity === 1) {
+          state[restaurantId].items.splice(itemIndex, 1);
+          state[restaurantId].totalPrice -= itemPrice;
+        } else {
+          state[restaurantId].items[itemIndex].amount -= 1;
+          state[restaurantId].totalPrice -= itemPrice;
+        }
       }
     },
     clearCartItems(state, action: PayloadAction<string>) {
