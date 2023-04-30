@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import restaurantsService from "@/services/restaurantsService";
 import userService from "@/services/userService";
 import { useToasts } from "@/hooks";
@@ -15,22 +14,12 @@ interface FormData {
   logo: File | undefined;
 }
 
-interface IUser {
-  name: string;
-  email: string;
-  role: string;
-  id: string;
-}
-
 const UserPage = () => {
-  const router = useRouter();
-  const slug = router.query.dynamicSlug as string;
-  console.log({ slug });
-
   const user = useSelector((state: RootState) => state.user);
 
-  const { restaurants, isLoading, error } =
-    userService.useUserRestaurants(slug);
+  const { restaurants, isLoading, error } = userService.useUserRestaurants(
+    user.id
+  );
 
   const { setSuccessMsg, setErrorMsg } = useToasts();
   const [formState, setFormState] = useState<FormData>({
@@ -98,7 +87,7 @@ const UserPage = () => {
         <div className="flex flex-col gap-4">
           {restaurants?.map((restaurant) => (
             <LinkCard
-              href={`/users/${slug}/restaurants/${restaurant.id}`}
+              href={`/users/${user.id}/restaurants/${restaurant.id}`}
               key={restaurant.id}
               name={restaurant.name}
             />
@@ -110,5 +99,3 @@ const UserPage = () => {
 };
 
 export default UserPage;
-
-// TODO: add list of restaurants belonging to user
