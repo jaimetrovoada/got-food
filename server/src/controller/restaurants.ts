@@ -36,6 +36,54 @@ const Order = z.object({
   totalPrice: z.number(),
 });
 
+function getExtensionFromMimeType(mimeType: string): string {
+  switch (mimeType) {
+    case "image/jpeg":
+      return "jpg";
+    case "image/png":
+      return "png";
+    case "image/webp":
+      return "webp";
+    default:
+      throw new Error(`Unsupported mimetype: ${mimeType}`);
+  }
+}
+
+function getContentTypeFromMimeType(mimeType: string): string {
+  return mimeType;
+}
+
+const uploadToFirebase = async (req: Request) => {
+  const id = nanoid();
+  const mimeType = req.file.mimetype;
+  const extension = getExtensionFromMimeType(mimeType);
+  const contentType = getContentTypeFromMimeType(mimeType);
+
+  const imgName = `${id}.${extension}`;
+
+  const file = bucket.file(imgName);
+  const firebaseImgUrlPromise = new Promise((resolve, reject) => {
+    const stream = file.createWriteStream({ contentType });
+
+    stream.on("error", (error) => {
+      reject(error);
+    });
+
+    stream.on("finish", async () => {
+      const firebaseImgUrl = await file.getSignedUrl({
+        action: "read",
+        expires: "03-09-2491",
+      });
+
+      resolve(firebaseImgUrl[0]);
+    });
+
+    stream.end(req.file.buffer);
+  });
+  const firebaseImgUrl = await firebaseImgUrlPromise;
+  return firebaseImgUrl;
+};
+
 router.get("/", async (req, res) => {
   try {
     const restaurants = await models.Restaurant.find({})
@@ -102,22 +150,14 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const { user } = req;
     try {
-      const id = await nanoid();
-      const imgname = id + "." + req.file.mimetype.split("/")[1];
-      const file = bucket.file(imgname);
-
-      file.createWriteStream().end(req.file.buffer);
-      const firebaseImgUrl = await file.getSignedUrl({
-        action: "read",
-        expires: "03-09-2491",
-      });
+      const firebaseImgUrl = await uploadToFirebase(req);
 
       const vRestaurant = Restaurant.parse({
         name: req.body.name,
         description: req.body.description,
         address: req.body.address,
         menuItems: req.body.menuItems || [],
-        logo: firebaseImgUrl[0],
+        logo: firebaseImgUrl,
       });
 
       const restaurant = new models.Restaurant({
@@ -138,15 +178,8 @@ router.post(
 
 router.post("/:id/menu", upload.single("image"), async (req, res) => {
   try {
-    const id = await nanoid();
-    const imgname = id + "." + req.file.mimetype.split("/")[1];
-    const file = bucket.file(imgname);
+    const firebaseImgUrl = await uploadToFirebase(req);
 
-    file.createWriteStream().end(req.file.buffer);
-    const firebaseImgUrl = await file.getSignedUrl({
-      action: "read",
-      expires: "03-09-2491",
-    });
     const priceSchema = z.coerce.number();
     const vMenuItem = MenuItem.parse({
       restaurant: req.params.id,
@@ -154,7 +187,7 @@ router.post("/:id/menu", upload.single("image"), async (req, res) => {
       description: req.body.description,
       price: priceSchema.parse(req.body.price),
       category: req.body.category,
-      image: firebaseImgUrl[0],
+      image: firebaseImgUrl,
     });
 
     const restaurant = await models.Restaurant.findById(req.params.id);
