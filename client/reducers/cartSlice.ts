@@ -7,7 +7,7 @@ interface ICartItem {
   amount: number;
 }
 
-interface ICartState {
+export interface ICartState {
   items: ICartItem[];
   totalPrice: number;
 }
