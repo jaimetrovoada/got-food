@@ -1,4 +1,3 @@
-import ItemCard from "@/components/Card";
 import restaurantsService, { MenuItem } from "@/services/restaurantsService";
 import React, { useState } from "react";
 import { AxiosError } from "axios";
@@ -9,10 +8,11 @@ import {
   clearCartItems,
   removeItemFromCart,
 } from "@/reducers/cartSlice";
-import Button from "@/components/Button";
 import { useToasts } from "@/hooks";
 import { InferGetStaticPropsType } from "next";
 import Container from "@/components/Container";
+import Menu from "@/components/Menu";
+import Cart from "@/components/Cart";
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -99,80 +99,21 @@ const Restaurant = ({ menu, restaurant }: Props) => {
 
   return (
     <Container className="relative overflow-hidden">
-      <section className="flex flex-1 overflow-hidden">
-        <aside className="mb-4 flex flex-col overflow-y-auto px-2">
-          {Object.keys(categories).map((cat) => (
-            <button
-              className={`rounded-lg p-2 ${
-                category === cat
-                  ? "underlines bg-gray-100 font-bold hover:bg-gray-200"
-                  : "hover:bg-gray-300"
-              }`}
-              onClick={() => setCategory(cat)}
-              key={cat}
-            >
-              {cat}
-            </button>
-          ))}
-        </aside>
-        <aside className="w-full flex-1 overflow-y-auto px-4">
-          {menu
-            .filter((item) =>
-              category === undefined ? item : item.category === category
-            )
-            .map((item) => (
-              <ItemCard
-                key={item.id}
-                name={item.name}
-                description={item.description}
-                imageUrl={item.image}
-                price={item.price}
-                addToCart={addToCart}
-                id={item.id}
-              />
-            ))}
-        </aside>
-      </section>
-      <section
-        className={`flex w-full flex-col bg-white transition-all ${
-          cartExpanded ? "absolute bottom-0 h-5/6" : "h-20"
-        }`}
-      >
-        <Button
-          onClick={() => setCartExpanded((prev) => !prev)}
-          className={`mx-auto -mt-5 flex items-center justify-center rounded-full leading-none transition-all ${
-            cartExpanded ? "rotate-180" : ""
-          }`}
-        >
-          ↑
-        </Button>
-        <h1>Total = ${cart?.totalPrice || 0}</h1>
-        {cartExpanded &&
-          (cart?.items.length ? (
-            <>
-              {cart.items.map((item) => (
-                <div key={item.name}>
-                  {item.name} - {item.amount}x
-                  <Button
-                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                      e.preventDefault();
-                      removeFromCart(item.name);
-                    }}
-                    type="reset"
-                  >
-                    -
-                  </Button>
-                </div>
-              ))}
-              <div>
-                <Button onClick={() => clearCart()}>Clear</Button>
-                <Button onClick={handleCheckout}>Checkout</Button>
-              </div>
-            </>
-          ) : (
-            <div>No items in cart</div>
-          ))}
-      </section>
+      <Menu
+        menu={menu}
+        categories={categories}
+        category={category}
+        setCategory={setCategory}
+        addToCart={addToCart}
+      />
+      <Cart
+        cart={cart}
+        cartExpanded={cartExpanded}
+        setCartExpanded={setCartExpanded}
+        handleCheckout={handleCheckout}
+        removeFromCart={removeFromCart}
+        clearCart={clearCart}
+      />
     </Container>
   );
 };
