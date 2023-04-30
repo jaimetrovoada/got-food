@@ -41,10 +41,17 @@ const ItemCard = ({
           <p className="text-gray-500">{description}</p>
         </div>
       </div>
-      <p className="p-2 text-lg font-bold">${price}</p>
-      {addToCart && (
-        <Button onClick={() => addToCart(price, name, id)}>+</Button>
-      )}
+      <div className="p-2">
+        <p className="text-lg font-bold">${price}</p>
+        {addToCart && (
+          <Button
+            onClick={() => addToCart(price, name, id)}
+            className="w-full rounded-full leading-none"
+          >
+            +
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
