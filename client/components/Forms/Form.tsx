@@ -41,7 +41,7 @@ export const ImageInput = ({ handleChange, name, id }: InputProps) => {
       <label htmlFor={id}>{capName}</label>
       <input
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg,image/webp"
         multiple={false}
         name={name}
         id={id}
