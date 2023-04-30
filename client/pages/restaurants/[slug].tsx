@@ -93,7 +93,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
     }
   };
 
-  if (!menu) {
+  if (!menu || !menu.length) {
     return <div>No menu</div>;
   }
 
