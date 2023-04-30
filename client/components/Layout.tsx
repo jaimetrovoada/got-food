@@ -66,9 +66,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </header>
       <ToastsProvider>
-        <main className="container mx-auto flex flex-1 flex-col p-2">
-          {children}
-        </main>
+        {children}
         <Toasts />
       </ToastsProvider>
     </>
