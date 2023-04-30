@@ -48,7 +48,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <header className="container mx-auto flex flex-row justify-between border-b p-4">
+      <header className="container mx-auto flex flex-row justify-between p-4">
         <Link href="/">got food?</Link>
         <div>
           {user.id ? (
