@@ -6,7 +6,7 @@ import morgan from "morgan";
 import logger from "./utils/logger";
 import admin from "firebase-admin";
 import middleware from "./utils/middleware";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 
 const app = express();
 
@@ -26,7 +26,11 @@ admin.initializeApp({
 
 export const bucket = admin.storage().bucket();
 
-app.use(cors());
+const corsConfig: CorsOptions = {
+  origin: ["http://localhost:3000", "https://got-food-five.vercel.app/"],
+};
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(morgan("tiny"));
 
