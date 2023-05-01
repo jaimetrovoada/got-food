@@ -3,14 +3,18 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import Toasts from "./Toasts";
 import ToastsProvider from "@/contexts/ToastsProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/reducers/store";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { RootState, store } from "@/reducers/store";
 import { removeAuth, setAuth } from "@/reducers/authReducers";
 import { useToasts } from "@/hooks";
 import { useRouter } from "next/router";
 import Button from "./Button";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   console.log({ user });
@@ -72,5 +76,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </>
   );
 };
+
+export const getLayout = (page: React.ReactNode) => (
+  <Provider store={store}>
+    <Layout>{page}</Layout>
+  </Provider>
+);
 
 export default Layout;
