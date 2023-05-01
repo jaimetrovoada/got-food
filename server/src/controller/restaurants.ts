@@ -147,7 +147,31 @@ router.get("/:id/menu", async (req, res) => {
 router.get("/:id/orders", async (req, res) => {
   try {
     const restaurant = await models.Restaurant.findById(req.params.id).populate(
-      "orders"
+      {
+        path: "orders",
+        populate: [
+          {
+            path: "orderedItems",
+            populate: {
+              path: "item",
+            },
+          },
+          {
+            path: "restaurant",
+            select: {
+              name: 1,
+            },
+          },
+        ],
+        select: {
+          restaurant: 1,
+          totalPrice: 1,
+          items: 1,
+          date: 1,
+          tableNumber: 1,
+          status: 1,
+        },
+      }
     );
     const orders = restaurant.orders;
 

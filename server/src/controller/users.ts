@@ -50,6 +50,8 @@ router.get("/:id/orders", async (req, res) => {
       totalPrice: 1,
       items: 1,
       date: 1,
+      tableNumber: 1,
+      status: 1,
     },
   });
   const orders = user.orders;

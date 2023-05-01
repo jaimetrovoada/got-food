@@ -1,8 +1,9 @@
 import axios from "axios";
 import useSWR from "swr";
 import config from "@/utils/config";
+import { IOrder } from "./userService";
 
-interface Restaurant {
+export interface Restaurant {
   id: string;
   name: string;
   description: string;
@@ -127,7 +128,7 @@ const useRestaurantMenu = (restaurantId: string) => {
 
 const useRestaurantOrders = (restaurantId: string) => {
   const fetcher = (url: string) =>
-    axios.get<MenuItem[]>(url).then((res) => res.data);
+    axios.get<IOrder[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}/orders`,

@@ -20,6 +20,8 @@ export interface IOrder {
   totalPrice: number;
   date: Date;
   id: string;
+  status: string;
+  tableNumber: string;
 }
 
 interface OrderedItem {
