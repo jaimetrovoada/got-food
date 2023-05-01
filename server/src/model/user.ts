@@ -8,6 +8,7 @@ export interface IUser extends Document {
   passwordHash: string;
   role: "customer" | "business";
   restaurants?: mongoose.Types.ObjectId[];
+  orders?: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -19,6 +20,13 @@ const userSchema = new Schema<IUser>({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
+      required: false,
+    },
+  ],
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
       required: false,
     },
   ],
