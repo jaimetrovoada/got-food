@@ -7,6 +7,16 @@ import config from "../utils/config";
 
 const router = express.Router();
 
+router.get("/:id", async (req, res) => {
+  const user = await models.User.findById(req.params.id).populate(
+    "restaurants",
+    {
+      name: 1,
+    }
+  );
+  res.json(user);
+});
+
 router.get("/:id/restaurants", async (req, res) => {
   const id = req.params.id;
   const user = await models.User.findById(id).populate("restaurants", {
@@ -15,6 +25,28 @@ router.get("/:id/restaurants", async (req, res) => {
   const restaurants = user.restaurants;
 
   res.json(restaurants);
+});
+
+router.get("/:id/orders", async (req, res) => {
+  const id = req.params.id;
+  const user = await models.User.findById(id).populate({
+    path: "orders",
+    populate: {
+      path: "orderedItems",
+      populate: {
+        path: "item",
+      },
+    },
+    select: {
+      restaurant: 1,
+      totalPrice: 1,
+      items: 1,
+      date: 1,
+    },
+  });
+  const orders = user.orders;
+
+  res.json(orders);
 });
 
 router.post("/register", async (req, res, next) => {
