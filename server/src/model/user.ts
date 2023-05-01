@@ -1,4 +1,5 @@
 import mongoose, { Document } from "mongoose";
+import uniqueValidator from "mongoose-unique-validator";
 
 const Schema = mongoose.Schema;
 
@@ -31,6 +32,8 @@ const userSchema = new Schema<IUser>({
     },
   ],
 });
+
+userSchema.plugin(uniqueValidator);
 
 userSchema.set("toJSON", {
   transform: (_, returnedObject) => {
