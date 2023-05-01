@@ -14,7 +14,7 @@ type PolymorphicComponentProp<
   Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
 
 type ButtonProps = {
-  kind?: "primary" | "secondary" | "tertiary";
+  kind?: "primary" | "secondary" | "tertiary" | "custom";
 };
 
 type Props<C extends React.ElementType> = PolymorphicComponentProp<
@@ -22,12 +22,17 @@ type Props<C extends React.ElementType> = PolymorphicComponentProp<
   ButtonProps
 >;
 
-const defaultStyles = "rounded-xl p-2 font-bold";
+const baseStyles = "rounded-xl p-2 font-bold";
 
-const buttonStyles = {
-  primary: `${defaultStyles} border bg-blue-700 hover:bg-blue-600 shadow-md text-white`,
-  secondary: `${defaultStyles} border border-blue-700 hover:bg-slate-100 shadow-md text-blue-700`,
-  tertiary: `${defaultStyles} shadow-b-md underline text-blue-700`,
+const getBaseStyles = (type: string) => {
+  return {
+    primary: `${baseStyles} border-2 shadow-custom border-black ${
+      type === "reset" ? "bg-red-700" : "bg-blue-700"
+    } hover:bg-blue-600 text-white`,
+    secondary: `${baseStyles} border-2 border-black hover:bg-slate-100 shadow-[0_4px_0_black] text-blue-700`,
+    tertiary: `${baseStyles} shadow-b-md underline text-blue-700`,
+    custom: `${baseStyles}`,
+  };
 };
 const Button = <C extends React.ElementType = "button">({
   as,
@@ -37,13 +42,17 @@ const Button = <C extends React.ElementType = "button">({
 }: Props<C>) => {
   const Component = as || "button";
 
+  const baseStyles = getBaseStyles(props.type);
+  const getStyles = () => {
+    return {
+      base: baseStyles[kind],
+      ...(props.className ? { className: props.className } : {}),
+    };
+  };
+  const styles = getStyles();
+
   return (
-    <Component
-      {...props}
-      className={`${props.className || ""} ${buttonStyles[kind]} ${
-        props.type === "reset" ? "bg-red-500" : ""
-      }`}
-    >
+    <Component {...props} className={styles.base + " " + styles.className}>
       {children}
     </Component>
   );
