@@ -27,14 +27,14 @@ const ItemCard = ({
   addToCart,
 }: ItemCardProps) => {
   return (
-    <div className="flex flex-row items-center justify-between rounded-2xl border shadow-md">
-      <div className="flex flex-row gap-2">
+    <div className="flex flex-row items-center justify-between rounded-2xl border-2 border-black shadow-custom">
+      <div className="flex flex-row gap-2 rounded-l-2xl">
         <Image
           src={imageUrl}
           alt={`image of the dish - ${name}`}
           width={50}
           height={50}
-          className="h-auto w-auto rounded-tl-2xl rounded-bl-2xl object-cover"
+          className="h-auto w-auto rounded-l-2xl object-cover"
         />
         <div className="flex flex-col gap-2 p-2">
           <p className="text-xl font-bold">{name}</p>
@@ -46,7 +46,7 @@ const ItemCard = ({
         {addToCart && (
           <Button
             onClick={() => addToCart(price, name, id)}
-            className="w-full rounded-full leading-none"
+            className="h-8 w-8 leading-none"
           >
             +
           </Button>
@@ -65,7 +65,10 @@ export const LinkCard = ({
   description,
 }: LinkCardProps) => {
   return (
-    <Link href={href} className="flex flex-row rounded-2xl border">
+    <Link
+      href={href}
+      className="flex flex-row rounded-2xl border-2 border-black shadow-custom"
+    >
       {imageUrl && (
         <div className="relative w-full max-w-[80px]">
           <Image
