@@ -125,6 +125,22 @@ const useRestaurantMenu = (restaurantId: string) => {
   };
 };
 
+const useRestaurantOrders = (restaurantId: string) => {
+  const fetcher = (url: string) =>
+    axios.get<MenuItem[]>(url).then((res) => res.data);
+
+  const { data, isLoading, error } = useSWR(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/orders`,
+    fetcher
+  );
+
+  return {
+    orders: data,
+    isLoading,
+    isError: error,
+  };
+};
+
 const addMenuItem = async (
   token: string,
   restaurantId: string,
@@ -194,4 +210,5 @@ export default {
   getRestaurant,
   useRestaurant,
   placeOrder,
+  useRestaurantOrders,
 };
