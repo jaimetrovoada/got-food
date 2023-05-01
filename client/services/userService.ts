@@ -14,8 +14,8 @@ interface IUserDetails {
   role: "customer" | "business";
 }
 
-interface IOrder {
-  restaurant: string;
+export interface IOrder {
+  restaurant: IUserRestaurants;
   orderedItems: OrderedItem[];
   totalPrice: number;
   date: Date;
