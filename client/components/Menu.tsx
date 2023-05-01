@@ -1,6 +1,7 @@
 import { MenuItem } from "@/services/restaurantsService";
 import React from "react";
 import ItemCard from "./Card";
+import Button from "./Button";
 
 interface Props {
   menu: MenuItem[];
@@ -21,20 +22,21 @@ const Menu = ({
     <section className="flex flex-1 overflow-hidden">
       <aside className="mb-4 flex flex-col overflow-y-auto px-2">
         {Object.keys(categories).map((cat) => (
-          <button
+          <Button
             className={`rounded-lg p-2 ${
               category === cat
-                ? "underlines bg-gray-100 font-bold hover:bg-gray-200"
+                ? "underline bg-gray-100 font-bold text-black hover:bg-gray-200"
                 : "hover:bg-gray-300"
             }`}
             onClick={() => setCategory(cat)}
             key={cat}
+            kind="custom"
           >
             {cat}
-          </button>
+          </Button>
         ))}
       </aside>
-      <aside className="w-full flex-1 overflow-y-auto px-4">
+      <aside className="flex w-full flex-1 flex-col gap-2 overflow-y-auto px-4">
         {menu
           .filter((item) =>
             category === undefined ? item : item.category === category
