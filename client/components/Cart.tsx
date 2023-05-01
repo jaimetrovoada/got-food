@@ -27,11 +27,15 @@ const Cart = ({
     >
       <Button
         onClick={() => setCartExpanded((prev) => !prev)}
-        className={`mx-auto -mt-5 flex items-center justify-center rounded-full leading-none transition-all ${
-          cartExpanded ? "rotate-180" : ""
-        }`}
+        className="mx-auto -mt-5 flex h-8 w-8 items-center justify-center"
       >
-        ↑
+        <span
+          className={`leading-none transition-all ${
+            cartExpanded ? "rotate-180" : ""
+          }`}
+        >
+          ↑
+        </span>
       </Button>
       <h1>Total = ${cart?.totalPrice || 0}</h1>
       {cartExpanded &&
@@ -41,6 +45,7 @@ const Cart = ({
               <div key={item.name}>
                 {item.name} - {item.amount}x
                 <Button
+                  className="h-8 w-8 leading-none"
                   onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                     e.preventDefault();
                     removeFromCart(item.name);
@@ -52,8 +57,12 @@ const Cart = ({
               </div>
             ))}
             <div>
-              <Button onClick={clearCart}>Clear</Button>
-              <Button onClick={handleCheckout}>Checkout</Button>
+              <Button className="leading-none" onClick={clearCart}>
+                Clear
+              </Button>
+              <Button className="leading-none" onClick={handleCheckout}>
+                Checkout
+              </Button>
             </div>
           </>
         ) : (
