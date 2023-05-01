@@ -27,13 +27,14 @@ const Restaurant = z.object({
 
 const Order = z.object({
   tableNumber: z.number(),
-  items: z.array(
+  orderedItems: z.array(
     z.object({
-      itemId: z.string(),
+      item: z.string(),
       amount: z.number(),
     })
   ),
   totalPrice: z.number(),
+  status: z.enum(["pending", "fullfilled"]),
 });
 
 function getExtensionFromMimeType(mimeType: string): string {
@@ -210,8 +211,9 @@ router.post("/:id/order", middleware.userExtractor, async (req, res) => {
   try {
     const vOrder = Order.parse({
       tableNumber: req.body.tableNumber,
-      items: req.body.items,
+      orderedItems: req.body.items,
       totalPrice: req.body.totalPrice,
+      status: req.body.status,
     });
 
     const order = new models.Order({
@@ -220,6 +222,9 @@ router.post("/:id/order", middleware.userExtractor, async (req, res) => {
       restaurant: req.params.id,
     });
     const result = await order.save();
+    const user = await models.User.findById(req.user._id);
+    user.orders = user.orders.concat(result._id);
+    await user.save();
 
     res.status(201).json(result);
   } catch (err) {
