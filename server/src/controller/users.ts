@@ -31,12 +31,20 @@ router.get("/:id/orders", async (req, res) => {
   const id = req.params.id;
   const user = await models.User.findById(id).populate({
     path: "orders",
-    populate: {
-      path: "orderedItems",
-      populate: {
-        path: "item",
+    populate: [
+      {
+        path: "orderedItems",
+        populate: {
+          path: "item",
+        },
       },
-    },
+      {
+        path: "restaurant",
+        select: {
+          name: 1,
+        },
+      },
+    ],
     select: {
       restaurant: 1,
       totalPrice: 1,
