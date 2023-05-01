@@ -1,6 +1,8 @@
 import ItemCard from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
+import { getUserLayout } from "@/components/UserLayout";
 import { useToasts } from "@/hooks";
+import { NextPageWithLayout } from "@/pages/_app";
 import { RootState } from "@/reducers/store";
 import restaurantsService from "@/services/restaurantsService";
 import Image from "next/image";
@@ -16,7 +18,7 @@ interface FormData {
   image: File | undefined;
 }
 
-const UserRestaurant = () => {
+const UserRestaurant: NextPageWithLayout = () => {
   const { setSuccessMsg, setErrorMsg } = useToasts();
   const router = useRouter();
   const slug = router.query.slug as string;
@@ -124,5 +126,7 @@ const UserRestaurant = () => {
     </div>
   );
 };
+
+UserRestaurant.getLayout = getUserLayout;
 
 export default UserRestaurant;
