@@ -9,6 +9,7 @@ export interface IRestaurant extends Document {
   menuItems: mongoose.Types.ObjectId[];
   owner: mongoose.Types.ObjectId;
   logo: string;
+  orders: mongoose.Types.ObjectId[];
 }
 
 const restaurantSchema = new Schema<IRestaurant>({
@@ -40,6 +41,12 @@ const restaurantSchema = new Schema<IRestaurant>({
     type: String,
     required: true,
   },
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
 });
 
 restaurantSchema.set("toJSON", {

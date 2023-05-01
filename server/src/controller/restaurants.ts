@@ -144,6 +144,20 @@ router.get("/:id/menu", async (req, res) => {
   }
 });
 
+router.get("/:id/orders", async (req, res) => {
+  try {
+    const restaurant = await models.Restaurant.findById(req.params.id).populate(
+      "orders"
+    );
+    const orders = restaurant.orders;
+
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log({ err });
+  }
+});
+
 router.post(
   "/",
   middleware.userExtractor,
@@ -222,9 +236,14 @@ router.post("/:id/order", middleware.userExtractor, async (req, res) => {
       restaurant: req.params.id,
     });
     const result = await order.save();
+
     const user = await models.User.findById(req.user._id);
     user.orders = user.orders.concat(result._id);
     await user.save();
+
+    const restaurant = await models.Restaurant.findById(req.params.id);
+    restaurant.orders = restaurant.orders.concat(result._id);
+    await restaurant.save();
 
     res.status(201).json(result);
   } catch (err) {
