@@ -74,7 +74,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
         restaurant.id,
         user.token,
         cart.items.map((item) => {
-          return { itemId: item.id, amount: item.amount };
+          return { item: item.id, amount: item.amount };
         }),
         cart.totalPrice
       );

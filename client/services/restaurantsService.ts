@@ -158,7 +158,7 @@ const placeOrder = async (
   restaurantId: string,
   token: string,
   items: {
-    itemId: string;
+    item: string;
     amount: number;
   }[],
   totalPrice: number
@@ -169,6 +169,7 @@ const placeOrder = async (
       tableNumber: 1,
       items,
       totalPrice,
+      status: "pending",
     },
     {
       headers: {
