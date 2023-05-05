@@ -13,7 +13,6 @@ interface Props {
 const UserLayout = ({ children }: Props) => {
   const router = useRouter();
   const currentRoute = router.asPath;
-  console.log({ currentRoute });
   const user = useSelector((state: RootState) => state.user);
   const routes =
     user.role === "customer"
@@ -33,8 +32,17 @@ const UserLayout = ({ children }: Props) => {
           { name: "Restaurants", path: `/users/${user.id}/restaurants` },
         ];
 
+  const activeRoute = routes.find((route) => {
+    const pattern = new RegExp(`^${route.path}$`);
+    if (route.name === "Restaurants") {
+      return new RegExp(`^/users/${user.id}/restaurants(/.*)?$`).test(
+        currentRoute
+      );
+    }
+    return pattern.test(currentRoute);
+  });
   const isActive = (route: string) => {
-    return currentRoute === route;
+    return activeRoute?.name === route;
   };
 
   return (
@@ -49,7 +57,7 @@ const UserLayout = ({ children }: Props) => {
                   href={route.path}
                   kind="custom"
                   className={`${
-                    isActive(route.path)
+                    isActive(route.name)
                       ? "underline"
                       : "font-normal text-gray-700"
                   }`}
