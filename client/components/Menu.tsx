@@ -1,11 +1,11 @@
-import { MenuItem } from "@/services/restaurantsService";
 import React from "react";
 import ItemCard from "./Card";
 import Button from "./Button";
+import { IMenuItem } from "@/types";
 
 interface Props {
-  menu: MenuItem[];
-  categories: Record<string, MenuItem[]>;
+  menu: IMenuItem[];
+  categories: Record<string, IMenuItem[]>;
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   addToCart: (price: number, name: string, id: string) => void;
@@ -25,7 +25,7 @@ const Menu = ({
           <Button
             className={`rounded-lg p-2 ${
               category === cat
-                ? "underline bg-gray-100 font-bold text-black hover:bg-gray-200"
+                ? "bg-gray-100 font-bold text-black underline hover:bg-gray-200"
                 : "hover:bg-gray-300"
             }`}
             onClick={() => setCategory(cat)}

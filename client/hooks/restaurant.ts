@@ -1,12 +1,11 @@
-import { MenuItem, Restaurant } from "@/services/restaurantsService";
 import axios from "axios";
 import config from "@/utils/config";
 import useSWR from "swr";
-import { IOrder } from "@/services/userService";
+import { IRestaurant, IMenuItem, IOrder } from "@/types";
 
 export const useRestaurants = () => {
   const fetcher = (url: string) =>
-    axios.get<Restaurant[]>(url).then((res) => res.data);
+    axios.get<IRestaurant[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
     `${config.BACKEND_URL}/api/restaurants`,
@@ -21,7 +20,7 @@ export const useRestaurants = () => {
 
 export const useRestaurant = (restaurantId: string) => {
   const fetcher = (url: string) =>
-    axios.get<Restaurant>(url).then((res) => res.data);
+    axios.get<IRestaurant>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
@@ -37,7 +36,7 @@ export const useRestaurant = (restaurantId: string) => {
 
 export const useRestaurantMenu = (restaurantId: string) => {
   const fetcher = (url: string) =>
-    axios.get<MenuItem[]>(url).then((res) => res.data);
+    axios.get<IMenuItem[]>(url).then((res) => res.data);
 
   const { data, isLoading, error } = useSWR(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,

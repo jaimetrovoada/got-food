@@ -1,44 +1,8 @@
 import axios from "axios";
 import useSWR from "swr";
 import config from "@/utils/config";
+import { IUserDetails, IUserRestaurants, IOrder } from "@/types";
 
-interface IUserRestaurants {
-  id: string;
-  name: string;
-}
-interface IUserDetails {
-  id: string;
-  name: string;
-  email: string;
-  restaurants: IUserRestaurants[];
-  role: "customer" | "business";
-}
-
-export interface IOrder {
-  restaurant: IUserRestaurants;
-  orderedItems: OrderedItem[];
-  totalPrice: number;
-  date: Date;
-  id: string;
-  status: string;
-  tableNumber: string;
-}
-
-interface OrderedItem {
-  item: Item;
-  amount: number;
-  _id: string;
-}
-
-interface Item {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  restaurant: string;
-  id: string;
-}
 
 export const useUserDetails = (id: string) => {
   const fetcher = (url: string) =>

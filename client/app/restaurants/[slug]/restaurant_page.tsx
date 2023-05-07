@@ -1,9 +1,5 @@
 "use client";
 
-import restaurantsService, {
-  MenuItem,
-  Restaurant as IRestaurant,
-} from "@/services/restaurantsService";
 import React, { useState } from "react";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,10 +13,12 @@ import { useToasts } from "@/hooks";
 import Container from "@/components/Container";
 import Menu from "@/components/Menu";
 import Cart from "@/components/Cart";
+import restaurantsService from "@/services/restaurantsService";
+import { IMenuItem, IRestaurant } from "@/types";
 
 interface Props {
   restaurant: IRestaurant;
-  menu: MenuItem[];
+  menu: IMenuItem[];
 }
 
 const Restaurant = ({ menu, restaurant }: Props) => {
@@ -37,7 +35,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
   console.log({ cart });
 
   // group by category
-  const categories: Record<string, MenuItem[]> | undefined = menu?.reduce(
+  const categories: Record<string, IMenuItem[]> | undefined = menu?.reduce(
     (acc, curr) => {
       if (!acc[curr.category]) {
         acc[curr.category] = [];
@@ -45,7 +43,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
       acc[curr.category].push(curr);
       return acc;
     },
-    {} as Record<string, MenuItem[]>
+    {} as Record<string, IMenuItem[]>
   );
 
   const categoryNames = Object.keys(categories);

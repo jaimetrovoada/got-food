@@ -1,27 +1,7 @@
 import axios from "axios";
 import config from "@/utils/config";
+import { IRestaurant, IMenuItem } from "@/types";
 
-export interface Restaurant {
-  id: string;
-  name: string;
-  description: string;
-  address: string;
-  menuItems: MenuItem[];
-  owner: {
-    name: string;
-    email: string;
-  };
-  logo: string;
-}
-
-export interface MenuItem {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-}
 
 const createRestaurant = async (
   token: string,
@@ -50,7 +30,7 @@ const createRestaurant = async (
 };
 
 const getRestaurants = async () => {
-  const res = await axios.get<Restaurant[]>(
+  const res = await axios.get<IRestaurant[]>(
     `${config.BACKEND_URL}/api/restaurants`
   );
   return {
@@ -60,7 +40,7 @@ const getRestaurants = async () => {
 };
 
 const getRestaurant = async (restaurantId: string) => {
-  const res = await axios.get<Restaurant>(
+  const res = await axios.get<IRestaurant>(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}`
   );
   return {
@@ -70,7 +50,7 @@ const getRestaurant = async (restaurantId: string) => {
 };
 
 const getMenu = async (restaurantId: string) => {
-  const res = await axios.get<MenuItem[]>(
+  const res = await axios.get<IMenuItem[]>(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`
   );
   return {
@@ -80,7 +60,7 @@ const getMenu = async (restaurantId: string) => {
 };
 
 const getTrendingRestaurants = async () => {
-  const res = await axios.get<Restaurant[]>(
+  const res = await axios.get<IRestaurant[]>(
     `${config.BACKEND_URL}/api/restaurants/trending`
   );
   return {

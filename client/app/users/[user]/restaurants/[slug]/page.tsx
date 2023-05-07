@@ -4,16 +4,13 @@ import Button from "@/components/Button";
 import ItemCard from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
 import { useToasts } from "@/hooks";
-import { IOrder } from "@/hooks/user";
 import { RootState } from "@/reducers/store";
-import restaurantsService, {
-  MenuItem,
-  Restaurant,
-} from "@/services/restaurantsService";
+import restaurantsService from "@/services/restaurantsService";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useRestaurant, useRestaurantOrders, useRestaurantMenu } from "@/hooks";
+import { IRestaurant, IMenuItem, IOrder } from "@/types";
 
 interface FormData {
   name: string;
@@ -35,8 +32,8 @@ interface ViewsProps {
     handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleCategoryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   };
-  restaurant: Restaurant | undefined;
-  menu: MenuItem[] | undefined;
+  restaurant: IRestaurant | undefined;
+  menu: IMenuItem[] | undefined;
   orders: IOrder[] | undefined;
 }
 

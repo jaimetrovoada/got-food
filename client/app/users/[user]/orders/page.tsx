@@ -5,7 +5,7 @@ import { RootState } from "@/reducers/store";
 import { useUserOrders } from "@/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
-import { IOrder } from "@/hooks/user";
+import { IOrder } from "@/types";
 
 interface Props {
   order: IOrder;
