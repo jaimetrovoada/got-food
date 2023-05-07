@@ -40,7 +40,7 @@ interface Item {
   id: string;
 }
 
-const useUserDetails = (id: string) => {
+export const useUserDetails = (id: string) => {
   const fetcher = (url: string) =>
     axios.get<IUserDetails>(url).then((res) => res.data);
 
@@ -55,7 +55,7 @@ const useUserDetails = (id: string) => {
   };
 };
 
-const useUserRestaurants = (id: string) => {
+export const useUserRestaurants = (id: string) => {
   const fetcher = (url: string) =>
     axios.get<IUserRestaurants[]>(url).then((res) => res.data);
 
@@ -71,7 +71,7 @@ const useUserRestaurants = (id: string) => {
   };
 };
 
-const useUserOrders = (id: string) => {
+export const useUserOrders = (id: string) => {
   const fetcher = (url: string) =>
     axios.get<IOrder[]>(url).then((res) => res.data);
 
@@ -85,5 +85,3 @@ const useUserOrders = (id: string) => {
     error,
   };
 };
-
-export default { useUserDetails, useUserRestaurants, useUserOrders };
