@@ -1,89 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
 import models from "../model";
 import multer from "multer";
-import { z } from "zod";
 import middleware from "../utils/middleware";
-import { bucket } from "../app";
-import { nanoid } from "nanoid/async";
+import { uploadToFirebase } from "../lib/helpers";
+import { MenuItem, Order, Restaurant, priceSchema } from "../lib/schemas";
+import { IOrder } from "../model/order";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
-
-const MenuItem = z.object({
-  name: z.string(),
-  description: z.string(),
-  price: z.number(),
-  category: z.string(),
-  image: z.string().url(),
-});
-
-const Restaurant = z.object({
-  name: z.string(),
-  description: z.string(),
-  address: z.string(),
-  menuItems: z.array(MenuItem).optional(),
-  logo: z.string().url(),
-});
-
-const Order = z.object({
-  tableNumber: z.number(),
-  orderedItems: z.array(
-    z.object({
-      item: z.string(),
-      amount: z.number(),
-    })
-  ),
-  totalPrice: z.number(),
-  status: z.enum(["pending", "fullfilled"]),
-});
-
-function getExtensionFromMimeType(mimeType: string): string {
-  switch (mimeType) {
-    case "image/jpeg":
-      return "jpg";
-    case "image/png":
-      return "png";
-    case "image/webp":
-      return "webp";
-    default:
-      throw new Error(`Unsupported mimetype: ${mimeType}`);
-  }
-}
-
-function getContentTypeFromMimeType(mimeType: string): string {
-  return mimeType;
-}
-
-const uploadToFirebase = async (req: Request) => {
-  const id = nanoid();
-  const mimeType = req.file.mimetype;
-  const extension = getExtensionFromMimeType(mimeType);
-  const contentType = getContentTypeFromMimeType(mimeType);
-
-  const imgName = `${id}.${extension}`;
-
-  const file = bucket.file(imgName);
-  const firebaseImgUrlPromise = new Promise((resolve, reject) => {
-    const stream = file.createWriteStream({ contentType });
-
-    stream.on("error", (error) => {
-      reject(error);
-    });
-
-    stream.on("finish", async () => {
-      const firebaseImgUrl = await file.getSignedUrl({
-        action: "read",
-        expires: "03-09-2491",
-      });
-
-      resolve(firebaseImgUrl[0]);
-    });
-
-    stream.end(req.file.buffer);
-  });
-  const firebaseImgUrl = await firebaseImgUrlPromise;
-  return firebaseImgUrl;
-};
 
 router.get("/", async (req, res) => {
   try {
@@ -219,7 +143,6 @@ router.post("/:id/menu", upload.single("image"), async (req, res) => {
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
-    const priceSchema = z.coerce.number();
     const vMenuItem = MenuItem.parse({
       restaurant: req.params.id,
       name: req.body.name,

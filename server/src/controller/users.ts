@@ -1,9 +1,9 @@
 import express from "express";
 import models from "../model";
 import bcrypt from "bcrypt";
-import { z } from "zod";
 import jwt from "jsonwebtoken";
 import config from "../utils/config";
+import { Register, Login } from "../lib/schemas";
 
 const router = express.Router();
 
@@ -60,17 +60,8 @@ router.get("/:id/orders", async (req, res) => {
 });
 
 router.post("/register", async (req, res, next) => {
-  const User = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-    role: z.enum(["customer", "business"]),
-  });
-
   try {
-    const validatedUser = User.parse({
+    const validatedUser = Register.parse({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
@@ -94,15 +85,8 @@ router.post("/register", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-  const User = z.object({
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-  });
-
   try {
-    const validatedUser = User.parse({
+    const validatedUser = Login.parse({
       email: req.body.email,
       password: req.body.password,
     });
@@ -137,18 +121,9 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.put("/:id", async (req, res, next) => {
-  const User = z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" }),
-    role: z.enum(["customer", "business"]),
-  });
-
   const userId = req.params.id;
   try {
-    const validatedUser = User.parse({
+    const validatedUser = Register.parse({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
