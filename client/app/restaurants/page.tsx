@@ -1,12 +1,10 @@
 import { LinkCard } from "@/components/Card";
 import Container from "@/components/Container";
 import restaurantsService from "@/services/restaurantsService";
-import { InferGetStaticPropsType } from "next";
 import React from "react";
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-const Restaurants = ({ restaurants }: Props) => {
+const Page = async () => {
+  const { restaurants } = await getRestaurants();
   return (
     <Container className="flex flex-col gap-4 p-2">
       {restaurants?.map((restaurant) => (
@@ -22,12 +20,10 @@ const Restaurants = ({ restaurants }: Props) => {
   );
 };
 
-export default Restaurants;
+export default Page;
 
-export async function getStaticProps() {
-  const { restaurants } = await restaurantsService.getRestaurants();
-  return {
-    props: { restaurants },
-    revalidate: 60,
-  };
+async function getRestaurants() {
+  const restaurant = await restaurantsService.getRestaurants();
+
+  return restaurant;
 }

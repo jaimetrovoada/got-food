@@ -1,10 +1,11 @@
+"use client";
+
 import Button from "@/components/Button";
-import { getUserLayout } from "@/components/UserLayout";
-import { NextPageWithLayout } from "@/pages/_app";
 import { RootState } from "@/reducers/store";
-import userService, { IOrder } from "@/services/userService";
+import { useUserOrders } from "@/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
+import { IOrder } from "@/hooks/user";
 
 interface Props {
   order: IOrder;
@@ -50,9 +51,9 @@ const OrderCard = ({ order }: Props) => {
   );
 };
 
-const OrdersPage: NextPageWithLayout = () => {
+const OrdersPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const { orders, isLoading, error } = userService.useUserOrders(user.id);
+  const { orders, isLoading, error } = useUserOrders(user.id);
   console.log({ orders });
 
   if (isLoading) {
@@ -78,7 +79,5 @@ const OrdersPage: NextPageWithLayout = () => {
     </div>
   );
 };
-
-OrdersPage.getLayout = getUserLayout;
 
 export default OrdersPage;

@@ -1,4 +1,9 @@
-import restaurantsService, { MenuItem } from "@/services/restaurantsService";
+"use client";
+
+import restaurantsService, {
+  MenuItem,
+  Restaurant as IRestaurant,
+} from "@/services/restaurantsService";
 import React, { useState } from "react";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +14,14 @@ import {
   removeItemFromCart,
 } from "@/reducers/cartSlice";
 import { useToasts } from "@/hooks";
-import { InferGetStaticPropsType } from "next";
 import Container from "@/components/Container";
 import Menu from "@/components/Menu";
 import Cart from "@/components/Cart";
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+interface Props {
+  restaurant: IRestaurant;
+  menu: MenuItem[];
+}
 
 const Restaurant = ({ menu, restaurant }: Props) => {
   const cart = useSelector(
@@ -119,30 +126,3 @@ const Restaurant = ({ menu, restaurant }: Props) => {
 };
 
 export default Restaurant;
-
-export async function getStaticPaths() {
-  const { restaurants } = await restaurantsService.getRestaurants();
-
-  const paths = restaurants.map((restaurant) => ({
-    params: { slug: restaurant.id },
-  }));
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
-}
-
-export async function getStaticProps({
-  params: { slug },
-}: {
-  params: { slug: string };
-}) {
-  const { menu } = await restaurantsService.getMenu(slug);
-  const { restaurant } = await restaurantsService.getRestaurant(slug);
-
-  return {
-    props: { menu, restaurant },
-    revalidate: 60,
-  };
-}

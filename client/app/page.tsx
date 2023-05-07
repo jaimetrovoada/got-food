@@ -1,8 +1,10 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
+import restaurantsService from "@/services/restaurantsService";
 import Link from "next/link";
+import React from "react";
 
-export default function Home() {
+const Page = async () => {
   return (
     <Container className="flex h-full items-center justify-center">
       <Button as={Link} href={"/restaurants"}>
@@ -10,4 +12,6 @@ export default function Home() {
       </Button>
     </Container>
   );
-}
+};
+
+export default Page;

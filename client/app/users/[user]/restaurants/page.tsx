@@ -1,11 +1,11 @@
+"use client";
+
 import { LinkCard } from "@/components/Card";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
-import { getUserLayout } from "@/components/UserLayout";
 import { useToasts } from "@/hooks";
-import { NextPageWithLayout } from "@/pages/_app";
 import { RootState } from "@/reducers/store";
 import restaurantsService from "@/services/restaurantsService";
-import userService from "@/services/userService";
+import { useUserRestaurants } from "@/hooks";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -16,13 +16,10 @@ interface FormData {
   logo: File | undefined;
 }
 
-const UserRestaurantPage: NextPageWithLayout = () => {
+const UserRestaurantPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  
 
-  const { restaurants, isLoading, error } = userService.useUserRestaurants(
-    user.id
-  );
+  const { restaurants, isLoading, error } = useUserRestaurants(user.id);
 
   const { setSuccessMsg, setErrorMsg } = useToasts();
   const [formState, setFormState] = useState<FormData>({
@@ -100,7 +97,5 @@ const UserRestaurantPage: NextPageWithLayout = () => {
     </div>
   );
 };
-
-UserRestaurantPage.getLayout = getUserLayout;
 
 export default UserRestaurantPage;

@@ -1,13 +1,13 @@
+"use client";
+
 import React from "react";
 import { RootState } from "@/reducers/store";
-import { NextPageWithLayout } from "@/pages/_app";
 import { useSelector } from "react-redux";
-import { getUserLayout } from "@/components/UserLayout";
-import userService from "@/services/userService";
+import { useUserDetails } from "@/hooks";
 
-const UserPage: NextPageWithLayout = () => {
+const UserPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const { user: userinfo } = userService.useUserDetails(user.id);
+  const { user: userinfo } = useUserDetails(user.id);
 
   return (
     <>
@@ -24,7 +24,5 @@ const UserPage: NextPageWithLayout = () => {
     </>
   );
 };
-
-UserPage.getLayout = getUserLayout;
 
 export default UserPage;

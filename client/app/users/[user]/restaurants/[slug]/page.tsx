@@ -1,19 +1,19 @@
+"use client";
+
 import Button from "@/components/Button";
 import ItemCard from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
-import { getUserLayout } from "@/components/UserLayout";
 import { useToasts } from "@/hooks";
-import { NextPageWithLayout } from "@/pages/_app";
+import { IOrder } from "@/hooks/user";
 import { RootState } from "@/reducers/store";
 import restaurantsService, {
   MenuItem,
   Restaurant,
 } from "@/services/restaurantsService";
-import { IOrder } from "@/services/userService";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { useRestaurant, useRestaurantOrders, useRestaurantMenu } from "@/hooks";
 
 interface FormData {
   name: string;
@@ -121,17 +121,16 @@ const Views = ({
     </div>
   );
 };
-const UserRestaurant: NextPageWithLayout = () => {
+const UserRestaurant = () => {
   const { setSuccessMsg, setErrorMsg } = useToasts();
-  const router = useRouter();
-  const slug = router.query.slug as string;
+  const router = useParams();
+  const slug = router?.slug as string;
   const user = useSelector((state: RootState) => state.user);
 
-  const { orders } = restaurantsService.useRestaurantOrders(slug);
+  const { orders } = useRestaurantOrders(slug);
   console.log({ orders });
-  const { restaurant, isLoading, isError } =
-    restaurantsService.useRestaurant(slug);
-  const { menu } = restaurantsService.useRestaurantMenu(slug);
+  const { restaurant, isLoading, isError } = useRestaurant(slug);
+  const { menu } = useRestaurantMenu(slug);
 
   const views = ["dashboard", "menu", "details"];
 
@@ -234,7 +233,5 @@ const UserRestaurant: NextPageWithLayout = () => {
     </div>
   );
 };
-
-UserRestaurant.getLayout = getUserLayout;
 
 export default UserRestaurant;

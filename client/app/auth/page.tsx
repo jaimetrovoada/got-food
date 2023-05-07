@@ -1,17 +1,14 @@
+"use client";
+
 import React, { useState } from "react";
 import authService from "@/services/authService";
 import { useToasts } from "@/hooks";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import RegisterForm from "@/components/Forms/RegisterForm";
+import { useRouter } from "next/navigation";
+import RegisterForm, { Role } from "@/components/Forms/RegisterForm";
 import LoginForm from "@/components/Forms/LoginForm";
 import { useDispatch } from "react-redux";
 import { setAuth } from "@/reducers/authReducers";
-
-export enum Role {
-  BUSINESS = "business",
-  CUSTOMER = "customer",
-}
 
 const Auth = () => {
   const [view, setView] = useState<"login" | "register">("login");
@@ -112,7 +109,7 @@ const Auth = () => {
               role: res.data.user.role,
             })
           );
-          router.push("/users/" + res.data.user.id);
+          router.push(`/users/${res.data.user.id}`);
         }
       } catch (err) {
         console.log({ err });
