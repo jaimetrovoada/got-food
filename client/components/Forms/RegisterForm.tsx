@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import Form from "./Form";
-import { Role } from "@/pages/auth";
+
+export enum Role {
+  BUSINESS = "business",
+  CUSTOMER = "customer",
+}
 
 interface RegisterFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
