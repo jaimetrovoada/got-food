@@ -1,7 +1,5 @@
 import axios from "axios";
-import useSWR from "swr";
 import config from "@/utils/config";
-import { IOrder } from "./userService";
 
 export interface Restaurant {
   id: string;
@@ -60,20 +58,6 @@ const getRestaurants = async () => {
     status: res.status,
   };
 };
-const useRestaurants = () => {
-  const fetcher = (url: string) =>
-    axios.get<Restaurant[]>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants`,
-    fetcher
-  );
-  return {
-    restaurants: data,
-    isLoading,
-    isError: error,
-  };
-};
 
 const getRestaurant = async (restaurantId: string) => {
   const res = await axios.get<Restaurant>(
@@ -82,21 +66,6 @@ const getRestaurant = async (restaurantId: string) => {
   return {
     restaurant: res.data,
     status: res.status,
-  };
-};
-const useRestaurant = (restaurantId: string) => {
-  const fetcher = (url: string) =>
-    axios.get<Restaurant>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
-    fetcher
-  );
-
-  return {
-    restaurant: data,
-    isLoading,
-    isError: error,
   };
 };
 
@@ -110,35 +79,13 @@ const getMenu = async (restaurantId: string) => {
   };
 };
 
-const useRestaurantMenu = (restaurantId: string) => {
-  const fetcher = (url: string) =>
-    axios.get<MenuItem[]>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
-    fetcher
+const getTrendingRestaurants = async () => {
+  const res = await axios.get<Restaurant[]>(
+    `${config.BACKEND_URL}/api/restaurants/trending`
   );
-
   return {
-    menu: data,
-    isLoading,
-    isError: error,
-  };
-};
-
-const useRestaurantOrders = (restaurantId: string) => {
-  const fetcher = (url: string) =>
-    axios.get<IOrder[]>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/orders`,
-    fetcher
-  );
-
-  return {
-    orders: data,
-    isLoading,
-    isError: error,
+    restaurants: res.data,
+    status: res.status,
   };
 };
 
@@ -203,13 +150,10 @@ const placeOrder = async (
 
 export default {
   getRestaurants,
+  getRestaurant,
+  getMenu,
+  getTrendingRestaurants,
   createRestaurant,
   addMenuItem,
-  useRestaurants,
-  getMenu,
-  useRestaurantMenu,
-  getRestaurant,
-  useRestaurant,
   placeOrder,
-  useRestaurantOrders,
 };
