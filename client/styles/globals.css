@@ -6,11 +6,6 @@ body,
 html {
     min-height: 100vh;
     min-height: 100svh;
-}
-
-#__next {
-    height: 100vh;
-    height: 100svh;
     display: flex;
     flex-direction: column;
 }
