@@ -1,18 +1,20 @@
+"use client";
+
 import { RootState } from "@/reducers/store";
 import React from "react";
 import { useSelector } from "react-redux";
 import Button from "./Button";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { getLayout as getSiteLayout } from "./Layout";
+import { usePathname } from "next/navigation";
 import Container from "./Container";
 
 interface Props {
   children: React.ReactNode;
 }
 const UserLayout = ({ children }: Props) => {
-  const router = useRouter();
-  const currentRoute = router.asPath;
+  const router = usePathname();
+  const currentRoute = router as string;
+  console.log({ currentRoute });
   const user = useSelector((state: RootState) => state.user);
   const routes =
     user.role === "customer"
@@ -73,8 +75,5 @@ const UserLayout = ({ children }: Props) => {
     </>
   );
 };
-
-export const getUserLayout = (page: React.ReactNode) =>
-  getSiteLayout(<UserLayout>{page}</UserLayout>);
 
 export default UserLayout;

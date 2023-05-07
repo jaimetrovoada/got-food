@@ -1,14 +1,16 @@
+"use client";
+
 import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import Toasts from "./Toasts";
 import ToastsProvider from "@/contexts/ToastsProvider";
-import { Provider, useDispatch, useSelector } from "react-redux";
-import { RootState, store } from "@/reducers/store";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/reducers/store";
 import { removeAuth, setAuth } from "@/reducers/authReducers";
 import { useToasts } from "@/hooks";
-import { useRouter } from "next/router";
 import Button from "./Button";
+import { useRouter } from "next/navigation";
 
 interface Props {
   children: React.ReactNode;
@@ -76,11 +78,5 @@ const Layout = ({ children }: Props) => {
     </>
   );
 };
-
-export const getLayout = (page: React.ReactNode) => (
-  <Provider store={store}>
-    <Layout>{page}</Layout>
-  </Provider>
-);
 
 export default Layout;
