@@ -7,7 +7,7 @@ interface IOrderedItems {
   amount: number;
 }
 
-interface IOrder extends Document {
+export interface IOrder extends Document {
   restaurant: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
   tableNumber: string;
