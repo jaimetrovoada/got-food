@@ -25,6 +25,29 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/trending", async (req, res, next) => {
+  try {
+    const restaurants = await models.Restaurant.find({}).populate<{
+      orders: IOrder[];
+    }>("orders", {
+      date: 1,
+      status: 1,
+    });
+
+    const top5 = restaurants
+      .filter((restaurant) => restaurant.orders.length > 0)
+      .sort((a, b) => {
+        return b.orders.length - a.orders.length;
+      })
+      .slice(0, 5);
+
+    res.json(top5);
+  } catch (err) {
+    console.log({ err });
+    next(err);
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const restaurant = await models.Restaurant.findById(req.params.id).populate(
