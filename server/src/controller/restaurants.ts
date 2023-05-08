@@ -34,8 +34,8 @@ router.get("/trending", async (req, res, next) => {
       status: 1,
     });
 
+    // .filter((restaurant) => restaurant.orders.length > 0)
     const top5 = restaurants
-      .filter((restaurant) => restaurant.orders.length > 0)
       .sort((a, b) => {
         return b.orders.length - a.orders.length;
       })
