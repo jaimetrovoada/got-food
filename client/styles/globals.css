@@ -8,4 +8,5 @@ html {
     min-height: 100svh;
     display: flex;
     flex-direction: column;
+    background-color: #fbfae5;
 }
