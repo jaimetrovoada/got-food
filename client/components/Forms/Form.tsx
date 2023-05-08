@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "../Button";
 
 interface FormProps {
@@ -9,8 +9,10 @@ interface FormProps {
 interface InputProps {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: React.HTMLInputTypeAttribute;
+  value?: string;
   name: string;
   id: string;
+  disabled?: boolean | undefined;
 }
 
 export const Input = ({
@@ -18,8 +20,13 @@ export const Input = ({
   type = "text",
   name,
   id,
+  value,
+  disabled,
 }: InputProps) => {
   const capName = name.charAt(0).toUpperCase() + name.slice(1);
+
+  const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
+
   return (
     <div className="flex flex-col">
       <label htmlFor={id}>{capName}</label>
@@ -29,7 +36,18 @@ export const Input = ({
         id={id}
         onChange={handleChange}
         className="border p-2 focus:outline-none"
+        value={value}
+        disabled={isDisabled}
       />
+      {disabled !== undefined && (
+        <Button
+          type="button"
+          onClick={() => setIsDisabled(!isDisabled)}
+          className="w-fit"
+        >
+          edit
+        </Button>
+      )}
     </div>
   );
 };
