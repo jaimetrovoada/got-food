@@ -37,6 +37,16 @@ export const Register = z.object({
     .min(8, { message: "Password must be at least 8 characters long" }),
   role: z.enum(["customer", "business"]),
 });
+export const Update = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .nullable()
+    .optional(),
+  role: z.enum(["customer", "business"]),
+});
 
 export const Login = z.object({
   email: z.string().email(),
