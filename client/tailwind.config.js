@@ -10,6 +10,10 @@ module.exports = {
       boxShadow: {
         custom: "0px 3px 0px rgba(0, 0, 0, 1)",
       },
+      backgroundImage: {
+        "hero-pattern":
+          "linear-gradient(to right bottom, rgba(0,0,0,0), rgba(16,71,52,1)), var(--image-url)",
+      },
     },
   },
   plugins: [require("tailwind-scrollbar-hide")],
