@@ -42,7 +42,33 @@ const register = async (payload: {
   return { data: res.data, status: res.status };
 };
 
-export default {
+const updateUser = async (
+  token: string,
+  id: string,
+  payload: {
+    name: string;
+    email: string;
+    password: string;
+    role: string;
+  }
+) => {
+  const res = await axios.put(
+    `${config.BACKEND_URL}/api/users/${id}`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return { data: res.data, status: res.status };
+};
+
+const authService = {
   login,
   register,
+  updateUser,
 };
+
+export default authService;
