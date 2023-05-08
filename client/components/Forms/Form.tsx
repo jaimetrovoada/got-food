@@ -28,24 +28,27 @@ export const Input = ({
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor={id}>{capName}</label>
-      <input
-        type={type}
-        name={name}
-        id={id}
-        onChange={handleChange}
-        className="border p-2 focus:outline-none"
-        value={value}
-        disabled={isDisabled}
-      />
+    <div className="flex flex-row items-center">
+      <div className="flex flex-1 flex-col">
+        <label htmlFor={id}>{capName}</label>
+        <input
+          type={type}
+          name={name}
+          id={id}
+          onChange={handleChange}
+          className="border p-2 focus:outline-none"
+          value={value}
+          disabled={isDisabled}
+        />
+      </div>
       {disabled !== undefined && (
         <Button
           type="button"
           onClick={() => setIsDisabled(!isDisabled)}
           className="w-fit"
+          kind="tertiary"
         >
-          edit
+          ✏️
         </Button>
       )}
     </div>
