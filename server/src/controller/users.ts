@@ -3,7 +3,8 @@ import models from "../model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../utils/config";
-import { Register, Login } from "../lib/schemas";
+import { Register, Login, Update } from "../lib/schemas";
+import middleware from "../utils/middleware";
 
 const router = express.Router();
 
@@ -120,25 +121,27 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", middleware.userExtractor, async (req, res, next) => {
   const userId = req.params.id;
   try {
-    const validatedUser = Register.parse({
+    const validatedUser = Update.parse({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
       role: req.body.role,
     });
-
+    const user = await models.User.findById(userId);
     const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
+    const passwordHash = validatedUser.password
+      ? await bcrypt.hash(validatedUser.password, saltRounds)
+      : user.passwordHash;
 
-    const updatedUser = await models.User.findByIdAndUpdate(userId, {
-      name: validatedUser.name,
-      email: validatedUser.email,
-      passwordHash,
-      role: validatedUser.role,
-    });
+    user.name = validatedUser.name;
+    user.email = validatedUser.email;
+    user.passwordHash = passwordHash;
+    user.role = validatedUser.role;
+
+    const updatedUser = await user.save();
 
     res.status(200).json(updatedUser);
   } catch (err) {
