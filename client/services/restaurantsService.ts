@@ -2,7 +2,6 @@ import axios from "axios";
 import config from "@/utils/config";
 import { IRestaurant, IMenuItem } from "@/types";
 
-
 const createRestaurant = async (
   token: string,
   payload: {
@@ -128,6 +127,19 @@ const placeOrder = async (
   };
 };
 
+const updateOrder = async (restaurantId: string, orderId: string) => {
+  const res = await axios.put(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/order/${orderId}`,
+    {
+      status: "fullfilled",
+    }
+  );
+  return {
+    order: res.data,
+    status: res.status,
+  };
+};
+
 export default {
   getRestaurants,
   getRestaurant,
@@ -136,4 +148,5 @@ export default {
   createRestaurant,
   addMenuItem,
   placeOrder,
+  updateOrder,
 };

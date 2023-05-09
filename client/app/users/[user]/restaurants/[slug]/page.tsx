@@ -45,6 +45,7 @@ const Views = ({
   orders,
 }: ViewsProps) => {
   console.log({ currV: view });
+
   if (view === "menu") {
     return (
       <div className="flex flex-col gap-4">
@@ -109,7 +110,13 @@ const Views = ({
                   </li>
                 </ul>
               ))}
-              <Button className="" kind="custom">
+              <Button
+                className=""
+                kind="custom"
+                onClick={() =>
+                  restaurantsService.updateOrder(restaurant.id, order.id)
+                }
+              >
                 ✅
               </Button>
             </div>
