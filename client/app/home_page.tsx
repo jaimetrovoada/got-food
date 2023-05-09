@@ -66,9 +66,7 @@ const Home = ({ trending }: Props) => {
           >
             <div className="ml-auto flex flex-col gap-2 p-4 text-right">
               <p className="text-5xl font-bold text-white">{restaurant.name}</p>
-              <p className="text-xl font-bold text-gray-800">
-                {restaurant.description}
-              </p>
+              <p className="text-xl text-gray-800">{restaurant.description}</p>
             </div>
             <div className="mt-auto mb-4 ml-auto mr-4 flex gap-4">
               <Button
