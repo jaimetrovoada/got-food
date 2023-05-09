@@ -53,30 +53,22 @@ const OrderCard = ({ order }: Props) => {
 
 const OrdersPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const { orders, isLoading, error } = useUserOrders(user.id);
+  const { orders } = useUserOrders(user.id);
   console.log({ orders });
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error.message}</div>;
-  }
 
   if (!orders) {
     return <>No orders made yet</>;
   }
 
   return (
-    <div>
-      Order History:
-      <div className="mx-auto max-w-screen-md">
+    <section className="mx-auto w-full max-w-screen-md">
+      <p>Order History:</p>
+      <div>
         {orders.map((order) => (
           <OrderCard key={order.id} order={order} />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

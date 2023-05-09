@@ -78,8 +78,7 @@ const UserRestaurantPage = () => {
     return <div>something went wrong</div>;
   }
   return (
-    <div>
-      Hi {user?.name}
+    <section className="mx-auto w-full max-w-screen-md">
       {user?.role === "business" ? <RestaurantForm {...formHandlers} /> : null}
       <div className="flex flex-col gap-4">
         <h3>your restaurants</h3>
@@ -87,14 +86,14 @@ const UserRestaurantPage = () => {
         <div className="flex flex-col gap-4">
           {restaurants?.map((restaurant) => (
             <LinkCard
-              href={`/users/${user.id}/restaurants/${restaurant.id}`}
+              href={`/users/${user.id}/restaurants/${restaurant.id}/details`}
               key={restaurant.id}
               name={restaurant.name}
             />
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
