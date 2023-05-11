@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function useOnScreen() {
   const ref = useRef<HTMLDivElement>(null);
@@ -7,6 +7,7 @@ export default function useOnScreen() {
   const observer = useRef(null);
 
   useEffect(() => {
+    if (!ref.current) return;
     if (observer.current) observer.current.disconnect();
     observer.current = new IntersectionObserver(
       ([entry]) => setIntersecting(entry.isIntersecting),
