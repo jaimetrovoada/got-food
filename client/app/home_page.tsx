@@ -19,8 +19,31 @@ const Home = ({ trending }: Props) => {
   const [isVisible1, ref1] = useOnScreen();
   const [isVisible2, ref2] = useOnScreen();
   const [isVisible3, ref3] = useOnScreen();
-  const refArr = [ref1, ref2, ref3];
+  const [isVisible4, ref4] = useOnScreen();
+  const [isVisible5, ref5] = useOnScreen();
 
+  const dotsArr = [
+    {
+      ref: ref1,
+      isVisible: isVisible1,
+    },
+    {
+      ref: ref2,
+      isVisible: isVisible2,
+    },
+    {
+      ref: ref3,
+      isVisible: isVisible3,
+    },
+    {
+      ref: ref4,
+      isVisible: isVisible4,
+    },
+    {
+      ref: ref5,
+      isVisible: isVisible5,
+    },
+  ];
   const scrollToElement = (el: HTMLDivElement) => {
     el.scrollIntoView({ behavior: "smooth" });
   };
@@ -31,38 +54,38 @@ const Home = ({ trending }: Props) => {
       "--image-url": `url(${restaurant.logo})`,
     } as MyCustomCSS;
   };
+
+  if (!trending || trending.length === 0) {
+    return (
+      <Container className="flex items-center justify-center">
+        <Button as={Link} href="/restaurants">
+          Explore
+        </Button>
+      </Container>
+    );
+  }
+
   return (
     <Container className="flex max-w-full">
       <div className="flex-no-wrap scrolling-touch relative flex w-full max-w-full flex-1 snap-x snap-mandatory overflow-x-auto scrollbar-hide">
         <div className="fixed left-10 bottom-10 z-30 flex gap-4">
-          <Button
-            onClick={() => scrollToElement(ref1.current)}
-            kind="custom"
-            className={`h-4 w-4 rounded-full ${
-              !isVisible1 ? "bg-gray-500" : "bg-black"
-            }`}
-          ></Button>
-          <Button
-            onClick={() => scrollToElement(ref2.current)}
-            kind="custom"
-            className={`h-4 w-4 rounded-full ${
-              !isVisible2 ? "bg-gray-500" : "bg-black"
-            }`}
-          ></Button>
-          <Button
-            onClick={() => scrollToElement(ref3.current)}
-            kind="custom"
-            className={`h-4 w-4 rounded-full ${
-              !isVisible3 ? "bg-gray-500" : "bg-black"
-            }`}
-          ></Button>
+          {trending.map((_, index) => (
+            <Button
+              key={index}
+              onClick={() => scrollToElement(dotsArr[index].ref.current)}
+              kind="custom"
+              className={`h-4 w-4 rounded-full ${
+                !dotsArr[index].isVisible ? "bg-gray-500" : "bg-black"
+              }`}
+            ></Button>
+          ))}
         </div>
         {trending.map((restaurant, index) => (
           <div
             key={restaurant.id}
             style={style(restaurant)}
             className={`flex w-full flex-none snap-start snap-always flex-col bg-hero-pattern bg-cover bg-center bg-no-repeat`}
-            ref={refArr[index]}
+            ref={dotsArr[index].ref}
           >
             <div className="ml-auto flex flex-col gap-2 p-4 text-right">
               <p className="text-5xl font-bold text-white">{restaurant.name}</p>
