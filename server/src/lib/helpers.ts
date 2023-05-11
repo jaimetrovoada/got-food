@@ -20,7 +20,7 @@ function getContentTypeFromMimeType(mimeType: string): string {
 }
 
 export async function uploadToFirebase(req: Request) {
-  const id = nanoid();
+  const id = await nanoid();
   const mimeType = req.file.mimetype;
   const extension = getExtensionFromMimeType(mimeType);
   const contentType = getContentTypeFromMimeType(mimeType);
