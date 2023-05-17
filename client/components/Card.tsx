@@ -138,3 +138,15 @@ export const LinkCard = ({
     </Card>
   );
 };
+
+export const CardSkeleton = () => {
+  return (
+    <Card className="flex h-20 select-none">
+      <Skeleton className="h-full w-[80px] rounded-l-2xl"></Skeleton>
+      <div className="flex flex-1 flex-col justify-between p-2">
+        <Skeleton className="h-6 w-1/3" rounded></Skeleton>
+        <Skeleton className="h-4 w-2/5" rounded></Skeleton>
+      </div>
+    </Card>
+  );
+};
