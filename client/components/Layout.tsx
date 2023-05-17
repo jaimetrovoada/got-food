@@ -52,15 +52,15 @@ const Layout = ({ children }: Props) => {
         <Link href="/">got food?</Link>
         <div>
           {user.id ? (
-            <Button as={Link} href={`/users/${user.id}`} kind="secondary">
+            <Button as={Link} href={`/users/${user.id}`} variant="secondary">
               Logged in as {user.name}
             </Button>
           ) : (
-            <Button as={Link} href="/auth" kind="secondary">
+            <Button as={Link} href="/auth/login" variant="secondary">
               Login
             </Button>
           )}
-          <Button kind="secondary" onClick={handleLogout}>
+          <Button variant="secondary" onClick={handleLogout}>
             Logout
           </Button>
         </div>

@@ -14,7 +14,7 @@ type PolymorphicComponentProp<
   Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
 
 type ButtonProps = {
-  kind?: "primary" | "secondary" | "tertiary" | "custom";
+  variant?: "primary" | "secondary" | "tertiary" | "custom";
 };
 
 type Props<C extends React.ElementType> = PolymorphicComponentProp<
@@ -37,7 +37,7 @@ const getBaseStyles = (type: string) => {
 const Button = <C extends React.ElementType = "button">({
   as,
   children,
-  kind = "primary",
+  variant = "primary",
   ...props
 }: Props<C>) => {
   const Component = as || "button";
@@ -45,7 +45,7 @@ const Button = <C extends React.ElementType = "button">({
   const baseStyles = getBaseStyles(props.type);
   const getStyles = () => {
     return {
-      base: baseStyles[kind],
+      base: baseStyles[variant],
       ...(props.className ? { className: props.className } : {}),
     };
   };

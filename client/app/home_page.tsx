@@ -73,7 +73,7 @@ const Home = ({ trending }: Props) => {
             <Button
               key={index}
               onClick={() => scrollToElement(dotsArr[index].ref.current)}
-              kind="custom"
+              variant="custom"
               className={`h-4 w-4 rounded-full ${
                 !dotsArr[index].isVisible ? "bg-gray-500" : "bg-black"
               }`}
@@ -102,7 +102,7 @@ const Home = ({ trending }: Props) => {
               <Button
                 as={Link}
                 href={"/restaurants"}
-                kind="secondary"
+                variant="secondary"
                 className="bg-white"
               >
                 Explore Restaurants

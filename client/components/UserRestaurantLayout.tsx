@@ -56,7 +56,7 @@ const UserRestaurantLayout = ({ children }: Props) => {
                 <Button
                   as={Link}
                   href={route.path}
-                  kind="custom"
+                  variant="custom"
                   className={`font-normal ${
                     isActive(route.name) ? "underline" : "text-gray-600"
                   }`}

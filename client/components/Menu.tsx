@@ -30,7 +30,7 @@ const Menu = ({
             }`}
             onClick={() => setCategory(cat)}
             key={cat}
-            kind="custom"
+            variant="custom"
           >
             {cat}
           </Button>

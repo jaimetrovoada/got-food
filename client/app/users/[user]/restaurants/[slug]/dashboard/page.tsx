@@ -49,7 +49,7 @@ const Page = () => {
               ))}
               <Button
                 className=""
-                kind="custom"
+                variant="custom"
                 onClick={() =>
                   restaurantsService.updateOrder(restaurant.id, order.id)
                 }

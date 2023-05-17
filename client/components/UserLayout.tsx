@@ -57,7 +57,7 @@ const UserLayout = ({ children }: Props) => {
                 <Button
                   as={Link}
                   href={route.path}
-                  kind="custom"
+                  variant="custom"
                   className={`${
                     isActive(route.name)
                       ? "underline"
