@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
+import Skeleton from "./Skeleton";
 
 interface ItemCardProps {
   id: string;
@@ -10,6 +11,7 @@ interface ItemCardProps {
   description: string;
   price: number;
   addToCart?: (price: number, name: string, id: string) => void;
+  deleteItem?: (id: string) => void;
 }
 interface LinkCardProps {
   href: string;
@@ -18,16 +20,63 @@ interface LinkCardProps {
   description?: string;
 }
 
-const ItemCard = ({
+type AsProp<C extends React.ElementType> = {
+  as?: C extends "div" | typeof Link ? C : never;
+};
+
+type PropsToOmit<C extends React.ElementType, P> = keyof (AsProp<C> & P);
+
+type PolymorphicComponentProp<
+  C extends React.ElementType,
+  Props = {}
+> = React.PropsWithChildren<Props & AsProp<C>> &
+  Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
+
+type Props<C extends React.ElementType> = PolymorphicComponentProp<
+  C,
+  CardProps
+>;
+
+type CardProps = {
+  variant?: "rounded" | "square";
+  children: React.ReactNode;
+};
+
+const baseStyle = "border-2 border-black shadow-custom";
+const styles = {
+  rounded: `${baseStyle} rounded-2xl`,
+  square: `${baseStyle}`,
+};
+
+const Card = <C extends React.ElementType = "div">({
+  as,
+  variant = "rounded",
+  className,
+  children,
+  ...props
+}: Props<C>) => {
+  const Component = as || "div";
+
+  return (
+    <Component className={styles[variant] + " " + className} {...props}>
+      {children}
+    </Component>
+  );
+};
+
+export default Card;
+
+export const ItemCard = ({
   name,
   id,
   imageUrl,
   description,
   price,
   addToCart,
+  deleteItem,
 }: ItemCardProps) => {
   return (
-    <div className="flex flex-row items-center justify-between rounded-2xl border-2 border-black shadow-custom">
+    <Card className="flex flex-row items-center justify-between">
       <div className="flex flex-row gap-2 rounded-l-2xl">
         <Image
           src={imageUrl}
@@ -51,12 +100,18 @@ const ItemCard = ({
             +
           </Button>
         )}
+        {deleteItem && (
+          <Button
+            onClick={(e) => deleteItem(id)}
+            className="h-8 w-8 bg-red-500 leading-none"
+          >
+            🗑️
+          </Button>
+        )}
       </div>
-    </div>
+    </Card>
   );
 };
-
-export default ItemCard;
 
 export const LinkCard = ({
   href,
@@ -65,10 +120,7 @@ export const LinkCard = ({
   description,
 }: LinkCardProps) => {
   return (
-    <Link
-      href={href}
-      className="flex flex-row rounded-2xl border-2 border-black shadow-custom"
-    >
+    <Card as={Link} href={href} className="flex h-20 flex-row">
       {imageUrl && (
         <div className="relative w-full max-w-[80px]">
           <Image
@@ -79,10 +131,10 @@ export const LinkCard = ({
           />
         </div>
       )}
-      <div className="p-2">
+      <div className="flex flex-1 flex-col justify-between p-2">
         <h3 className="text-2xl font-bold underline">{name}</h3>
         {description && <p className="text-gray-500">{description}</p>}
       </div>
-    </Link>
+    </Card>
   );
 };
