@@ -19,7 +19,7 @@ const MenuForm = ({
   handlePriceChange,
 }: MenuFormProps) => {
   return (
-    <Form handleSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Input name="name" id="name" handleChange={handleNameChange} />
 
       <Form.Input

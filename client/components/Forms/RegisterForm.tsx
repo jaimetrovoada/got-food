@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Form from "./Form";
+import Button from "../Button";
 
 export enum Role {
   BUSINESS = "business",
@@ -34,23 +35,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   if (role === undefined) {
     return (
       <div className="flex flex-col gap-2">
-        <button
-          onClick={setRoleBusiness}
-          className="rounded-xl border p-2 shadow-md"
-        >
-          Sign up to add my restuarants
-        </button>
-        <button
-          onClick={setRoleCustomer}
-          className="rounded-xl border p-2 shadow-md"
-        >
-          Create a costumer account
-        </button>
+        <Button onClick={setRoleBusiness}>Sign up to add my restuarants</Button>
+        <Button onClick={setRoleCustomer}>Create a costumer account</Button>
       </div>
     );
   }
   return (
-    <Form handleSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       {role ? (
         <>
           <Form.Input name="name" id="name" handleChange={handleNameInput} />

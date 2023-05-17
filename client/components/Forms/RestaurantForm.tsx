@@ -16,7 +16,7 @@ const RestaurantForm: React.FC<FormProps> = ({
   handleNameInput,
 }) => {
   return (
-    <Form handleSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <p className="text-2xl font-bold">Add New Restaurant</p>
       <Form.Input handleChange={handleNameInput} name="name" id="name" />
       <Form.Input

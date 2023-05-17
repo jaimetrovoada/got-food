@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Button from "../Button";
 
-interface FormProps {
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+interface FormProps extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
 }
 
@@ -46,7 +45,7 @@ export const Input = ({
           type="button"
           onClick={() => setIsDisabled(!isDisabled)}
           className="w-fit"
-          kind="tertiary"
+          variant="tertiary"
         >
           ✏️
         </Button>
@@ -72,14 +71,18 @@ export const ImageInput = ({ handleChange, name, id }: InputProps) => {
   );
 };
 
-const Form = ({ handleSubmit, children }: FormProps) => {
+const Form = ({ children, className, ...props }: FormProps) => {
   return (
     <form
-      onSubmit={handleSubmit}
-      className="flex flex-col gap-4 rounded-2xl border p-4 shadow-md"
+      {...props}
+      className={
+        "flex flex-col gap-4 rounded-2xl border border-black p-4 shadow-custom" +
+        " " +
+        className
+      }
     >
       {children}
-      <div>
+      <div className="flex gap-4">
         <Button type="submit" className="bg-blue-500 p-2">
           Submit
         </Button>

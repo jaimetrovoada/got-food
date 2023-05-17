@@ -45,7 +45,7 @@ const UserPage = () => {
   return (
     <section className="mx-auto w-full max-w-screen-md">
       <p className="mb-4 text-3xl font-bold">Hi {user.name}</p>
-      <Form handleSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Form.Input
           name="name"
           id="name"

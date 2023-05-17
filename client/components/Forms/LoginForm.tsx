@@ -1,5 +1,7 @@
 import React from "react";
 import Form from "./Form";
+import Button from "../Button";
+import Link from "next/link";
 
 interface LoginFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -13,7 +15,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
   handleSubmit,
 }) => {
   return (
-    <Form handleSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <Form.Input
         type="email"
         name="email"
@@ -26,6 +28,14 @@ const LoginForm: React.FC<LoginFormProps> = ({
         id="password"
         handleChange={handlePasswordInput}
       />
+      <Button
+        as={Link}
+        href="/auth/register"
+        variant="tertiary"
+        className="font-normal"
+      >
+        Create Account
+      </Button>
     </Form>
   );
 };
