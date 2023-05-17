@@ -1,6 +1,8 @@
 export interface IUserRestaurants {
   id: string;
   name: string;
+  logo: string;
+  description: string;
 }
 export interface IUserDetails {
   id: string;
