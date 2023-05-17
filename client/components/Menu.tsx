@@ -1,5 +1,5 @@
 import React from "react";
-import ItemCard from "./Card";
+import { ItemCard } from "./Card";
 import Button from "./Button";
 import { IMenuItem } from "@/types";
 
