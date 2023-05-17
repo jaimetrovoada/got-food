@@ -140,6 +140,40 @@ const updateOrder = async (restaurantId: string, orderId: string) => {
   };
 };
 
+const deleteMenuItem = async (
+  token: string,
+  restaurantId: string,
+  itemId: string
+) => {
+  const res = await axios.delete(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu/${itemId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return {
+    message: res.data,
+    status: res.status,
+  };
+};
+
+const deleteRestaurant = async (token: string, restaurantId: string) => {
+  const res = await axios.delete(
+    `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return {
+    message: res.data,
+    status: res.status,
+  };
+};
+
 export default {
   getRestaurants,
   getRestaurant,
@@ -149,4 +183,6 @@ export default {
   addMenuItem,
   placeOrder,
   updateOrder,
+  deleteMenuItem,
+  deleteRestaurant,
 };
