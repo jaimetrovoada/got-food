@@ -6,6 +6,7 @@ import { useUserOrders } from "@/hooks";
 import React from "react";
 import { useSelector } from "react-redux";
 import { IOrder } from "@/types";
+import Card from "@/components/Card";
 
 interface Props {
   order: IOrder;
@@ -19,7 +20,7 @@ const OrderCard = ({ order }: Props) => {
   const time = `${date.getHours()}:${date.getMinutes()}`;
 
   return (
-    <div className="flex flex-col border-2 border-black p-2 shadow-custom">
+    <Card className="flex flex-col p-2" variant="square">
       <div className="flex justify-between">
         <span className="font-bold">{order.restaurant.name}</span>
         <span className="font-bold">${order.totalPrice}</span>
@@ -42,12 +43,12 @@ const OrderCard = ({ order }: Props) => {
       </div>
       <Button
         className="mx-auto text-gray-500"
-        kind="tertiary"
+        variant="tertiary"
         onClick={() => setIsExpanded((prev) => !prev)}
       >
         Details
       </Button>
-    </div>
+    </Card>
   );
 };
 
@@ -56,7 +57,7 @@ const OrdersPage = () => {
   const { orders } = useUserOrders(user.id);
   console.log({ orders });
 
-  if (!orders) {
+  if (!orders || orders.length === 0) {
     return <>No orders made yet</>;
   }
 
