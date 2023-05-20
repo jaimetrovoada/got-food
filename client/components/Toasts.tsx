@@ -11,7 +11,7 @@ const Toasts = () => {
       ${type === "success" && "bg-green-500"} 
       ${type === "info" && "bg-yellow-500"} 
       ${type === "error" && "bg-red-500"} 
-      text-xl`}
+      animate-bounce text-xl`}
     >
       {message}
     </div>
