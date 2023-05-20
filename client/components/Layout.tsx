@@ -10,6 +10,7 @@ import { removeAuth, setAuth } from "@/reducers/authReducers";
 import { useToasts } from "@/hooks";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
+import UserDropdown from "./UserDropdown";
 
 interface Props {
   children: React.ReactNode;
@@ -47,22 +48,17 @@ const Layout = ({ children }: Props) => {
   };
   return (
     <>
-      <header className="container mx-auto flex flex-row justify-between p-4">
-        <Link href="/">got food?</Link>
-        <div>
+      <header>
+        <nav className="container mx-auto flex flex-row items-center justify-between p-4">
+          <Link href="/">got food?</Link>
           {user.id ? (
-            <Button as={Link} href={`/users/${user.id}`} variant="secondary">
-              Logged in as {user.name}
-            </Button>
+            <UserDropdown userId={user.id} logoutFunc={handleLogout} />
           ) : (
-            <Button as={Link} href="/auth/login" variant="secondary">
+            <Button as={Link} href="/auth/login">
               Login
             </Button>
           )}
-          <Button variant="secondary" onClick={handleLogout}>
-            Logout
-          </Button>
-        </div>
+        </nav>
       </header>
       <ToastsProvider>
         {children}
