@@ -31,7 +31,7 @@ const getBaseStyles = (type: string) => {
     } hover:bg-blue-600 text-white`,
     secondary: `${baseStyles} border-2 border-black hover:bg-slate-100 shadow-[0_4px_0_black] text-blue-700`,
     tertiary: `${baseStyles} shadow-b-md underline text-blue-700`,
-    custom: `${baseStyles}`,
+    custom: ``,
   };
 };
 const Button = <C extends React.ElementType = "button">({
