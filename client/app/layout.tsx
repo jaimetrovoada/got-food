@@ -1,5 +1,6 @@
-import LayoutWrapper from "@/components/LayoutWrapper";
 import "@/styles/globals.css";
+import { Providers } from "./providers";
+import Layout from "@/components/Layout";
 
 export default function RootLayout({
   // Layouts must accept a children prop.
@@ -11,7 +12,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <LayoutWrapper>{children}</LayoutWrapper>
+        <Providers>
+          <Layout>{children}</Layout>
+        </Providers>
       </body>
     </html>
   );
