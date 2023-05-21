@@ -6,7 +6,29 @@ body,
 html {
     min-height: 100vh;
     min-height: 100svh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     background-color: #fbfae5;
+}
+
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #ccc;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #e0cbcb;
+        border-radius: 100vh;
+    }
+
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #c0a0b9;
+    }
 }
