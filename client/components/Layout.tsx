@@ -49,12 +49,14 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <header>
-        <nav className="container mx-auto flex flex-row items-center justify-between p-4">
-          <Link href="/">got food?</Link>
+        <nav className="container mx-auto flex flex-row items-center justify-between py-2 px-4">
+          <Link href="/" className="text-3xl font-bold uppercase">
+            got food?
+          </Link>
           {user.id ? (
             <UserDropdown userId={user.id} logoutFunc={handleLogout} />
           ) : (
-            <Button as={Link} href="/auth/login">
+            <Button as={Link} href="/auth/login" variant="secondary">
               Login
             </Button>
           )}

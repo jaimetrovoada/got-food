@@ -11,7 +11,6 @@ interface Props {
 }
 
 const UserDropdown = ({ userId, logoutFunc }: Props) => {
-
   const showMenu = () => {
     const el = menuRef.current;
     el.classList.toggle("hidden");
@@ -25,9 +24,9 @@ const UserDropdown = ({ userId, logoutFunc }: Props) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative">
+    <div className="relative h-10 w-10">
       <Button
-        className="h-12 w-12 rounded-full border-2 border-black p-0"
+        className="h-10 w-10 rounded-full border-2 border-black p-0"
         onClick={showMenu}
         variant="custom"
       >
