@@ -44,19 +44,26 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
     <Form onSubmit={handleSubmit}>
       {role ? (
         <>
-          <Form.Input name="name" id="name" handleChange={handleNameInput} />
+          <Form.Input
+            name="name"
+            id="name"
+            onChange={handleNameInput}
+            labelText="Name"
+          />
           <Form.Input
             type="email"
             name="email"
             id="email"
-            handleChange={handleEmailInput}
+            onChange={handleEmailInput}
+            labelText="Email"
           />
 
           <Form.Input
             type="password"
             name="password"
             id="password"
-            handleChange={handlePasswordInput}
+            onChange={handlePasswordInput}
+            labelText="Password"
           />
         </>
       ) : (

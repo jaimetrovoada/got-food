@@ -5,37 +5,45 @@ interface FormProps extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
 }
 
-interface InputProps {
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: React.HTMLInputTypeAttribute;
-  value?: string;
-  name: string;
-  id: string;
-  disabled?: boolean | undefined;
+interface InputProps
+  extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
+  labelText: string;
+  variant?: "column" | "row";
 }
 
 export const Input = ({
-  handleChange,
+  onChange,
   type = "text",
   name,
   id,
   value,
   disabled,
+  variant = "column",
+  labelText,
 }: InputProps) => {
-  const capName = name.charAt(0).toUpperCase() + name.slice(1);
-
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
 
   return (
     <div className="flex flex-row items-center">
-      <div className="flex flex-1 flex-col">
-        <label htmlFor={id}>{capName}</label>
+      <div
+        className={`flex ${
+          variant === "column"
+            ? "flex-1 flex-col"
+            : "flex-row items-center gap-2"
+        }`}
+      >
+        <label htmlFor={id}>{labelText}</label>
         <input
           type={type}
           name={name}
           id={id}
-          onChange={handleChange}
-          className="border p-2 focus:outline-none"
+          onChange={onChange}
+          className={`rounded-xl border p-2 focus:outline-none ${
+            variant === "row" ? "w-16" : "w-auto"
+          }`}
           value={value}
           disabled={isDisabled}
         />
@@ -54,18 +62,17 @@ export const Input = ({
   );
 };
 
-export const ImageInput = ({ handleChange, name, id }: InputProps) => {
-  const capName = name.charAt(0).toUpperCase() + name.slice(1);
+export const ImageInput = ({ onChange, name, id, labelText }: InputProps) => {
   return (
     <div className="flex flex-col">
-      <label htmlFor={id}>{capName}</label>
+      <label htmlFor={id}>{labelText}</label>
       <input
         type="file"
         accept="image/png,image/jpeg,image/webp"
         multiple={false}
         name={name}
         id={id}
-        onChange={handleChange}
+        onChange={onChange}
       />
     </div>
   );

@@ -18,14 +18,30 @@ const RestaurantForm: React.FC<FormProps> = ({
   return (
     <Form onSubmit={handleSubmit}>
       <p className="text-2xl font-bold">Add New Restaurant</p>
-      <Form.Input handleChange={handleNameInput} name="name" id="name" />
       <Form.Input
-        handleChange={handleDescInput}
+        onChange={handleNameInput}
+        name="name"
+        id="name"
+        labelText="Name"
+      />
+      <Form.Input
+        onChange={handleDescInput}
         name="description"
         id="description"
+        labelText="Description"
       />
-      <Form.Input handleChange={handleAddrInput} name="address" id="address" />
-      <Form.ImageInput handleChange={handleLogoUpload} name="logo" id="logo" />
+      <Form.Input
+        onChange={handleAddrInput}
+        name="address"
+        id="address"
+        labelText="Address"
+      />
+      <Form.ImageInput
+        onChange={handleLogoUpload}
+        name="logo"
+        id="logo"
+        labelText="Logo"
+      />
     </Form>
   );
 };

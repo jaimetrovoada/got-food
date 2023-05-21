@@ -20,30 +20,39 @@ const MenuForm = ({
 }: MenuFormProps) => {
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Input name="name" id="name" handleChange={handleNameChange} />
+      <Form.Input
+        name="name"
+        id="name"
+        onChange={handleNameChange}
+        labelText="Name"
+      />
 
       <Form.Input
         name="description"
         id="description"
-        handleChange={handleDescriptionChange}
+        onChange={handleDescriptionChange}
+        labelText="Description"
       />
 
       <Form.Input
         type="number"
         name="price"
         id="price"
-        handleChange={handlePriceChange}
+        onChange={handlePriceChange}
+        labelText="Price"
       />
       <Form.Input
         name="category"
         id="category"
-        handleChange={handleCategoryChange}
+        onChange={handleCategoryChange}
+        labelText="Category"
       />
 
       <Form.ImageInput
         name="image"
         id="image"
-        handleChange={handleImageChange}
+        onChange={handleImageChange}
+        labelText="Image"
       />
     </Form>
   );

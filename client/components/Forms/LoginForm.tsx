@@ -20,13 +20,15 @@ const LoginForm: React.FC<LoginFormProps> = ({
         type="email"
         name="email"
         id="email"
-        handleChange={handleEmailInput}
+        onChange={handleEmailInput}
+        labelText="Email"
       />
       <Form.Input
         type="password"
         name="password"
         id="password"
-        handleChange={handlePasswordInput}
+        onChange={handlePasswordInput}
+        labelText="Password"
       />
       <Button
         as={Link}
