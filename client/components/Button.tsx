@@ -23,17 +23,16 @@ type Props<C extends React.ElementType> = PolymorphicComponentProp<
 >;
 
 const baseStyles = "rounded-xl p-2 font-bold";
+const disabledStyles = "bg-gray-500 cursor-not-allowed hover:bg-gray-600";
+const resetStyles = "bg-red-700";
 
-const getBaseStyles = (type: string) => {
-  return {
-    primary: `${baseStyles} border-2 shadow-custom border-black ${
-      type === "reset" ? "bg-red-700" : "bg-blue-700"
-    } hover:bg-blue-600 text-white`,
-    secondary: `${baseStyles} border-2 border-black hover:bg-slate-100 shadow-[0_4px_0_black] text-blue-700`,
-    tertiary: `${baseStyles} shadow-b-md underline text-blue-700`,
-    custom: ``,
-  };
+const variantStyles = {
+  primary: `${baseStyles} border-2 shadow-custom border-black bg-blue-700 hover:bg-blue-600 text-white`,
+  secondary: `${baseStyles} border-2 border-black hover:bg-slate-100 shadow-[0_4px_0_black] text-blue-700`,
+  tertiary: `${baseStyles} shadow-b-md underline text-blue-700`,
+  custom: ``,
 };
+
 const Button = <C extends React.ElementType = "button">({
   as,
   children,
@@ -42,17 +41,15 @@ const Button = <C extends React.ElementType = "button">({
 }: Props<C>) => {
   const Component = as || "button";
 
-  const baseStyles = getBaseStyles(props.type);
   const getStyles = () => {
-    return {
-      base: baseStyles[variant],
-      ...(props.className ? { className: props.className } : {}),
-    };
+    const resetStyle = props.type === "reset" ? resetStyles : "";
+    const disabledStyle = props.disabled ? disabledStyles : "";
+    return `${variantStyles[variant]} ${props.className} ${resetStyle} ${disabledStyle}`;
   };
   const styles = getStyles();
 
   return (
-    <Component {...props} className={styles.base + " " + styles.className}>
+    <Component {...props} className={styles}>
       {children}
     </Component>
   );
