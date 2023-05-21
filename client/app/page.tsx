@@ -1,9 +1,27 @@
 import restaurantsService from "@/services/restaurantsService";
-import Home from "./home_page";
+import Button from "@/components/Button";
+import Container from "@/components/Container";
+import TrendingSlider from "@/components/TrendingSlider";
+import Link from "next/link";
 
 const Page = async () => {
   const trending = await getTrending();
-  return <Home trending={trending} />;
+
+  if (!trending || trending.length === 0) {
+    return (
+      <Container className="flex items-center justify-center">
+        <Button as={Link} href="/restaurants">
+          Explore
+        </Button>
+      </Container>
+    );
+  }
+
+  return (
+    <Container className="flex max-w-full">
+      <TrendingSlider trending={trending} />
+    </Container>
+  );
 };
 
 export default Page;
