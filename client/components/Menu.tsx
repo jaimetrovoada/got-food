@@ -19,8 +19,8 @@ const Menu = ({
   addToCart,
 }: Props) => {
   return (
-    <section className="flex flex-1 overflow-hidden">
-      <aside className="mb-4 flex flex-col overflow-y-auto px-2">
+    <section className="mb-20 flex flex-auto overflow-hidden pb-2">
+      <aside className="flex flex-col overflow-y-auto px-2">
         {Object.keys(categories).map((cat) => (
           <Button
             className={`rounded-lg p-2 ${
@@ -36,7 +36,7 @@ const Menu = ({
           </Button>
         ))}
       </aside>
-      <aside className="flex w-full flex-1 flex-col gap-2 overflow-y-auto px-4">
+      <aside className="scrollbar flex w-full flex-1 flex-col gap-2 overflow-y-auto px-4">
         {menu
           .filter((item) =>
             category === undefined ? item : item.category === category
