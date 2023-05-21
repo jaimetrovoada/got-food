@@ -1,13 +1,15 @@
 import React from "react";
 import Button from "./Button";
 import { ICartState } from "@/reducers/cartSlice";
+import Form, { Input } from "./Forms/Form";
+import { useInput } from "@/hooks";
 
 interface Props {
   cartExpanded: boolean;
   setCartExpanded: React.Dispatch<React.SetStateAction<boolean>>;
   cart: ICartState;
   removeFromCart: (itemName: string) => void;
-  handleCheckout: () => void;
+  handleCheckout: (tableNumber: number) => void;
   clearCart: () => void;
 }
 
@@ -19,6 +21,8 @@ const Cart = ({
   handleCheckout,
   removeFromCart,
 }: Props) => {
+  const [tableValue, tableInput] = useInput("");
+
   return (
     <section
       className={`container fixed left-1/2 bottom-0 z-10 flex w-full -translate-x-1/2 flex-col rounded-t-2xl border-2 border-b-0 border-black bg-white transition-all ${
@@ -38,10 +42,17 @@ const Cart = ({
             ↑
           </span>
         </Button>
-        <h1>Total = ${cart?.totalPrice || 0}</h1>
+        <h1 className="text-lg font-bold">Total = ${cart?.totalPrice || 0}</h1>
         {cartExpanded &&
           (cart?.items.length ? (
-            <>
+            <div>
+              <Form.Input
+                onChange={tableInput}
+                name="table"
+                id="table"
+                variant="row"
+                labelText="Table Number"
+              />
               {cart.items.map((item) => (
                 <div key={item.name}>
                   {item.name} - {item.amount}x
@@ -58,14 +69,21 @@ const Cart = ({
                 </div>
               ))}
               <div>
-                <Button className="leading-none" onClick={clearCart}>
+                <Button
+                  className="leading-none"
+                  onClick={clearCart}
+                  variant="secondary"
+                >
                   Clear
                 </Button>
-                <Button className="leading-none" onClick={handleCheckout}>
+                <Button
+                  className="leading-none"
+                  onClick={() => handleCheckout(Number(tableValue))}
+                >
                   Checkout
                 </Button>
               </div>
-            </>
+            </div>
           ) : (
             <div>No items in cart</div>
           ))}
