@@ -32,7 +32,7 @@ const TrendingSlide = forwardRef<Ref, Props>((props, ref) => {
     >
       <div className="ml-auto flex flex-col gap-2 p-4 text-right">
         <p className="text-5xl font-bold text-white">{restaurant.name}</p>
-        <p className="text-xl text-gray-800">{restaurant.description}</p>
+        <p className="text-xl text-gray-200">{restaurant.description}</p>
       </div>
       <div className="mt-auto mb-4 ml-auto mr-4 flex gap-4">
         <Button as={Link} href={`/restaurants/${restaurant.id}`} className="">
