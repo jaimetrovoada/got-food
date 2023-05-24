@@ -1,3 +1,4 @@
+"use client";
 import UserRestaurantLayout from "@/components/UserRestaurantLayout";
 import { RootState } from "@/reducers/store";
 import { useSelector } from "react-redux";
