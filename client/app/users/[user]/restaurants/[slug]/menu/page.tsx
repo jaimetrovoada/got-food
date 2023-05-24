@@ -1,12 +1,12 @@
 "use client";
 
-import ItemCard from "@/components/Card";
+import { ItemCard } from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
 import { useRestaurantMenu, useToasts } from "@/hooks";
 import { RootState } from "@/reducers/store";
 import restaurantsService from "@/services/restaurantsService";
 import { useParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 interface FormData {
@@ -22,8 +22,8 @@ const Page = () => {
 
   const user = useSelector((state: RootState) => state.user);
 
-  const router = useParams();
-  const slug = router?.slug as string;
+  const params = useParams();
+  const slug = params?.slug as string;
 
   const { menu } = useRestaurantMenu(slug);
 
@@ -48,6 +48,7 @@ const Page = () => {
         console.log({ res });
         if (res.status === 201) {
           setSuccessMsg("Item added");
+
         }
       } catch (err) {
         console.log({ err });
@@ -86,6 +87,19 @@ const Page = () => {
     },
   };
 
+  const handleDeleteItem = async (id: string) => {
+    try {
+      const res = await restaurantsService.deleteMenuItem(user.token, slug, id);
+      console.log({ res });
+      if (res.status === 200) {
+        setSuccessMsg("Item deleted");
+      }
+    } catch (err) {
+      console.log({ err });
+      setErrorMsg("something went wrong");
+    }
+  };
+
   return (
     <section className="mx-auto w-full max-w-screen-md">
       <MenuForm {...formHandlers} />
@@ -98,6 +112,7 @@ const Page = () => {
             description={item.description}
             imageUrl={item.image}
             price={item.price}
+            deleteItem={handleDeleteItem}
           />
         ))}
       </div>
