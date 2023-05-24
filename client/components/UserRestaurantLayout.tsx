@@ -1,8 +1,6 @@
 "use client";
 
-import { RootState } from "@/reducers/store";
 import React from "react";
-import { useSelector } from "react-redux";
 import Button from "./Button";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
@@ -17,29 +15,23 @@ const UserRestaurantLayout = ({ children }: Props) => {
   console.log({ params });
   const currentRoute = router as string;
   console.log({ currentRoute });
-  const user = useSelector((state: RootState) => state.user);
   const routes = [
     {
       name: "Dashboard",
-      path: `/users/${user.id}/restaurants/${params.slug}/dashboard`,
+      path: `/manage/${params.slug}/dashboard`,
     },
     {
       name: "Menu",
-      path: `/users/${user.id}/restaurants/${params.slug}/menu`,
+      path: `/manage/${params.slug}/menu`,
     },
     {
       name: "Details",
-      path: `/users/${user.id}/restaurants/${params.slug}/details`,
+      path: `/manage/${params.slug}/details`,
     },
   ];
 
   const activeRoute = routes.find((route) => {
     const pattern = new RegExp(`^${route.path}$`);
-    if (route.name === "Restaurants") {
-      return new RegExp(`^/users/${user.id}/restaurants(/.*)?$`).test(
-        currentRoute
-      );
-    }
     return pattern.test(currentRoute);
   });
   const isActive = (route: string) => {
