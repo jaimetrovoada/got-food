@@ -1,9 +1,10 @@
 "use client"; // Error components must be Client components
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
+import Unauthorized from "@/components/Unauthorized";
 
 export default function Error({
   error,
@@ -12,22 +13,9 @@ export default function Error({
   error: Error;
   reset: () => void;
 }) {
-  const router = useRouter();
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error({ error });
-  }, [error]);
 
   if (error.message === "NotLoggedIn") {
-    setTimeout(() => {
-      router.replace("/");
-    }, 5000);
-    return (
-      <Container className="flex items-center justify-center">
-        <h2 className="text-3xl font-bold">Unauthorized</h2>
-        <p>You&apos;re being redirected to the home page</p>
-      </Container>
-    );
+    return <Unauthorized />;
   }
 
   return (
