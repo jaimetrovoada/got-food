@@ -64,7 +64,7 @@ const UserRestaurantPage = () => {
           ) : (
             restaurants.map((restaurant) => (
               <LinkCard
-                href={`/users/${user.id}/restaurants/${restaurant.id}/details`}
+                href={`/manage/${restaurant.id}/details`}
                 key={restaurant.id}
                 name={restaurant.name}
                 description={restaurant.description}

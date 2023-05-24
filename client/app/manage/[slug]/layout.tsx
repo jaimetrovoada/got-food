@@ -1,8 +1,5 @@
-"use client";
-
-import UserLayout from "@/components/UserLayout";
+import UserRestaurantLayout from "@/components/UserRestaurantLayout";
 import { RootState } from "@/reducers/store";
-import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
 interface Props {
@@ -11,11 +8,8 @@ interface Props {
 
 export default function Layout({ children }: Props) {
   const user = useSelector((state: RootState) => state.user);
-  const slug = useParams().user;
-  console.log({ slug });
-  if (!user || user.id !== slug) {
+  if (!user || !user.id) {
     throw new Error("NotLoggedIn");
   }
-
-  return <UserLayout>{children}</UserLayout>;
+  return <UserRestaurantLayout>{children}</UserRestaurantLayout>;
 }
