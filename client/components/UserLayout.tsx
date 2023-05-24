@@ -13,34 +13,18 @@ interface Props {
 }
 const UserLayout = ({ children }: Props) => {
   const router = usePathname();
+
   const currentRoute = router as string;
-  console.log({ currentRoute });
-  const user = useSelector((state: RootState) => state.user);
-  const routes =
-    user.role === "customer"
-      ? [
-          {
-            name: "Profile",
-            path: `/users/${user.id}`,
-          },
-          { name: "Orders", path: `/users/${user.id}/orders` },
-        ]
-      : [
-          {
-            name: "Profile",
-            path: `/users/${user.id}`,
-          },
-          { name: "Orders", path: `/users/${user.id}/orders` },
-          { name: "Restaurants", path: `/users/${user.id}/restaurants` },
-        ];
+  const routes = [
+    {
+      name: "Profile",
+      path: `/profile`,
+    },
+    { name: "Orders", path: `/profile/orders` },
+  ];
 
   const activeRoute = routes.find((route) => {
     const pattern = new RegExp(`^${route.path}$`);
-    if (route.name === "Restaurants") {
-      return new RegExp(`^/users/${user.id}/restaurants(/.*)?$`).test(
-        currentRoute
-      );
-    }
     return pattern.test(currentRoute);
   });
   const isActive = (route: string) => {
