@@ -3,20 +3,13 @@
 import React from "react";
 import { RootState } from "@/reducers/store";
 import { useSelector } from "react-redux";
-import { useToasts, useUserDetails } from "@/hooks";
-import { useParams } from "next/navigation";
+import { useToasts } from "@/hooks";
 import Form from "@/components/Forms/Form";
 import { useInput } from "@/hooks";
 import authService from "@/services/authService";
 
 const UserPage = () => {
   const user = useSelector((state: RootState) => state.user);
-  const { user: userinfo } = useUserDetails(user.id);
-  const slug = useParams().user;
-  console.log({ slug });
-  if (!user || user.id !== slug) {
-    throw new Error("NotLoggedIn");
-  }
 
   const [nameValue, handleNameChange] = useInput(user.name);
   const [emailValue, handleEmailChange] = useInput(user.email);
@@ -50,7 +43,8 @@ const UserPage = () => {
           name="name"
           id="name"
           type="text"
-          handleChange={handleNameChange}
+          onChange={handleNameChange}
+          labelText="Name"
           value={nameValue}
           disabled
         />
@@ -58,7 +52,8 @@ const UserPage = () => {
           name="email"
           id="email"
           type="text"
-          handleChange={handleEmailChange}
+          onChange={handleEmailChange}
+          labelText="Email"
           value={emailValue}
           disabled
         />
@@ -66,7 +61,8 @@ const UserPage = () => {
           name="password"
           id="password"
           type="password"
-          handleChange={handlePasswordChange}
+          onChange={handlePasswordChange}
+          labelText="Password"
           value={passwordValue}
           disabled
         />
