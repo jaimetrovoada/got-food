@@ -104,12 +104,13 @@ const placeOrder = async (
     item: string;
     amount: number;
   }[],
-  totalPrice: number
+  totalPrice: number,
+  tableNumber: number
 ) => {
   const res = await axios.post(
     `${config.BACKEND_URL}/api/restaurants/${restaurantId}/order`,
     {
-      tableNumber: 1,
+      tableNumber,
       items,
       totalPrice,
       status: "pending",

@@ -73,7 +73,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
     dispatch(clearCartItems(restaurant?.id as string));
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = async (tableNumber: number) => {
     try {
       const res = await restaurantsService.placeOrder(
         restaurant.id,
@@ -81,7 +81,8 @@ const Restaurant = ({ menu, restaurant }: Props) => {
         cart.items.map((item) => {
           return { item: item.id, amount: item.amount };
         }),
-        cart.totalPrice
+        cart.totalPrice,
+        tableNumber
       );
       if (res.status === 201) {
         setSuccessMsg("Order Successful");
