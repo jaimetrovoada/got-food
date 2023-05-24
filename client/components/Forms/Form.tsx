@@ -23,6 +23,8 @@ export const Input = ({
   disabled,
   variant = "column",
   labelText,
+  className,
+  ...props
 }: InputProps) => {
   const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
 
@@ -43,9 +45,10 @@ export const Input = ({
           onChange={onChange}
           className={`rounded-xl border p-2 focus:outline-none ${
             variant === "row" ? "w-16" : "w-auto"
-          }`}
+          } ${className}`}
           value={value}
           disabled={isDisabled}
+          {...props}
         />
       </div>
       {disabled !== undefined && (
@@ -62,7 +65,14 @@ export const Input = ({
   );
 };
 
-export const ImageInput = ({ onChange, name, id, labelText }: InputProps) => {
+export const ImageInput = ({
+  onChange,
+  name,
+  id,
+  labelText,
+  className,
+  ...props
+}: InputProps) => {
   return (
     <div className="flex flex-col">
       <label htmlFor={id}>{labelText}</label>
@@ -73,6 +83,7 @@ export const ImageInput = ({ onChange, name, id, labelText }: InputProps) => {
         name={name}
         id={id}
         onChange={onChange}
+        {...props}
       />
     </div>
   );
