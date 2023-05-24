@@ -20,8 +20,26 @@ function useInput(initialValue: string) {
   return [value, handleInputChange] as const;
 }
 
+function useFileInput() {
+  const [value, setValue] = useState<File | undefined>();
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    /* TODO: check image resolution
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+     */
+
+    if (file) {
+      setValue(file);
+    }
+  };
+  return [value, handleChange] as const;
+}
+
 export {
   useInput,
+  useFileInput,
   useToasts,
   useRestaurant,
   useRestaurantMenu,
