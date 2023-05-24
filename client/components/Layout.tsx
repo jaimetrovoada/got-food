@@ -11,6 +11,7 @@ import { useToasts } from "@/hooks";
 import Button from "./Button";
 import { useRouter } from "next/navigation";
 import UserDropdown from "./UserDropdown";
+import { Role } from "./Forms/RegisterForm";
 
 interface Props {
   children: React.ReactNode;
@@ -54,7 +55,11 @@ const Layout = ({ children }: Props) => {
             got food?
           </Link>
           {user.id ? (
-            <UserDropdown userId={user.id} logoutFunc={handleLogout} />
+            <UserDropdown
+              userId={user.id}
+              userRole={user.role as Role}
+              logoutFunc={handleLogout}
+            />
           ) : (
             <Button as={Link} href="/auth/login" variant="secondary">
               Login
