@@ -8,6 +8,10 @@ interface MenuFormProps {
   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCategoryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  nameValue: string;
+  descriptionValue: string;
+  priceValue: string;
+  categoryValue: string;
 }
 
 const MenuForm = ({
@@ -17,6 +21,10 @@ const MenuForm = ({
   handleImageChange,
   handleNameChange,
   handlePriceChange,
+  nameValue,
+  descriptionValue,
+  priceValue,
+  categoryValue,
 }: MenuFormProps) => {
   return (
     <Form onSubmit={handleSubmit}>
@@ -25,6 +33,8 @@ const MenuForm = ({
         id="name"
         onChange={handleNameChange}
         labelText="Name"
+        value={nameValue}
+        disabled
       />
 
       <Form.Input
@@ -32,20 +42,27 @@ const MenuForm = ({
         id="description"
         onChange={handleDescriptionChange}
         labelText="Description"
+        value={descriptionValue}
+        disabled
       />
 
       <Form.Input
         type="number"
         name="price"
         id="price"
+        min={0}
         onChange={handlePriceChange}
         labelText="Price"
+        value={priceValue}
+        disabled
       />
       <Form.Input
         name="category"
         id="category"
         onChange={handleCategoryChange}
         labelText="Category"
+        value={categoryValue}
+        disabled
       />
 
       <Form.ImageInput
@@ -53,6 +70,7 @@ const MenuForm = ({
         id="image"
         onChange={handleImageChange}
         labelText="Image"
+        disabled
       />
     </Form>
   );
