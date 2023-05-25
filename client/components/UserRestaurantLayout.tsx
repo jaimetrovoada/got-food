@@ -12,9 +12,7 @@ interface Props {
 const UserRestaurantLayout = ({ children }: Props) => {
   const router = usePathname();
   const params = useParams();
-  console.log({ params });
   const currentRoute = router as string;
-  console.log({ currentRoute });
   const routes = [
     {
       name: "Dashboard",

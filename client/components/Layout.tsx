@@ -20,7 +20,6 @@ interface Props {
 const Layout = ({ children }: Props) => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
-  console.log({ user });
   const { setSuccessMsg } = useToasts();
 
   const router = useRouter();
