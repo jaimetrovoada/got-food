@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import config from "../utils/config";
 import { Register, Login, Update } from "../lib/schemas";
 import middleware from "../utils/middleware";
+import { IRestaurant } from "../model/restaurant";
 
 const router = express.Router();
 
@@ -20,8 +21,12 @@ router.get("/:id", async (req, res) => {
 
 router.get("/:id/restaurants", async (req, res) => {
   const id = req.params.id;
-  const user = await models.User.findById(id).populate("restaurants", {
+  const user = await models.User.findById(id).populate<{
+    restaurants: IRestaurant[];
+  }>("restaurants", {
     name: 1,
+    description: 1,
+    logo: 1,
   });
   const restaurants = user.restaurants;
 
@@ -79,6 +84,7 @@ router.post("/register", async (req, res, next) => {
       role: validatedUser.role,
     });
     const newUser = await user.save();
+    await newUser.populate(["restaurants", "orders"]);
     res.status(201).json(newUser);
   } catch (err) {
     next(err);
