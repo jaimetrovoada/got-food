@@ -130,6 +130,42 @@ router.get("/:id/orders", async (req, res) => {
   }
 });
 
+router.get("/:id/data-stream", (req, res, next) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  const query = models.Order.find({ restaurant: req.params.id }).populate([
+    "restaurant",
+    "user",
+    {
+      path: "orderedItems",
+      populate: {
+        path: "item",
+      },
+    },
+  ]);
+
+  const cursor = query.cursor();
+
+  const sendEvent = (order) => {
+    res.write(`data: ${JSON.stringify(order)}\n\n`);
+  };
+
+  const sendStreamClosedEvent = () => {
+    res.write("event: streamClosed\ndata: Stream closed\n\n");
+    res.end();
+  };
+
+  cursor.on("data", sendEvent);
+  cursor.on("close", sendStreamClosedEvent);
+  cursor.on("error", (error) => {
+    sendStreamClosedEvent();
+    next(error);
+  });
+});
+
 router.post(
   "/",
   middleware.userExtractor,
