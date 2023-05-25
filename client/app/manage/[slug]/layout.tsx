@@ -1,5 +1,5 @@
 "use client";
-import UserRestaurantLayout from "@/components/UserRestaurantLayout";
+import ManageLayout from "@/components/ManageLayout";
 import { RootState } from "@/reducers/store";
 import { useSelector } from "react-redux";
 
@@ -12,5 +12,5 @@ export default function Layout({ children }: Props) {
   if (!user || !user.id) {
     throw new Error("NotLoggedIn");
   }
-  return <UserRestaurantLayout>{children}</UserRestaurantLayout>;
+  return <ManageLayout>{children}</ManageLayout>;
 }
