@@ -20,6 +20,7 @@ export interface IOrder {
   id: string;
   status: string;
   tableNumber: string;
+  orderId: string;
 }
 
 export interface IOrderedItem {

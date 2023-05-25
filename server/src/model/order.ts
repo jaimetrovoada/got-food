@@ -15,6 +15,7 @@ export interface IOrder extends Document {
   totalPrice: number;
   date: Date;
   status: "pending" | "fullfilled";
+  orderId: string;
 }
 
 const orderSchema = new Schema<IOrder>({
@@ -58,6 +59,40 @@ const orderSchema = new Schema<IOrder>({
     type: Date,
     default: Date.now,
   },
+  orderId: {
+    type: String,
+  },
+});
+
+orderSchema.pre<IOrder>("save", async function (next) {
+  if (!this.orderId) {
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, "0");
+    const day = now.getDate().toString().padStart(2, "0");
+
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    console.log({ today, date: this.date });
+
+    const highestOrderId = await Order.findOne({ date: { $gte: today } })
+      .sort("-orderId")
+      .select("orderId")
+      .lean();
+
+    console.log({ highestOrderId });
+    let newOrderId = `${year}${month}${day}001`;
+
+    if (highestOrderId && highestOrderId.orderId) {
+      const highestOrderIdNumber = parseInt(highestOrderId.orderId.slice(-3));
+      newOrderId = `${year}${month}${day}${(highestOrderIdNumber + 1)
+        .toString()
+        .padStart(3, "0")}`;
+    }
+
+    this.orderId = newOrderId;
+  }
+
+  next();
 });
 
 orderSchema.set("toJSON", {
