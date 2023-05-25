@@ -52,7 +52,7 @@ export const useRestaurantMenu = (restaurantId: string) => {
 };
 
 export const useRestaurantOrders = (restaurantId: string) => {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -60,7 +60,7 @@ export const useRestaurantOrders = (restaurantId: string) => {
     );
 
     eventSource.onmessage = (event) => {
-      const order = JSON.parse(event.data);
+      const order: IOrder = JSON.parse(event.data);
       setOrders((prevOrders) => [...prevOrders, order]);
     };
 
