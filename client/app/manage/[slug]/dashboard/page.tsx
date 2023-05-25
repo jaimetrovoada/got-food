@@ -4,14 +4,20 @@ import Button from "@/components/Button";
 import { useRestaurant, useRestaurantOrders } from "@/hooks";
 import restaurantsService from "@/services/restaurantsService";
 import { useParams } from "next/navigation";
-import React from "react";
 
-const Page = () => {
-  const router = useParams();
-  const slug = router?.slug as string;
+interface Props {
+  params: {
+    slug: string;
+  };
+}
 
+const Page = ({}: Props) => {
+  const params = useParams();
+  const slug = params.slug;
   const { restaurant } = useRestaurant(slug);
-  const { orders } = useRestaurantOrders(slug);
+  const orders = useRestaurantOrders(slug);
+
+  console.log({ orders });
 
   const dateString = (orderDate: Date) => {
     const date = new Date(orderDate);
