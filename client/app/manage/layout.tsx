@@ -1,4 +1,5 @@
 "use client";
+import Container from "@/components/Container";
 import { RootState } from "@/reducers/store";
 import { useSelector } from "react-redux";
 
@@ -11,5 +12,5 @@ export default function Layout({ children }: Props) {
   if (!user || !user.id) {
     throw new Error("NotLoggedIn");
   }
-  return <>{children}</>;
+  return <Container className="overflow-y-hidden">{children}</Container>;
 }

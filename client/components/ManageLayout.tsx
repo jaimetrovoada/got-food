@@ -39,7 +39,7 @@ const ManageLayout = ({ children }: Props) => {
   };
 
   return (
-    <Container className="overflow-hidden">
+    <>
       <nav>
         <ul className="flex gap-2">
           <span className="font-bold">{restaurant?.name}/</span>
@@ -61,7 +61,7 @@ const ManageLayout = ({ children }: Props) => {
         </ul>
       </nav>
       {children}
-    </Container>
+    </>
   );
 };
 
