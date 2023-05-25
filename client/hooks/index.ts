@@ -17,7 +17,7 @@ function useInput(initialValue: string) {
     setValue(e.target.value);
   };
 
-  return [value, handleInputChange] as const;
+  return [value, handleInputChange, setValue] as const;
 }
 
 function useFileInput() {
