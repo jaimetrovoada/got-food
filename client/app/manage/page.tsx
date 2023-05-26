@@ -6,8 +6,11 @@ import { useFileInput, useInput, useToasts } from "@/hooks";
 import { RootState } from "@/reducers/store";
 import restaurantsService from "@/services/restaurantsService";
 import { useUserRestaurants } from "@/hooks";
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
+import Modal, { ModalHandler } from "@/components/Modal";
+import CardWrapper from "@/components/CardWrapper";
+import Button from "@/components/Button";
 
 const UserRestaurantPage = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -48,11 +51,22 @@ const UserRestaurantPage = () => {
     handleLogoUpload: imageInput,
   };
 
+  const modalRef = useRef<ModalHandler>(null);
+
   return (
-    <section className="mx-auto w-full max-w-screen-md">
-      <RestaurantForm {...formHandlers} />
-      <div className="flex flex-col gap-4">
-        <h3>your restaurants</h3>
+    <section className="mx-auto w-full max-w-screen-lg">
+      <Modal ref={modalRef}>
+        <RestaurantForm {...formHandlers} />
+      </Modal>
+      <CardWrapper>
+        <h3 className="text-3xl font-bold text-center">Your Restaurants</h3>
+        <Button
+          variant="custom"
+          className="w-full rounded-lg bg-blue-200/50 p-4 font-bold text-blue-600"
+          onClick={() => modalRef.current?.show()}
+        >
+          Add Restaurant
+        </Button>
 
         <div className="flex flex-col gap-4">
           {isLoading ? (
@@ -73,7 +87,7 @@ const UserRestaurantPage = () => {
             ))
           )}
         </div>
-      </div>
+      </CardWrapper>
     </section>
   );
 };
