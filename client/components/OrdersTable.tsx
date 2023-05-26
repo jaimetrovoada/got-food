@@ -76,7 +76,7 @@ const OrdersTableWrapper = ({ orders, restaurantId }: Props) => {
           ?.map((order) => (
             <Card
               key={order.id}
-              className="flex cursor-pointer flex-col justify-between gap-2 bg-white p-2 last:mb-2"
+              className="flex h-fit cursor-pointer flex-col gap-2 bg-white p-2 last:mb-2"
               onClick={() => setActiveOrder(order)}
               role="button"
               tabIndex={0}

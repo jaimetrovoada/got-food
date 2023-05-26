@@ -15,20 +15,9 @@ const Page = ({}: Props) => {
   const slug = params.slug;
   const orders = useRestaurantOrders(slug);
 
-  const newOrders = [
-    ...orders,
-    ...orders,
-    ...orders,
-    ...orders,
-    ...orders,
-    ...orders,
-    ...orders,
-    ...orders,
-  ];
-
   return (
     <section className="flex flex-1 flex-col gap-4 overflow-hidden py-4 lg:py-6">
-      <OrdersTableWrapper orders={newOrders} restaurantId={slug} />
+      <OrdersTableWrapper orders={orders} restaurantId={slug} />
     </section>
   );
 };
