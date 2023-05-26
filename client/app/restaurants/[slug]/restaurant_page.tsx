@@ -46,8 +46,7 @@ const Restaurant = ({ menu, restaurant }: Props) => {
     {} as Record<string, IMenuItem[]>
   );
 
-  const categoryNames = Object.keys(categories);
-  const [category, setCategory] = React.useState<string>(categoryNames[0]);
+  const [category, setCategory] = React.useState<string>("all");
 
   const addToCart = (price: number, name: string, id: string) => {
     dispatch(

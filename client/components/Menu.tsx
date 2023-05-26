@@ -1,7 +1,9 @@
-import React from "react";
-import { ItemCard } from "./Card";
+import React, { useRef } from "react";
+import { MenuItemCard } from "./Card";
 import Button from "./Button";
 import { IMenuItem } from "@/types";
+import RightIcon from "@/assets/right_line.svg";
+import LeftIcon from "@/assets/left_line.svg";
 
 interface Props {
   menu: IMenuItem[];
@@ -18,41 +20,70 @@ const Menu = ({
   setCategory,
   addToCart,
 }: Props) => {
+  const categoriesArray = ["all", ...Object.keys(categories)];
+
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollRight = () => {
+    if (buttonsContainerRef.current) {
+      buttonsContainerRef.current.scrollLeft +=
+        buttonsContainerRef.current.offsetWidth;
+    }
+  };
+
+  const scrollLeft = () => {
+    if (buttonsContainerRef.current) {
+      buttonsContainerRef.current.scrollLeft -=
+        buttonsContainerRef.current.offsetWidth;
+    }
+  };
+
   return (
-    <section className="mb-20 flex flex-auto overflow-hidden pb-2">
-      <aside className="flex flex-col overflow-y-auto px-2">
-        {Object.keys(categories).map((cat) => (
-          <Button
-            className={`rounded-lg p-2 ${
-              category === cat
-                ? "bg-gray-100 font-bold text-black underline hover:bg-gray-200"
-                : "hover:bg-gray-300"
-            }`}
-            onClick={() => setCategory(cat)}
-            key={cat}
-            variant="custom"
-          >
-            {cat}
-          </Button>
-        ))}
-      </aside>
-      <aside className="scrollbar flex w-full flex-1 flex-col gap-2 overflow-y-auto px-4">
+    <section className="mb-24 flex flex-col gap-4 overflow-hidden">
+      <div className="flex flex-row gap-2">
+        <Button
+          className="aspect-square h-fit rounded-full bg-gray-300 p-2 shadow-sm"
+          variant="custom"
+          onClick={scrollLeft}
+        >
+          <LeftIcon className="h-4 w-4" width={14} height={14} />
+        </Button>
+        <div
+          className="flex w-full max-w-full flex-row gap-2 overflow-auto scroll-smooth px-2"
+          ref={buttonsContainerRef}
+        >
+          {categoriesArray.map((cat) => (
+            <Button
+              className={`rounded-lg border-2  p-2 uppercase hover:border-black/50 ${
+                category === cat
+                  ? "border-white bg-white font-bold text-black underline"
+                  : "border-slate-200 bg-slate-200 text-gray-700"
+              }`}
+              onClick={() => setCategory(cat)}
+              key={cat}
+              variant="custom"
+            >
+              {cat}
+            </Button>
+          ))}
+        </div>
+        <Button
+          className="aspect-square h-fit rounded-full bg-gray-300 p-2 shadow-sm"
+          variant="custom"
+          onClick={scrollRight}
+        >
+          <RightIcon className="h-4 w-4" width={14} height={14} />
+        </Button>
+      </div>
+      <div className="scrollbar grid w-full flex-1 grid-flow-row grid-cols-1 gap-2 overflow-auto pb-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
         {menu
           .filter((item) =>
-            category === undefined ? item : item.category === category
+            category === "all" ? item : item.category === category
           )
           .map((item) => (
-            <ItemCard
-              key={item.id}
-              name={item.name}
-              description={item.description}
-              imageUrl={item.image}
-              price={item.price}
-              addToCart={addToCart}
-              id={item.id}
-            />
+            <MenuItemCard key={item.id} addToCart={addToCart} item={item} />
           ))}
-      </aside>
+      </div>
     </section>
   );
 };
