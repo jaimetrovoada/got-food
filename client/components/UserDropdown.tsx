@@ -55,8 +55,8 @@ const UserDropdown = ({ userId, userRole, logoutFunc }: Props) => {
       </Button>
       <div
         ref={menuRef}
-        className={`min-h-24 min-w-20
-         absolute right-0 -bottom-1 z-10 hidden translate-y-full flex-col justify-center rounded-2xl border-2 border-black bg-white opacity-0 shadow-custom transition-all xl:right-1/2 xl:translate-x-1/2`}
+        className={`absolute right-0 -bottom-1 z-10
+         hidden h-40 w-40 translate-y-full flex-col justify-center rounded-2xl border-2 border-black bg-white opacity-0 shadow-custom transition-all xl:right-1/2 xl:translate-x-1/2`}
       >
         {menuList.map((item) => (
           <Button
