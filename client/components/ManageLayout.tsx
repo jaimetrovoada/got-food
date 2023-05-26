@@ -17,8 +17,8 @@ const ManageLayout = ({ children }: Props) => {
   const currentRoute = router as string;
   const routes = [
     {
-      name: "Dashboard",
-      path: `/manage/${params.slug}/dashboard`,
+      name: "Orders",
+      path: `/manage/${params.slug}/orders`,
     },
     {
       name: "Menu",
