@@ -25,7 +25,7 @@ const Modal = forwardRef<ModalHandler, Props>(({ children }, ref) => {
 
   return (
     <div
-      className={`fixed inset-0 z-20 flex h-screen w-screen items-center justify-center bg-gray-50/50 ${
+      className={`fixed inset-0 z-20 flex h-screen w-screen items-center justify-center bg-gray-50/50 backdrop-blur-md ${
         showModal ? "block" : "hidden"
       }`}
       onClick={(e) => {
