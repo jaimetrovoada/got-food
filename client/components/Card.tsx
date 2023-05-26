@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "./Button";
 import Skeleton from "./Skeleton";
+import { IMenuItem } from "@/types";
 
 interface ItemCardProps {
   id: string;
@@ -146,6 +147,45 @@ export const CardSkeleton = () => {
       <div className="flex flex-1 flex-col justify-between p-2">
         <Skeleton className="h-6 w-1/3" rounded></Skeleton>
         <Skeleton className="h-4 w-2/5" rounded></Skeleton>
+      </div>
+    </Card>
+  );
+};
+
+interface MenuCardProps {
+  item: IMenuItem;
+  addToCart: (price: number, name: string, id: string) => void;
+}
+export const MenuItemCard = ({ item, addToCart }: MenuCardProps) => {
+  return (
+    <Card
+      key={item.id}
+      className="flex flex-col items-center justify-between gap-2 bg-white p-2"
+    >
+      <div className="flex flex-row gap-2">
+        <div className="aspect-square rounded-2xl">
+          <Image
+            src={item.image}
+            alt={`image of the dish - ${item.name}`}
+            width={50}
+            height={50}
+            className="h-full w-full rounded-2xl object-cover"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <p className="text-xl font-bold">{item.name}</p>
+          <p className="text-gray-500 ">{item.description}</p>
+        </div>
+      </div>
+      <div className="flex w-full flex-row items-center justify-between p-2">
+        <p className="text-lg font-bold">${item.price}</p>
+        <Button
+          onClick={() => addToCart(item.price, item.name, item.id)}
+          className="h-8 w-8 rounded-full bg-blue-500 leading-none text-white shadow-md"
+          variant="custom"
+        >
+          +
+        </Button>
       </div>
     </Card>
   );
