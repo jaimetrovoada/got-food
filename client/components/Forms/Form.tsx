@@ -94,7 +94,7 @@ const Form = ({ children, className, ...props }: FormProps) => {
     <form
       {...props}
       className={
-        "flex flex-col gap-4 rounded-2xl border-2 border-black p-4 shadow-custom" +
+        "flex flex-col gap-4 rounded-2xl border-2 border-black bg-white p-4 shadow-custom" +
         " " +
         className
       }
