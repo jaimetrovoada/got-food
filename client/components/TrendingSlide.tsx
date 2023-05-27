@@ -1,21 +1,17 @@
-/* eslint-disable react/display-name */
 import { IRestaurant } from "@/types";
 import Link from "next/link";
-import React, { forwardRef } from "react";
+import React from "react";
 import Button from "./Button";
 
 interface Props {
   restaurant: IRestaurant;
 }
 
-type Ref = HTMLDivElement;
-
 export interface MyCustomCSS extends React.CSSProperties {
   [key: `--${string}`]: string | number;
 }
 
-const TrendingSlide = forwardRef<Ref, Props>((props, ref) => {
-  const { restaurant } = props;
+const TrendingSlide = ({ restaurant }: Props) => {
   const style = (restaurant: IRestaurant) => {
     return {
       "--image-url": `url(${restaurant.logo})`,
@@ -24,30 +20,18 @@ const TrendingSlide = forwardRef<Ref, Props>((props, ref) => {
 
   return (
     <div
-      key={restaurant.id}
       style={style(restaurant)}
-      className={`flex w-full flex-none snap-start snap-always flex-col bg-hero-pattern bg-cover bg-center bg-no-repeat`}
-      ref={ref}
+      className="flex w-full flex-none snap-center snap-always flex-col rounded-2xl bg-hero-pattern bg-cover bg-center bg-no-repeat md:w-1/2 xl:w-1/3"
     >
-      <div className="ml-auto flex flex-col gap-2 p-4 text-right">
-        <p className="text-5xl font-bold text-white">{restaurant.name}</p>
-        <p className="text-xl text-gray-200">{restaurant.description}</p>
-      </div>
-      <div className="mt-auto mb-4 ml-auto mr-4 flex gap-4">
-        <Button as={Link} href={`/restaurants/${restaurant.id}`} className="">
-          Go to {restaurant.name}
-        </Button>
-        <Button
-          as={Link}
-          href={"/restaurants"}
-          variant="secondary"
-          className="text-white"
-        >
-          Explore Restaurants
-        </Button>
-      </div>
+      <Button as={Link} variant="custom" href={`/restaurants/${restaurant.id}`}>
+        <div className="ml-auto flex flex-col gap-2 py-8 px-4 text-right">
+          <p className="text-5xl font-bold text-white underline">
+            {restaurant.name}
+          </p>
+        </div>
+      </Button>
     </div>
   );
-});
+};
 
 export default TrendingSlide;
