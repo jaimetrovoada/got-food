@@ -11,7 +11,6 @@ interface Props {}
 
 const UserDropdown = ({}: Props) => {
   const { data: session } = useSession();
-  console.log({ session });
   const user = session?.user;
   const showMenu = () => {
     const el = menuRef.current;
