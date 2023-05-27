@@ -17,7 +17,6 @@ export interface MyCustomCSS extends React.CSSProperties {
 const TrendingSlide = forwardRef<Ref, Props>((props, ref) => {
   const { restaurant } = props;
   const style = (restaurant: IRestaurant) => {
-    console.log({ logo: restaurant.logo });
     return {
       "--image-url": `url(${restaurant.logo})`,
     } as MyCustomCSS;

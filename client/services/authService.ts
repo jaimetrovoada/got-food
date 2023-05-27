@@ -19,7 +19,6 @@ interface LoginRes {
 }
 
 const login = async (credentials: Record<"email" | "password", string>) => {
-  console.log({ credentials });
   const res = await axios.post<LoginRes>(
     `${config.BACKEND_URL}/api/users/login`,
     credentials
