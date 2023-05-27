@@ -117,7 +117,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
         >
           Add item
         </Button>
-        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-hide">
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-none">
           {menu?.map((item) => (
             <MenuCard
               key={item.id}

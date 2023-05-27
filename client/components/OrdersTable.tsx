@@ -69,7 +69,7 @@ const OrdersTableWrapper = ({ orders, restaurantId }: Props) => {
 
   return (
     <div className="flex h-full flex-1 gap-2 overflow-y-hidden pb-4 lg:gap-8">
-      <aside className="grid flex-1 grid-cols-1 gap-4 overflow-y-auto scrollbar-hide md:grid-cols-2 lg:grid-cols-3">
+      <aside className="grid flex-1 grid-cols-1 gap-4 overflow-y-auto scrollbar-none md:grid-cols-2 lg:grid-cols-3">
         {orders
           ?.filter((order) => order.status === "pending")
           ?.sort((a, b) => Number(a.orderId) - Number(b.orderId))
