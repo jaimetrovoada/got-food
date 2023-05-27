@@ -14,18 +14,18 @@ import Container from "@/components/Container";
 import Menu from "@/components/Menu";
 import Cart from "@/components/Cart";
 import restaurantsService from "@/lib/restaurantsService";
-import { IMenuItem, IRestaurant } from "@/types";
+import { IMenuItem, IRestaurant, IUser } from "@/types";
 
 interface Props {
   restaurant: IRestaurant;
   menu: IMenuItem[];
+  user: IUser;
 }
 
-const Restaurant = ({ menu, restaurant }: Props) => {
+const Restaurant = ({ menu, restaurant, user }: Props) => {
   const cart = useSelector(
     (state: RootState) => state.cart[restaurant?.id as string]
   );
-  const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const [cartExpanded, setCartExpanded] = useState<boolean>(false);

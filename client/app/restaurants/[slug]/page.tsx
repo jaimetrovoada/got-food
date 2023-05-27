@@ -2,6 +2,7 @@ import restaurantsService from "@/lib/restaurantsService";
 import React from "react";
 import Restaurant from "./restaurant_page";
 import { Metadata } from "next";
+import { getUser } from "@/lib/auth";
 
 type Props = {
   params: {
@@ -10,8 +11,9 @@ type Props = {
 };
 
 const Page = async ({ params }: Props) => {
+  const user = await getUser();
   const { restaurant, menu } = await getRestaurant(params);
-  return <Restaurant restaurant={restaurant} menu={menu} />;
+  return <Restaurant restaurant={restaurant} menu={menu} user={user} />;
 };
 
 export default Page;
