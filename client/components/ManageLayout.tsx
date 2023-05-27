@@ -3,18 +3,18 @@
 import React from "react";
 import Button from "./Button";
 import Link from "next/link";
-import { useParams, usePathname } from "next/navigation";
-import Container from "./Container";
-import { useRestaurant } from "@/lib/hooks";
+import { usePathname } from "next/navigation";
 
 interface Props {
   children: React.ReactNode;
+  params: {
+    slug: string;
+  };
+  name: string;
 }
-const ManageLayout = ({ children }: Props) => {
+const ManageLayout = ({ children, params, name }: Props) => {
   const router = usePathname();
-  const params = useParams();
-  const { restaurant } = useRestaurant(params.slug);
-  const currentRoute = router as string;
+  const currentRoute = router;
   const routes = [
     {
       name: "Orders",
@@ -42,7 +42,7 @@ const ManageLayout = ({ children }: Props) => {
     <>
       <nav>
         <ul className="flex gap-2">
-          <span className="font-bold">{restaurant?.name}/</span>
+          <span className="font-bold">{name}/</span>
           {routes.map((route) => (
             <li key={route.name}>
               <Button
