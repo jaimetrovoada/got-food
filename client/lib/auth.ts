@@ -1,4 +1,5 @@
 import authService from "@/lib/authService";
+import { IUser } from "@/types";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -30,20 +31,13 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.user.id;
-        session.user.name = token.user.name;
-        session.user.email = token.user.email;
-        session.user.token = token.user.token;
-        session.user.restaurants = token.user.restaurants;
-        session.user.orders = token.user.orders;
-        session.user.role = token.user.role;
-      }
+      session.user = token.user;
+
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.user = user as IUser;
       }
       return token;
     },
