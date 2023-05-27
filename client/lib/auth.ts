@@ -3,6 +3,13 @@ import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const nextAuthOptions: NextAuthOptions = {
+  debug: process.env.NODE_ENV !== "production",
+  theme: {
+    colorScheme: "auto", // "auto" | "dark" | "light"
+  },
+  pages: {
+    signIn: "/auth/login",
+  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -14,7 +21,6 @@ export const nextAuthOptions: NextAuthOptions = {
         const res = await authService.login(credentials);
         const user = { ...res.data.user, token: res.data.token };
         if (res.status === 200 && user) {
-          console.log("in authorize", { user });
           return user;
         } else {
           return null;
