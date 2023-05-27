@@ -1,36 +1,31 @@
-import restaurantsService from "@/lib/restaurantsService";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
-import TrendingSlider from "@/components/TrendingSlider";
 import Link from "next/link";
 
 const Page = async () => {
-  const trending = await getTrending();
-
-  if (!trending || trending.length === 0) {
-    return (
-      <Container className="flex items-center justify-center">
+  return (
+    <Container className="items-center justify-center gap-8">
+      <div className="text-center">
+        <p className="mb-4 text-3xl font-bold">
+          Boost Your Restaurant&apos;s Success with Our Platform!
+        </p>
+        <p className="mx-auto w-full max-w-2xl text-xl text-gray-700">
+          Elevate customer experience by offering direct food ordering through
+          our user-friendly app. Maximize convenience, streamline operations,
+          and expand your reach. Join us today and revolutionize your
+          restaurant&apos;s growth!
+        </p>
+      </div>
+      <div className="flex flex-row gap-4">
         <Button as={Link} href="/restaurants">
           Explore
         </Button>
-      </Container>
-    );
-  }
-
-  return (
-    <Container className="flex max-w-full">
-      <TrendingSlider trending={trending} />
+        <Button as={Link} variant="secondary" href="/auth/register">
+          Sign Up
+        </Button>
+      </div>
     </Container>
   );
 };
 
 export default Page;
-
-export const revalidate = 3600;
-
-async function getTrending() {
-  const { restaurants: trending } =
-    await restaurantsService.getTrendingRestaurants();
-
-  return trending;
-}
