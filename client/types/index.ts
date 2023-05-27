@@ -4,6 +4,14 @@ export interface IUserRestaurants {
   logo: string;
   description: string;
 }
+export interface UserState {
+  name: string;
+  email: string;
+  id: string;
+  token: string;
+  role: string;
+}
+
 export interface IUserDetails {
   id: string;
   name: string;

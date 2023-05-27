@@ -1,12 +1,5 @@
+import { UserState } from "@/types";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-export interface UserState {
-  name: string;
-  email: string;
-  id: string;
-  token: string;
-  role: string;
-}
 
 const initialState = {
   name: "",
