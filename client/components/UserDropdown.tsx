@@ -5,14 +5,14 @@ import Avatar from "@/assets/avatar.svg";
 import Button from "./Button";
 import Link from "next/link";
 import { Role } from "./Forms/RegisterForm";
+import { signIn, signOut, useSession } from "next-auth/react";
 
-interface Props {
-  userId: string;
-  userRole: Role;
-  logoutFunc: () => void;
-}
+interface Props {}
 
-const UserDropdown = ({ userId, userRole, logoutFunc }: Props) => {
+const UserDropdown = ({}: Props) => {
+  const { data: session } = useSession();
+  console.log({ session });
+  const user = session?.user;
   const showMenu = () => {
     const el = menuRef.current;
     el.classList.toggle("hidden");
@@ -26,7 +26,7 @@ const UserDropdown = ({ userId, userRole, logoutFunc }: Props) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuList =
-    userRole === Role.BUSINESS
+    user?.role === Role.BUSINESS
       ? [
           {
             name: "Profile",
@@ -40,10 +40,17 @@ const UserDropdown = ({ userId, userRole, logoutFunc }: Props) => {
       : [
           {
             name: "Profile",
-            link: `/users/${userId}`,
+            link: `/users/${user?.id}`,
           },
         ];
 
+  if (!user) {
+    return (
+      <Button onClick={() => signIn()} variant="secondary">
+        Login
+      </Button>
+    );
+  }
   return (
     <div className="relative h-10 w-10">
       <Button
@@ -70,7 +77,7 @@ const UserDropdown = ({ userId, userRole, logoutFunc }: Props) => {
           </Button>
         ))}
         <Button
-          onClick={logoutFunc}
+          onClick={() => signOut()}
           variant="custom"
           className="rounded-xl p-2 text-center hover:bg-gray-200"
         >

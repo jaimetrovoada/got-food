@@ -1,16 +1,23 @@
 "use client";
+
 import Container from "@/components/Container";
-import { RootState } from "@/reducers/store";
-import { useSelector } from "react-redux";
+import { useSession } from "next-auth/react";
 
 interface Props {
   children: React.ReactNode;
 }
 
 export default function Layout({ children }: Props) {
-  const user = useSelector((state: RootState) => state.user);
-  if (!user || !user.id) {
-    throw new Error("NotLoggedIn");
+  const { status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      throw new Error("NotLoggedIn");
+      // The user is not authenticated, handle it here.
+    },
+  });
+  if (status === "loading") {
+    return <div>Loading</div>;
   }
+
   return <Container className="overflow-y-hidden">{children}</Container>;
 }
