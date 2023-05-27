@@ -1,8 +1,8 @@
 import React from "react";
 import Button from "./Button";
-import { ICartState } from "@/reducers/cartSlice";
+import { ICartState } from "@/lib/reducers/cartSlice";
 import Form, { Input } from "./Forms/Form";
-import { useInput } from "@/hooks";
+import { useInput } from "@/lib/hooks";
 
 interface Props {
   cartExpanded: boolean;

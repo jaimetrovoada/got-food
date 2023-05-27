@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import RestaurantList from "@/components/RestaurantList";
-import restaurantsService from "@/services/restaurantsService";
+import restaurantsService from "@/lib/restaurantsService";
 import React from "react";
 
 const Page = async () => {

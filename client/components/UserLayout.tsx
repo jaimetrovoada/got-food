@@ -1,6 +1,6 @@
 "use client";
 
-import { RootState } from "@/reducers/store";
+import { RootState } from "@/lib/reducers/store";
 import React from "react";
 import { useSelector } from "react-redux";
 import Button from "./Button";

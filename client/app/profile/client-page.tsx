@@ -1,7 +1,7 @@
 "use client";
 import Form from "@/components/Forms/Form";
-import { useInput, useToasts } from "@/hooks";
-import authService from "@/services/authService";
+import { useInput, useToasts } from "@/lib/hooks";
+import authService from "@/lib/authService";
 import React from "react";
 
 interface Props {

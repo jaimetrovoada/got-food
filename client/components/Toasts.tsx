@@ -1,4 +1,4 @@
-import { useToasts } from "@/hooks";
+import { useToasts } from "@/lib/hooks";
 import React from "react";
 
 const Toasts = () => {

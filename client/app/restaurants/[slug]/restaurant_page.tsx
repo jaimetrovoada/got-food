@@ -3,17 +3,17 @@
 import React, { useState } from "react";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/reducers/store";
+import { RootState } from "@/lib/reducers/store";
 import {
   addItemToCart,
   clearCartItems,
   removeItemFromCart,
-} from "@/reducers/cartSlice";
-import { useToasts } from "@/hooks";
+} from "@/lib/reducers/cartSlice";
+import { useToasts } from "@/lib/hooks";
 import Container from "@/components/Container";
 import Menu from "@/components/Menu";
 import Cart from "@/components/Cart";
-import restaurantsService from "@/services/restaurantsService";
+import restaurantsService from "@/lib/restaurantsService";
 import { IMenuItem, IRestaurant } from "@/types";
 
 interface Props {

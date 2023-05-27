@@ -2,17 +2,17 @@
 
 import { CardSkeleton, LinkCard } from "@/components/Card";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
-import { useFileInput, useInput, useToasts } from "@/hooks";
-import restaurantsService from "@/services/restaurantsService";
+import { useFileInput, useInput, useToasts } from "@/lib/hooks";
+import restaurantsService from "@/lib/restaurantsService";
 import React, { useRef } from "react";
 import Modal, { ModalHandler } from "@/components/Modal";
 import CardWrapper from "@/components/CardWrapper";
 import Button from "@/components/Button";
-import { IUserRestaurants, UserState } from "@/types";
+import { IUserRestaurants, IUser } from "@/types";
 
 interface Props {
   restaurants: IUserRestaurants[];
-  user: UserState;
+  user: IUser;
 }
 const UserRestaurantPage = ({ restaurants, user }: Props) => {
   const [nameValue, nameInput] = useInput("");

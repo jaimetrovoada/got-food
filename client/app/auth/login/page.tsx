@@ -1,6 +1,6 @@
 "use client";
 import LoginForm from "@/components/Forms/LoginForm";
-import { useInput, useToasts } from "@/hooks";
+import { useInput, useToasts } from "@/lib/hooks";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 

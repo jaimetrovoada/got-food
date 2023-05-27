@@ -1,4 +1,4 @@
-import restaurantsService from "@/services/restaurantsService";
+import restaurantsService from "@/lib/restaurantsService";
 import React from "react";
 import Restaurant from "./restaurant_page";
 import { Metadata } from "next";

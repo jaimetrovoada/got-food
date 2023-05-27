@@ -1,6 +1,6 @@
 "use client";
 
-import { store } from "@/reducers/store";
+import { store } from "@/lib/reducers/store";
 import { SessionProvider } from "next-auth/react";
 import { Provider } from "react-redux";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import OrdersTableWrapper from "@/components/OrdersTable";
-import { useRestaurantOrders } from "@/hooks";
+import { useRestaurantOrders } from "@/lib/hooks";
 import { useParams } from "next/navigation";
 
 interface Props {

@@ -4,9 +4,14 @@ import Button from "@/components/Button";
 import Card from "@/components/Card";
 import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
-import { useFileInput, useInput, useRestaurantMenu, useToasts } from "@/hooks";
-import { RootState } from "@/reducers/store";
-import restaurantsService from "@/services/restaurantsService";
+import {
+  useFileInput,
+  useInput,
+  useRestaurantMenu,
+  useToasts,
+} from "@/lib/hooks";
+import { RootState } from "@/lib/reducers/store";
+import restaurantsService from "@/lib/restaurantsService";
 import { useParams } from "next/navigation";
 import React, { useRef } from "react";
 import { useSelector } from "react-redux";

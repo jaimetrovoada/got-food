@@ -4,21 +4,6 @@ import useSWR from "swr";
 import { IRestaurant, IMenuItem, IOrder } from "@/types";
 import { useState, useEffect } from "react";
 
-export const useRestaurants = () => {
-  const fetcher = (url: string) =>
-    axios.get<IRestaurant[]>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants`,
-    fetcher
-  );
-  return {
-    restaurants: data,
-    isLoading,
-    isError: error,
-  };
-};
-
 export const useRestaurant = (restaurantId: string) => {
   const fetcher = (url: string) =>
     axios.get<IRestaurant>(url).then((res) => res.data);

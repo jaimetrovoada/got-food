@@ -1,6 +1,6 @@
 "use client";
 
-import useOnScreen from "@/hooks/useOnScreen";
+import useOnScreen from "@/lib/hooks/useOnScreen";
 import { IRestaurant } from "@/types";
 import React from "react";
 import Button from "./Button";

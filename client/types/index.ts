@@ -4,20 +4,15 @@ export interface IUserRestaurants {
   logo: string;
   description: string;
 }
-export interface UserState {
+
+export interface IUser {
   name: string;
   email: string;
+  role: "customer" | "business";
+  restaurants: string[];
+  orders: string[];
   id: string;
   token: string;
-  role: string;
-}
-
-export interface IUserDetails {
-  id: string;
-  name: string;
-  email: string;
-  restaurants: IUserRestaurants[];
-  role: "customer" | "business";
 }
 
 export interface IOrder {

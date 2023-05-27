@@ -1,9 +1,9 @@
 "use client";
 
 import Button from "@/components/Button";
-import { useRestaurant, useToasts } from "@/hooks";
-import { RootState } from "@/reducers/store";
-import restaurantsService from "@/services/restaurantsService";
+import { useRestaurant, useToasts } from "@/lib/hooks";
+import { RootState } from "@/lib/reducers/store";
+import restaurantsService from "@/lib/restaurantsService";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { useSelector } from "react-redux";

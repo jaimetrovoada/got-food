@@ -1,4 +1,4 @@
-import authService from "@/services/authService";
+import authService from "@/lib/authService";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -30,7 +30,15 @@ export const nextAuthOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = token.user;
+      if (token) {
+        session.user.id = token.user.id;
+        session.user.name = token.user.name;
+        session.user.email = token.user.email;
+        session.user.token = token.user.token;
+        session.user.restaurants = token.user.restaurants;
+        session.user.orders = token.user.orders;
+        session.user.role = token.user.role;
+      }
       return session;
     },
     async jwt({ token, user }) {

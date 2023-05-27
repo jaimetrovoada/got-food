@@ -1,4 +1,4 @@
-import restaurantsService from "@/services/restaurantsService";
+import restaurantsService from "@/lib/restaurantsService";
 import { IOrder } from "@/types";
 import React, { useRef, useState } from "react";
 import Button from "./Button";

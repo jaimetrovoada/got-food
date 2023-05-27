@@ -1,8 +1,8 @@
 "use client";
 
 import RegisterForm, { Role } from "@/components/Forms/RegisterForm";
-import { useInput, useToasts } from "@/hooks";
-import authService from "@/services/authService";
+import { useInput, useToasts } from "@/lib/hooks";
+import authService from "@/lib/authService";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

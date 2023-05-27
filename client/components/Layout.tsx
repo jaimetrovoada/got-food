@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import Toasts from "./Toasts";
-import ToastsProvider from "@/contexts/ToastsProvider";
+import ToastsProvider from "@/lib/contexts/ToastsProvider";
 import UserDropdown from "./UserDropdown";
 
 interface Props {

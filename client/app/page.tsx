@@ -1,4 +1,4 @@
-import restaurantsService from "@/services/restaurantsService";
+import restaurantsService from "@/lib/restaurantsService";
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import TrendingSlider from "@/components/TrendingSlider";

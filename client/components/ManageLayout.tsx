@@ -5,7 +5,7 @@ import Button from "./Button";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 import Container from "./Container";
-import { useRestaurant } from "@/hooks";
+import { useRestaurant } from "@/lib/hooks";
 
 interface Props {
   children: React.ReactNode;

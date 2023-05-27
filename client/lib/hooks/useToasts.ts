@@ -1,6 +1,5 @@
-
-import { ToastsContext } from "@/contexts/ToastsProvider";
-import { useCallback, useState, useContext, useEffect } from "react";
+import { ToastsContext } from "@/lib/contexts/ToastsProvider";
+import { useCallback, useContext } from "react";
 
 const useToasts = () => {
   const context = useContext(ToastsContext);
