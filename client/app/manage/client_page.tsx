@@ -15,8 +15,6 @@ interface Props {
   user: UserState;
 }
 const UserRestaurantPage = ({ restaurants, user }: Props) => {
-  console.log({ restaurants });
-
   const [nameValue, nameInput] = useInput("");
   const [descriptionValue, descriptionInput] = useInput("");
   const [addressValue, addressInput] = useInput("");
