@@ -15,10 +15,11 @@ interface Props {
   user: IUser;
 }
 const UserRestaurantPage = ({ restaurants, user }: Props) => {
-  const [nameValue, nameInput] = useInput("");
-  const [descriptionValue, descriptionInput] = useInput("");
-  const [addressValue, addressInput] = useInput("");
-  const [imageValue, imageInput] = useFileInput();
+  const [nameValue, handleNameInput, setNameInput] = useInput("");
+  const [descriptionValue, handleDescInput, setDescriptionInput] = useInput("");
+  const [addressValue, handleAddrInput, setAddressInput] = useInput("");
+  const [imageValue, handleLogoUpload, setImageInput] = useFileInput();
+  console.log({ imageValue });
 
   const { setSuccessMsg, setErrorMsg } = useToasts();
 
@@ -42,10 +43,20 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
         setErrorMsg("something went wrong");
       }
     },
-    handleNameInput: nameInput,
-    handleDescInput: descriptionInput,
-    handleAddrInput: addressInput,
-    handleLogoUpload: imageInput,
+    handleNameInput,
+    handleDescInput,
+    handleAddrInput,
+    handleLogoUpload,
+    handleReset: () => {
+      setNameInput("");
+      setAddressInput("");
+      setDescriptionInput("");
+      setImageInput(null);
+    },
+    nameValue,
+    descriptionValue,
+    addressValue,
+    logoValue: imageValue?.name,
   };
 
   const modalRef = useRef<ModalHandler>(null);
