@@ -101,10 +101,8 @@ const Form = ({ children, className, ...props }: FormProps) => {
     >
       {children}
       <div className="flex gap-4">
-        <Button type="submit" className="bg-blue-500 p-2">
-          Submit
-        </Button>
-        <Button type="reset" className="bg-red-500 p-2">
+        <Button type="submit">Submit</Button>
+        <Button type="reset" variant="secondary">
           Reset
         </Button>
       </div>
