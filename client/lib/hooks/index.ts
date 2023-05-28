@@ -32,7 +32,7 @@ function useFileInput() {
       setValue(file);
     }
   };
-  return [value, handleChange] as const;
+  return [value, handleChange, setValue] as const;
 }
 
 export { useInput, useFileInput };
