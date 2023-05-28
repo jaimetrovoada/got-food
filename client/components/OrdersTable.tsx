@@ -17,7 +17,7 @@ const OrdersTableDetail = ({
 }) => {
   return (
     <aside className="hidden w-1/3 flex-col rounded-xl border-2 border-black/50 bg-white shadow-custom transition-all md:flex">
-      <p className="border-b border-black p-2 font-bold uppercase shadow-md">
+      <p className="border-b border-black/50 p-2 font-bold uppercase shadow-md">
         Details
       </p>
       {order ? (

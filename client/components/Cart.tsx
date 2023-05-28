@@ -27,7 +27,7 @@ const Cart = ({
 
   return (
     <section
-      className={`container fixed left-1/2 bottom-0 z-10 flex w-full -translate-x-1/2 flex-col rounded-t-2xl border-2 border-b-0 border-black bg-white transition-all ${
+      className={`container fixed left-1/2 bottom-0 z-10 flex w-full -translate-x-1/2 flex-col rounded-t-2xl border-2 border-b-0 border-black/50 bg-white transition-all ${
         cartExpanded ? "h-5/6" : "h-20"
       }`}
     >

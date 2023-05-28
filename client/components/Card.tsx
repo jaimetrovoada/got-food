@@ -45,7 +45,7 @@ type CardProps = {
   children: React.ReactNode;
 };
 
-const baseStyle = "bg-white border-2 border-black shadow-custom";
+const baseStyle = "bg-white border-2 border-black/50 shadow-custom";
 const styles = {
   rounded: `${baseStyle} rounded-2xl`,
   square: `${baseStyle}`,

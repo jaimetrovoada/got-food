@@ -54,7 +54,7 @@ const Menu = ({
         >
           {categoriesArray.map((cat) => (
             <Button
-              className={`rounded-lg border-2  p-2 uppercase hover:border-black/50 ${
+              className={`rounded-lg border-2  p-2 uppercase hover:border-black/75 ${
                 category === cat
                   ? "border-white bg-white font-bold text-black underline"
                   : "border-slate-200 bg-slate-200 text-gray-700"

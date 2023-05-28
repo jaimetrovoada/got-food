@@ -53,7 +53,7 @@ const UserDropdown = ({}: Props) => {
   return (
     <div className="relative h-10 w-10">
       <Button
-        className="h-10 w-10 rounded-full border-2 border-black p-0"
+        className="h-10 w-10 rounded-full border-2 border-black/50 p-0"
         onClick={showMenu}
         variant="custom"
       >
@@ -62,7 +62,7 @@ const UserDropdown = ({}: Props) => {
       <div
         ref={menuRef}
         className={`absolute right-0 -bottom-1 z-10
-         hidden h-40 w-40 translate-y-full flex-col justify-center rounded-2xl border-2 border-black bg-white opacity-0 shadow-custom transition-all xl:right-1/2 xl:translate-x-1/2`}
+         hidden h-40 w-40 translate-y-full flex-col justify-center rounded-2xl border-2 border-black/50 bg-white opacity-0 shadow-custom transition-all xl:right-1/2 xl:translate-x-1/2`}
       >
         {menuList.map((item) => (
           <Button
