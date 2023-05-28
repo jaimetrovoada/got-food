@@ -17,11 +17,11 @@ const Page = async () => {
         </p>
       </div>
       <div className="flex flex-row gap-4">
-        <Button as={Link} href="/restaurants">
-          Explore
-        </Button>
-        <Button as={Link} variant="secondary" href="/auth/register">
+        <Button as={Link} href="/auth/register">
           Sign Up
+        </Button>
+        <Button as={Link} href="/restaurants" variant="secondary">
+          Explore
         </Button>
       </div>
     </Container>
