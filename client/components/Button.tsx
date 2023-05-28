@@ -22,14 +22,39 @@ type Props<C extends React.ElementType> = PolymorphicComponentProp<
   ButtonProps
 >;
 
-const baseStyles = "rounded-xl p-2 font-bold";
-const disabledStyles = "bg-gray-500 cursor-not-allowed hover:bg-gray-600";
-const resetStyles = "bg-red-700";
+interface VariantStyles {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  custom: string;
+}
 
-const variantStyles = {
-  primary: `${baseStyles} border-2 shadow-custom border-black bg-blue-700 hover:bg-blue-600 text-white`,
-  secondary: `${baseStyles} border-2 border-black hover:bg-slate-100 shadow-[0_4px_0_black] text-blue-700`,
-  tertiary: `${baseStyles} shadow-b-md underline text-blue-700`,
+const baseStyles: VariantStyles = {
+  primary: "rounded-xl p-2 font-bold",
+  secondary: "rounded-xl p-2 font-bold",
+  tertiary: "font-bold",
+  custom: "",
+};
+
+const disabledStyles: VariantStyles = {
+  primary: "disabled:bg-gray-500 disabled:cursor-not-allowed",
+  secondary:
+    "disabled:cursor-not-allowed disabled:text-gray-500 disabled:border-gray-500",
+  tertiary: "disabled:cursor-not-allowed disabled:text-gray-500",
+  custom: "disabled:cursor-not-allowed",
+};
+
+const resetStyles: VariantStyles = {
+  primary: "bg-red-700 text-white shadow-lg",
+  secondary: "border border-red-400 shadow-lg text-red-400",
+  tertiary: "text-red-400 underline",
+  custom: "",
+};
+
+const normalStyles: VariantStyles = {
+  primary: "shadow-lg bg-blue-600 text-white",
+  secondary: "border border-black/25 shadow-lg text-blue-700",
+  tertiary: "underline text-blue-700",
   custom: ``,
 };
 
@@ -42,9 +67,14 @@ const Button = <C extends React.ElementType = "button">({
   const Component = as || "button";
 
   const getStyles = () => {
-    const resetStyle = props.type === "reset" ? resetStyles : "";
-    const disabledStyle = props.disabled ? disabledStyles : "";
-    return `${variantStyles[variant]} ${props.className} ${resetStyle} ${disabledStyle}`;
+    let style =
+      props.type === "reset" ? resetStyles[variant] : normalStyles[variant];
+
+    style += " " + baseStyles[variant];
+    style += " " + disabledStyles[variant];
+    style += " " + props.className;
+
+    return style;
   };
   const styles = getStyles();
 
