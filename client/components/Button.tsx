@@ -53,8 +53,8 @@ const resetStyles: VariantStyles = {
 
 const normalStyles: VariantStyles = {
   primary: "shadow-lg bg-blue-600 text-white",
-  secondary: "border border-black/25 shadow-lg text-blue-700",
-  tertiary: "underline text-blue-700",
+  secondary: "border border-blue-600 shadow-lg text-blue-600",
+  tertiary: "underline text-blue-600",
   custom: ``,
 };
 
