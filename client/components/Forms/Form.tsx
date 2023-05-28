@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../Button";
+import { UploadCloud } from "react-feather";
 
 interface FormProps extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
@@ -71,11 +72,23 @@ export const ImageInput = ({
   id,
   labelText,
   className,
+  value,
   ...props
 }: InputProps) => {
+  console.log({ imgUpldValue: value });
   return (
     <div className="flex flex-col">
-      <label htmlFor={id}>{labelText}</label>
+      <label
+        htmlFor={id}
+        className={`flex w-fit cursor-pointer flex-row gap-2 rounded-lg border ${
+          value
+            ? "border-green-600 text-green-600"
+            : "border-blue-600 text-blue-600"
+        } p-2 font-bold shadow-lg`}
+      >
+        <UploadCloud />
+        <span>{value ? "Selected" : labelText}</span>
+      </label>
       <input
         type="file"
         accept="image/png,image/jpeg,image/webp"
@@ -83,6 +96,7 @@ export const ImageInput = ({
         name={name}
         id={id}
         onChange={onChange}
+        className={className + " hidden"}
         {...props}
       />
     </div>
