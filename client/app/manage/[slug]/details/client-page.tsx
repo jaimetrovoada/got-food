@@ -5,6 +5,7 @@ import { useInput, useToasts } from "@/lib/hooks";
 import restaurantsService from "@/lib/restaurantsService";
 import { IRestaurant, IUser } from "@/types";
 import { useRouter } from "next/navigation";
+import { Trash } from "react-feather";
 
 interface Props {
   restaurant: IRestaurant;
@@ -70,7 +71,7 @@ const RestaurantDetailsForm = ({ restaurant, user }: Props) => {
           disabled
         />
         <Button onClick={handleDeleteRestaurant} className="bg-red-500">
-          🗑️
+          <Trash />
         </Button>
       </Form>
     </>

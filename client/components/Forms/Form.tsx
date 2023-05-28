@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "../Button";
-import { UploadCloud } from "react-feather";
+import { Edit3, UploadCloud } from "react-feather";
 
 interface FormProps extends React.HTMLAttributes<HTMLFormElement> {
   children: React.ReactNode;
@@ -57,9 +57,9 @@ export const Input = ({
           type="button"
           onClick={() => setIsDisabled(!isDisabled)}
           className="w-fit"
-          variant="tertiary"
+          variant="custom"
         >
-          ✏️
+          <Edit3 />
         </Button>
       )}
     </div>

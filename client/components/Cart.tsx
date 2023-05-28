@@ -1,8 +1,9 @@
 import React from "react";
 import Button from "./Button";
 import { ICartState } from "@/lib/reducers/cartSlice";
-import Form, { Input } from "./Forms/Form";
+import Form from "./Forms/Form";
 import { useInput } from "@/lib/hooks";
+import { ArrowUp } from "react-feather";
 
 interface Props {
   cartExpanded: boolean;
@@ -36,13 +37,7 @@ const Cart = ({
           onClick={() => setCartExpanded((prev) => !prev)}
           className="absolute -top-4 left-1/2 flex h-8 w-8 translate-x-1/2 items-center justify-center"
         >
-          <span
-            className={`leading-none transition-all ${
-              cartExpanded ? "rotate-180" : ""
-            }`}
-          >
-            ↑
-          </span>
+          <ArrowUp className={cartExpanded ? "rotate-180" : ""} />
         </Button>
         <h1 className="text-lg font-bold">Total = ${cart?.totalPrice || 0}</h1>
         {cartExpanded &&
@@ -56,7 +51,7 @@ const Cart = ({
                 labelText="Table Number"
                 className="rounded-none border-0 border-b-2"
               />
-              <ul className="scrollbar flex-1 list-inside list-disc overflow-y-auto py-4">
+              <ul className="flex-1 list-inside list-disc overflow-y-auto py-4 scrollbar">
                 {cart.items.map((item) => (
                   <li key={item.name} className="list-item text-gray-700">
                     {item.name} - {item.amount}x

@@ -2,8 +2,7 @@ import React, { useRef } from "react";
 import { MenuItemCard } from "./Card";
 import Button from "./Button";
 import { IMenuItem } from "@/types";
-import RightIcon from "@/assets/right_line.svg";
-import LeftIcon from "@/assets/left_line.svg";
+import { ChevronLeft, ChevronRight } from "react-feather";
 
 interface Props {
   menu: IMenuItem[];
@@ -46,7 +45,7 @@ const Menu = ({
           variant="custom"
           onClick={scrollLeft}
         >
-          <LeftIcon className="h-4 w-4" width={14} height={14} />
+          <ChevronLeft />
         </Button>
         <div
           className="flex w-full max-w-full flex-row gap-2 overflow-auto scroll-smooth px-2"
@@ -72,10 +71,10 @@ const Menu = ({
           variant="custom"
           onClick={scrollRight}
         >
-          <RightIcon className="h-4 w-4" width={14} height={14} />
+          <ChevronRight />
         </Button>
       </div>
-      <div className="scrollbar grid w-full flex-1 grid-flow-row grid-cols-1 gap-2 overflow-auto pb-4 md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full flex-1 grid-flow-row grid-cols-1 gap-2 overflow-auto pb-4 scrollbar md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
         {menu
           .filter((item) =>
             category === "all" ? item : item.category === category

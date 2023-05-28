@@ -6,6 +6,7 @@ import Link from "next/link";
 import Button from "./Button";
 import Skeleton from "./Skeleton";
 import { IMenuItem, IOrder } from "@/types";
+import { Plus } from "react-feather";
 
 interface ItemCardProps {
   id: string;
@@ -183,10 +184,10 @@ export const MenuItemCard = ({ item, addToCart }: MenuCardProps) => {
         <p className="text-lg font-bold">${item.price}</p>
         <Button
           onClick={() => addToCart(item.price, item.name, item.id)}
-          className="h-8 w-8 rounded-full bg-blue-500 leading-none text-white shadow-md"
+          className="rounded-full bg-blue-500 p-2 text-white shadow-lg"
           variant="custom"
         >
-          +
+          <Plus size={16} />
         </Button>
       </div>
     </Card>
