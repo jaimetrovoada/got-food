@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import config from "./utils/config";
-import routes from "./controller";
+import routes from "./routes";
 import morgan from "morgan";
 import logger from "./utils/logger";
 import admin from "firebase-admin";
@@ -34,8 +34,8 @@ app.use(cors(corsConfig));
 app.use(express.json());
 app.use(morgan("tiny"));
 
-app.use("/api/restaurants", routes.restaurants);
-app.use("/api/users", routes.users);
+app.use("/api/restaurants", routes.restaurantRouter);
+app.use("/api/users", routes.userRouter);
 
 app.use("/api/ping", (req, res) => {
   res.send({ message: "pong" });

@@ -1,4 +1,2 @@
-import restaurants from "./restaurants";
-import users from "./users";
-
-export default { restaurants, users };
+export * as restaurantController from "./restaurants.controller";
+export * as userController from "./users.controller";

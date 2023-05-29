@@ -1,15 +1,16 @@
-import express from "express";
+import { Request, Response, NextFunction } from "express";
 import models from "../model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../utils/config";
 import { Register, Login, Update } from "../lib/schemas";
-import middleware from "../utils/middleware";
 import { IRestaurant } from "../model/restaurant";
 
-const router = express.Router();
-
-router.get("/:id", async (req, res) => {
+export const getUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const user = await models.User.findById(req.params.id).populate(
     "restaurants",
     {
@@ -17,9 +18,13 @@ router.get("/:id", async (req, res) => {
     }
   );
   res.json(user);
-});
+};
 
-router.get("/:id/restaurants", async (req, res) => {
+export const getUserRestaurants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const id = req.params.id;
   const user = await models.User.findById(id).populate<{
     restaurants: IRestaurant[];
@@ -31,9 +36,13 @@ router.get("/:id/restaurants", async (req, res) => {
   const restaurants = user.restaurants;
 
   res.json(restaurants);
-});
+};
 
-router.get("/:id/orders", async (req, res) => {
+export const getUserOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const id = req.params.id;
   const user = await models.User.findById(id).populate({
     path: "orders",
@@ -63,9 +72,13 @@ router.get("/:id/orders", async (req, res) => {
   const orders = user.orders;
 
   res.json(orders);
-});
+};
 
-router.post("/register", async (req, res, next) => {
+export const createUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const validatedUser = Register.parse({
       name: req.body.name,
@@ -89,9 +102,13 @@ router.post("/register", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
 
-router.post("/login", async (req, res, next) => {
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const validatedUser = Login.parse({
       email: req.body.email,
@@ -125,9 +142,13 @@ router.post("/login", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
+};
 
-router.put("/:id", middleware.userExtractor, async (req, res, next) => {
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const userId = req.params.id;
   try {
     const validatedUser = Update.parse({
@@ -153,6 +174,4 @@ router.put("/:id", middleware.userExtractor, async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-});
-
-export default router;
+};

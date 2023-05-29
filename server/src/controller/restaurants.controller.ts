@@ -1,32 +1,30 @@
-import express, { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import models from "../model";
-import multer from "multer";
-import middleware from "../utils/middleware";
 import { uploadToFirebase } from "../lib/helpers";
 import { MenuItem, Order, Restaurant, priceSchema } from "../lib/schemas";
 import { IOrder } from "../model/order";
 import { IMenu } from "../model/menu";
 
-const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() });
-
-router.get("/", async (req, res) => {
+export const getRestaurants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const restaurants = await models.Restaurant.find({})
-      .populate("owner", {
-        name: 1,
-        email: 1,
-      })
-      .populate("menuItems");
+    const restaurants = await models.Restaurant.find({});
 
     res.json(restaurants);
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.get("/trending", async (req, res, next) => {
+export const getTrendingRestaurants = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const restaurants = await models.Restaurant.find({}).populate<{
       orders: IOrder[];
@@ -47,9 +45,13 @@ router.get("/trending", async (req, res, next) => {
     console.log({ err });
     next(err);
   }
-});
+};
 
-router.get("/:id", async (req, res) => {
+export const getRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const restaurant = await models.Restaurant.findById(req.params.id).populate(
       "owner",
@@ -68,9 +70,13 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.get("/:id/menu", async (req, res) => {
+export const getRestaurantMenu = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const restaurant = await models.Restaurant.findById(req.params.id).populate(
       "menuItems",
@@ -90,37 +96,15 @@ router.get("/:id/menu", async (req, res) => {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.get("/:id/orders", async (req, res) => {
+export const getRestaurantOrders = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
-    const restaurant = await models.Restaurant.findById(req.params.id).populate(
-      {
-        path: "orders",
-        populate: [
-          {
-            path: "orderedItems",
-            populate: {
-              path: "item",
-            },
-          },
-          {
-            path: "restaurant",
-            select: {
-              name: 1,
-            },
-          },
-        ],
-        select: {
-          restaurant: 1,
-          totalPrice: 1,
-          items: 1,
-          date: 1,
-          tableNumber: 1,
-          status: 1,
-        },
-      }
-    );
+    const restaurant = await models.Restaurant.findById(req.params.id);
     const orders = restaurant.orders;
 
     res.json(orders);
@@ -128,9 +112,13 @@ router.get("/:id/orders", async (req, res) => {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.get("/:id/data-stream", (req, res, next) => {
+export const getRestaurantOrdersStream = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
@@ -164,42 +152,44 @@ router.get("/:id/data-stream", (req, res, next) => {
     sendStreamClosedEvent();
     next(error);
   });
-});
+};
 
-router.post(
-  "/",
-  middleware.userExtractor,
-  upload.single("logo"),
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { user } = req;
-    try {
-      const firebaseImgUrl = await uploadToFirebase(req);
+export const createRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user } = req;
+  try {
+    const firebaseImgUrl = await uploadToFirebase(req);
 
-      const vRestaurant = Restaurant.parse({
-        name: req.body.name,
-        description: req.body.description,
-        address: req.body.address,
-        menuItems: req.body.menuItems || [],
-        logo: firebaseImgUrl,
-      });
+    const vRestaurant = Restaurant.parse({
+      name: req.body.name,
+      description: req.body.description,
+      address: req.body.address,
+      menuItems: req.body.menuItems || [],
+      logo: firebaseImgUrl,
+    });
 
-      const restaurant = new models.Restaurant({
-        ...vRestaurant,
-        owner: user._id,
-      });
+    const restaurant = new models.Restaurant({
+      ...vRestaurant,
+      owner: user._id,
+    });
 
-      const result = await restaurant.save();
-      user.restaurants = user.restaurants.concat(result._id);
-      await user.save();
+    const result = await restaurant.save();
+    user.restaurants = user.restaurants.concat(result._id);
+    await user.save();
 
-      res.status(201).json(result);
-    } catch (err) {
-      next(err);
-    }
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
   }
-);
-
-router.post("/:id/menu", upload.single("image"), async (req, res) => {
+};
+export const createMenuItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
@@ -226,9 +216,13 @@ router.post("/:id/menu", upload.single("image"), async (req, res) => {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.post("/:id/order", middleware.userExtractor, async (req, res) => {
+export const createOrder = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const vOrder = Order.parse({
       tableNumber: req.body.tableNumber,
@@ -257,87 +251,90 @@ router.post("/:id/order", middleware.userExtractor, async (req, res) => {
     res.status(500).json({ message: err.message });
     console.log({ err });
   }
-});
+};
 
-router.put(
-  "/:id",
-  upload.single("logo"),
-  middleware.userExtractor,
-  async (req, res) => {
-    const { user } = req;
-    try {
-      const restaurant = await models.Restaurant.findById(req.params.id);
-      const logo = req.file ? await uploadToFirebase(req) : restaurant.logo;
-      const vRestaurant = Restaurant.parse({
-        name: req.body.name,
-        description: req.body.description,
-        address: req.body.address,
-        owner: user._id,
-        menuItems: req.body.menuItems,
-        logo: logo,
-      });
+export const updateRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user } = req;
+  try {
+    const restaurant = await models.Restaurant.findById(req.params.id);
+    const logo = req.file ? await uploadToFirebase(req) : restaurant.logo;
+    const vRestaurant = Restaurant.parse({
+      name: req.body.name,
+      description: req.body.description,
+      address: req.body.address,
+      owner: user._id,
+      menuItems: req.body.menuItems,
+      logo: logo,
+    });
 
-      restaurant.name = vRestaurant.name;
-      restaurant.description = vRestaurant.description;
-      restaurant.address = vRestaurant.address;
-      restaurant.logo = vRestaurant.logo;
+    restaurant.name = vRestaurant.name;
+    restaurant.description = vRestaurant.description;
+    restaurant.address = vRestaurant.address;
+    restaurant.logo = vRestaurant.logo;
 
-      const update = await restaurant.save();
+    const update = await restaurant.save();
 
-      res.json(update);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-      console.log({ err });
-    }
+    res.json(update);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+    console.log({ err });
   }
-);
+};
 
-router.put(
-  "/:id/menu/:menuId",
-  upload.single("image"),
-  async (req, res, next) => {
-    const { id, menuId } = req.params;
-    try {
-      const restaurant = await models.Restaurant.findById(id).populate<{
-        menuItems: IMenu[];
-      }>("menuItems");
-      const menuItem = await models.Menu.findById(menuId);
+export const updateMenuItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { id, menuId } = req.params;
+  try {
+    const restaurant = await models.Restaurant.findById(id).populate<{
+      menuItems: IMenu[];
+    }>("menuItems");
+    const menuItem = await models.Menu.findById(menuId);
 
-      const imgUrl = req.file ? await uploadToFirebase(req) : menuItem.image;
+    const imgUrl = req.file ? await uploadToFirebase(req) : menuItem.image;
 
-      const vMenuItem = MenuItem.parse({
-        name: req.body.name,
-        description: req.body.description,
-        price: priceSchema.parse(req.body.price),
-        category: req.body.category,
-        image: imgUrl,
-      });
+    const vMenuItem = MenuItem.parse({
+      name: req.body.name,
+      description: req.body.description,
+      price: priceSchema.parse(req.body.price),
+      category: req.body.category,
+      image: imgUrl,
+    });
 
-      menuItem.name = vMenuItem.name;
-      menuItem.description = vMenuItem.description;
-      menuItem.price = vMenuItem.price;
-      menuItem.category = vMenuItem.category;
-      menuItem.image = vMenuItem.image;
-      const updatedMenuItem = await menuItem.save();
-      const restMenuItem = restaurant.menuItems.find(
-        (m) => m._id.toString() === menuId
-      );
-      restMenuItem.name = updatedMenuItem.name;
-      restMenuItem.description = updatedMenuItem.description;
-      restMenuItem.price = updatedMenuItem.price;
-      restMenuItem.category = updatedMenuItem.category;
-      restMenuItem.image = updatedMenuItem.image;
+    menuItem.name = vMenuItem.name;
+    menuItem.description = vMenuItem.description;
+    menuItem.price = vMenuItem.price;
+    menuItem.category = vMenuItem.category;
+    menuItem.image = vMenuItem.image;
+    const updatedMenuItem = await menuItem.save();
+    const restMenuItem = restaurant.menuItems.find(
+      (m) => m._id.toString() === menuId
+    );
+    restMenuItem.name = updatedMenuItem.name;
+    restMenuItem.description = updatedMenuItem.description;
+    restMenuItem.price = updatedMenuItem.price;
+    restMenuItem.category = updatedMenuItem.category;
+    restMenuItem.image = updatedMenuItem.image;
 
-      await restaurant.save();
+    await restaurant.save();
 
-      res.json(updatedMenuItem);
-    } catch (err) {
-      next(err);
-    }
+    res.json(updatedMenuItem);
+  } catch (err) {
+    next(err);
   }
-);
+};
 
-router.put("/:id/order/:orderId", async (req, res, next) => {
+export const updateOrderStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { orderId, id } = req.params;
   try {
     const order = await models.Order.findById(orderId);
@@ -358,5 +355,4 @@ router.put("/:id/order/:orderId", async (req, res, next) => {
     console.log({ err });
     next(err);
   }
-});
-export default router;
+};
