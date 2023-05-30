@@ -25,10 +25,19 @@ export const getUserRestaurants = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
-  const user = await userRepository.findOneBy({ id: id });
-  const restaurants = user.restaurants;
+  try {
+    const user = await userRepository.findOne({
+      where: {
+        id: id,
+      },
+      relations: ["restaurants"],
+    });
+    const restaurants = user.restaurants;
 
-  res.json(restaurants);
+    return res.json(restaurants);
+  } catch (error) {
+    return next(error);
+  }
 };
 
 export const getUserOrders = async (
