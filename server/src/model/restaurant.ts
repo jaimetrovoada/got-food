@@ -12,7 +12,7 @@ import { Order } from "./order";
 @Entity()
 export class Restaurant {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   name: string;

@@ -6,7 +6,7 @@ export type UserRoleType = "business" | "customer";
 @Entity()
 export class User {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -14,7 +14,7 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ select: false })
   passwordHash: string;
 
   @Column({

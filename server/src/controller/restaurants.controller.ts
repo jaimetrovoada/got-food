@@ -60,7 +60,7 @@ export const getRestaurant = async (
 ) => {
   try {
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
 
     res.json(restaurant);
@@ -81,7 +81,7 @@ export const getRestaurantMenu = async (
 ) => {
   try {
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
 
     const menu = restaurant.menuItems;
@@ -100,7 +100,7 @@ export const getRestaurantOrders = async (
 ) => {
   try {
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
     const orders = restaurant.orders;
 
@@ -122,7 +122,7 @@ export const getRestaurantOrdersStream = async (
   res.flushHeaders();
 
   const cursor = await Order.findBy({
-    restaurant: { id: Number(req.params.id) },
+    restaurant: { id: req.params.id) },
   }).stream();
 
   const sendEvent = (order) => {
@@ -190,7 +190,7 @@ export const createMenuItem = async (
     });
 
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
     const menuItem = new Menu();
     menuItem.name = vMenuItem.name;
@@ -223,10 +223,10 @@ export const createOrder = async (
     });
 
     const user = await userRepository.findOneBy({
-      id: Number(req.user.id),
+      id: req.user.id,
     });
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
     const order = new Order();
     order.tableNumber = vOrder.tableNumber;
@@ -252,7 +252,7 @@ export const updateRestaurant = async (
   const { user } = req;
   try {
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(req.params.id),
+      id: req.params.id,
     });
     const logo = req.file ? await uploadToFirebase(req) : restaurant.logo;
     const vRestaurant = RestaurantSchema.parse({
@@ -286,10 +286,10 @@ export const updateMenuItem = async (
   const { id, menuId } = req.params;
   try {
     const restaurant = await restaurantRepository.findOneBy({
-      id: Number(id),
+      id: id,
     });
     const menuItem = await menuRepository.findOneBy({
-      id: Number(menuId),
+      id: menuId,
     });
 
     const imgUrl = req.file ? await uploadToFirebase(req) : menuItem.image;
@@ -323,7 +323,7 @@ export const updateOrderStatus = async (
   const { orderId } = req.params;
   try {
     const order = await orderRepository.findOneBy({
-      id: Number(orderId),
+      id: orderId,
     });
 
     const vOrderStatus = OrderSchema.shape.status.parse(req.body.status);

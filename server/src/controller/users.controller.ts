@@ -14,7 +14,7 @@ export const getUser = async (
   next: NextFunction
 ) => {
   const user = await userRepository.findOneBy({
-    id: Number(req.params.id),
+    id: req.params.id,
   });
   res.json(user);
 };
@@ -25,7 +25,7 @@ export const getUserRestaurants = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
-  const user = await userRepository.findOneBy({ id: Number(id) });
+  const user = await userRepository.findOneBy({ id: id });
   const restaurants = user.restaurants;
 
   res.json(restaurants);
@@ -37,7 +37,7 @@ export const getUserOrders = async (
   next: NextFunction
 ) => {
   const id = req.params.id;
-  const user = await userRepository.findOneBy({ id: Number(id) });
+  const user = await userRepository.findOneBy({ id: id });
   const orders = user.orders;
 
   res.json(orders);
@@ -84,9 +84,11 @@ export const loginUser = async (
       password: req.body.password,
     });
 
-    const user = await userRepository.findOneBy({
-      email: validatedUser.email,
-    });
+    const user = await userRepository
+      .createQueryBuilder("user")
+      .where("user.email = :email", { email: validatedUser.email })
+      .addSelect("user.passwordHash")
+      .getOne();
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -128,7 +130,7 @@ export const updateUser = async (
       password: req.body.password,
       role: req.body.role,
     });
-    const user = await userRepository.findOneBy({ id: Number(userId) });
+    const user = await userRepository.findOneBy({ id: userId });
     const saltRounds = 10;
     const passwordHash = validatedUser.password
       ? await bcrypt.hash(validatedUser.password, saltRounds)

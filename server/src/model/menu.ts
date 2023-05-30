@@ -4,7 +4,7 @@ import { Restaurant } from "./restaurant";
 @Entity()
 export class Menu {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   name: string;

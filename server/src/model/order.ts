@@ -7,7 +7,7 @@ export type OrderStatus = "pending" | "completed";
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   tableNumber: number;

@@ -30,7 +30,7 @@ const userExtractor = async (
     }
 
     const user = await userRepository.findOneBy({
-      id: Number(decoded.id),
+      id: decoded.id,
     });
 
     req.user.email = user.email;
