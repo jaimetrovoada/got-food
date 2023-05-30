@@ -167,9 +167,9 @@ export const createRestaurant = async (
     restaurant.description = vRestaurant.description;
     restaurant.address = vRestaurant.address;
     restaurant.logo = firebaseImgUrl as string;
-    user.restaurants = [restaurant];
+    restaurant.owner = user;
 
-    const result = await userRepository.save(user);
+    const result = await restaurantRepository.save(restaurant);
 
     return res.status(201).json(result);
   } catch (err) {
@@ -202,13 +202,14 @@ export const createMenuItem = async (
     menuItem.price = vMenuItem.price;
     menuItem.category = vMenuItem.category;
     menuItem.image = firebaseImgUrl as string;
-    restaurant.menuItems = [menuItem];
+    menuItem.restaurant = restaurant;
 
-    const result = await restaurantRepository.save(restaurant);
+    const result = await menuRepository.save(menuItem);
     res.status(201).json(result);
   } catch (err) {
-    res.status(500).json({ message: err.message });
     console.log({ err });
+    res.status(500).json({ message: err.message });
+    return next(err);
   }
 };
 
@@ -238,8 +239,9 @@ export const createOrder = async (
     order.status = vOrder.status;
     order.user = user;
     order.restaurant = restaurant;
+    order.user = user;
 
-    const result = await orderRepository.save(order);
+    const result = orderRepository.save(order);
 
     res.status(201).json(result);
   } catch (err) {
