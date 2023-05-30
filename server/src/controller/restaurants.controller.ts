@@ -80,16 +80,19 @@ export const getRestaurantMenu = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
+    const restaurant = await restaurantRepository.findOne({
+      where: {
+        id: req.params.id,
+      },
+      relations: ["menuItems"],
     });
 
     const menu = restaurant.menuItems;
 
-    res.json(menu);
+    return res.json(menu);
   } catch (err) {
     res.status(500).json({ message: err.message });
-    console.log({ err });
+    return next(err);
   }
 };
 
@@ -199,9 +202,9 @@ export const createMenuItem = async (
     menuItem.price = vMenuItem.price;
     menuItem.category = vMenuItem.category;
     menuItem.image = firebaseImgUrl as string;
-    menuItem.restaurant = restaurant;
+    restaurant.menuItems = [menuItem];
 
-    const result = await menuRepository.save(menuItem);
+    const result = await restaurantRepository.save(restaurant);
     res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
