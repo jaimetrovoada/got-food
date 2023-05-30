@@ -164,10 +164,11 @@ export const createRestaurant = async (
     restaurant.description = vRestaurant.description;
     restaurant.address = vRestaurant.address;
     restaurant.logo = firebaseImgUrl as string;
+    user.restaurants = [restaurant];
 
-    const result = await restaurantRepository.save(restaurant);
+    const result = await userRepository.save(user);
 
-    res.status(201).json(result);
+    return res.status(201).json(result);
   } catch (err) {
     next(err);
   }
