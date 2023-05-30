@@ -1,10 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import model from "../model";
+import { User } from "../model/user";
 import logger from "./logger";
 import { ZodError } from "zod";
 import config from "./config";
+import { AppDataSource } from "../data-source";
 
+const userRepository = AppDataSource.getRepository(User);
 const userExtractor = async (
   req: Request,
   res: Response,
@@ -27,9 +29,11 @@ const userExtractor = async (
       return res.status(401).json({ message: "Invalid Token" });
     }
 
-    const user = await model.User.findById(decoded.id);
+    const user = await userRepository.findOneBy({
+      id: Number(decoded.id),
+    });
 
-    req.user = user;
+    req.user.email = user.email;
 
     next();
   } catch (err) {

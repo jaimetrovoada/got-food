@@ -1,17 +1,9 @@
-import mongoose, { Document } from "mongoose";
-
-interface IUser extends Document {
-  name: string;
-  email: string;
-  passwordHash: string;
-  role: "admin" | "customer" | "business";
-  restaurants?: mongoose.Types.ObjectId[];
-}
+import { User } from "../../src/model/user";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser | undefined;
+      user?: User | undefined;
     }
   }
 }

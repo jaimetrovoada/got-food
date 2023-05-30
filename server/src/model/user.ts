@@ -1,52 +1,38 @@
-import mongoose, { Document } from "mongoose";
-import uniqueValidator from "mongoose-unique-validator";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Order } from "./order";
+import { Restaurant } from "./restaurant";
 
-const Schema = mongoose.Schema;
+export type UserRoleType = "business" | "customer";
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn("uuid")
+  id: number;
 
-export interface IUser extends Document {
+  @Column()
   name: string;
+
+  @Column({ unique: true })
   email: string;
+
+  @Column()
   passwordHash: string;
-  role: "customer" | "business";
-  restaurants?: mongoose.Types.ObjectId[];
-  orders?: mongoose.Types.ObjectId[];
+
+  @Column({
+    type: "enum",
+    enum: ["business", "customer"],
+    default: "customer",
+  })
+  role: UserRoleType;
+
+  @OneToMany(() => Restaurant, (restaurant) => restaurant.owner, {
+    cascade: true,
+    nullable: true,
+  })
+  restaurants: Restaurant[];
+
+  @OneToMany(() => Order, (order) => order.user, {
+    cascade: true,
+    nullable: true,
+  })
+  orders: Order[];
 }
-
-const userSchema = new Schema<IUser>({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true },
-  role: { type: String, required: true },
-  restaurants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
-      required: false,
-    },
-  ],
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-      required: false,
-    },
-  ],
-});
-
-userSchema.plugin(uniqueValidator);
-
-userSchema.set("toJSON", {
-  transform: (_, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-    delete returnedObject.passwordHash;
-    if (returnedObject.role !== "business") {
-      delete returnedObject.restaurants;
-    }
-  },
-});
-
-const User = mongoose.model<IUser>("User", userSchema);
-
-export default User;

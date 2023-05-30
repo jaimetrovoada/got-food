@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import config from "./utils/config";
 import routes from "./routes";
 import morgan from "morgan";
@@ -7,17 +6,15 @@ import logger from "./utils/logger";
 import admin from "firebase-admin";
 import middleware from "./utils/middleware";
 import cors, { CorsOptions } from "cors";
+import { AppDataSource } from "./data-source";
 
 const app = express();
 
-mongoose
-  .connect(config.MONGODB_URI)
+AppDataSource.initialize()
   .then(() => {
-    logger.info("Connected to MongoDB");
+    logger.info("Data Source has been initialized!");
   })
-  .catch((err) => {
-    logger.error("Could not connect to MongoDB", err);
-  });
+  .catch((error) => logger.error({ error }));
 
 admin.initializeApp({
   credential: admin.credential.applicationDefault(),

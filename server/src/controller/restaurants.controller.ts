@@ -1,9 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import models from "../model";
+import { User } from "../model/user";
+import { Restaurant } from "../model/restaurant";
+import { Order } from "../model/order";
+import { Menu } from "../model/menu";
 import { uploadToFirebase } from "../lib/helpers";
-import { MenuItem, Order, Restaurant, priceSchema } from "../lib/schemas";
-import { IOrder } from "../model/order";
-import { IMenu } from "../model/menu";
+import {
+  MenuItemSchema,
+  OrderSchema,
+  RestaurantSchema,
+  PriceSchema,
+} from "../lib/schemas";
+import { AppDataSource } from "../data-source";
+
+const menuRepository = AppDataSource.getRepository(Menu);
+const restaurantRepository = AppDataSource.getRepository(Restaurant);
+const orderRepository = AppDataSource.getRepository(Order);
+const userRepository = AppDataSource.getRepository(User);
 
 export const getRestaurants = async (
   req: Request,
@@ -11,7 +23,7 @@ export const getRestaurants = async (
   next: NextFunction
 ) => {
   try {
-    const restaurants = await models.Restaurant.find({});
+    const restaurants = await restaurantRepository.find({});
 
     res.json(restaurants);
   } catch (err) {
@@ -19,19 +31,13 @@ export const getRestaurants = async (
     console.log({ err });
   }
 };
-
 export const getTrendingRestaurants = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const restaurants = await models.Restaurant.find({}).populate<{
-      orders: IOrder[];
-    }>("orders", {
-      date: 1,
-      status: 1,
-    });
+    const restaurants = await restaurantRepository.find();
 
     // .filter((restaurant) => restaurant.orders.length > 0)
     const top5 = restaurants
@@ -53,13 +59,9 @@ export const getRestaurant = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await models.Restaurant.findById(req.params.id).populate(
-      "owner",
-      {
-        name: 1,
-        email: 1,
-      }
-    );
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
+    });
 
     res.json(restaurant);
 
@@ -78,16 +80,9 @@ export const getRestaurantMenu = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await models.Restaurant.findById(req.params.id).populate(
-      "menuItems",
-      {
-        name: 1,
-        description: 1,
-        price: 1,
-        category: 1,
-        image: 1,
-      }
-    );
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
+    });
 
     const menu = restaurant.menuItems;
 
@@ -104,7 +99,9 @@ export const getRestaurantOrders = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await models.Restaurant.findById(req.params.id);
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
+    });
     const orders = restaurant.orders;
 
     res.json(orders);
@@ -113,7 +110,7 @@ export const getRestaurantOrders = async (
     console.log({ err });
   }
 };
-
+/* 
 export const getRestaurantOrdersStream = async (
   req: Request,
   res: Response,
@@ -124,18 +121,9 @@ export const getRestaurantOrdersStream = async (
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
 
-  const query = models.Order.find({ restaurant: req.params.id }).populate([
-    "restaurant",
-    "user",
-    {
-      path: "orderedItems",
-      populate: {
-        path: "item",
-      },
-    },
-  ]);
-
-  const cursor = query.cursor();
+  const cursor = await Order.findBy({
+    restaurant: { id: Number(req.params.id) },
+  }).stream();
 
   const sendEvent = (order) => {
     res.write(`data: ${JSON.stringify(order)}\n\n`);
@@ -153,7 +141,7 @@ export const getRestaurantOrdersStream = async (
     next(error);
   });
 };
-
+ */
 export const createRestaurant = async (
   req: Request,
   res: Response,
@@ -163,7 +151,7 @@ export const createRestaurant = async (
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
-    const vRestaurant = Restaurant.parse({
+    const vRestaurant = RestaurantSchema.parse({
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
@@ -171,14 +159,13 @@ export const createRestaurant = async (
       logo: firebaseImgUrl,
     });
 
-    const restaurant = new models.Restaurant({
-      ...vRestaurant,
-      owner: user._id,
-    });
+    const restaurant = new Restaurant();
+    restaurant.name = vRestaurant.name;
+    restaurant.description = vRestaurant.description;
+    restaurant.address = vRestaurant.address;
+    restaurant.logo = firebaseImgUrl as string;
 
-    const result = await restaurant.save();
-    user.restaurants = user.restaurants.concat(result._id);
-    await user.save();
+    const result = await restaurantRepository.save(restaurant);
 
     res.status(201).json(result);
   } catch (err) {
@@ -193,25 +180,28 @@ export const createMenuItem = async (
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
-    const vMenuItem = MenuItem.parse({
+    const vMenuItem = MenuItemSchema.parse({
       restaurant: req.params.id,
       name: req.body.name,
       description: req.body.description,
-      price: priceSchema.parse(req.body.price),
+      price: PriceSchema.parse(req.body.price),
       category: req.body.category,
       image: firebaseImgUrl,
     });
 
-    const restaurant = await models.Restaurant.findById(req.params.id);
-    const menuItem = new models.Menu({
-      ...vMenuItem,
-      restaurant: restaurant._id,
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
     });
+    const menuItem = new Menu();
+    menuItem.name = vMenuItem.name;
+    menuItem.description = vMenuItem.description;
+    menuItem.price = vMenuItem.price;
+    menuItem.category = vMenuItem.category;
+    menuItem.image = firebaseImgUrl as string;
+    menuItem.restaurant = restaurant;
 
-    const result = await menuItem.save();
-    restaurant.menuItems = restaurant.menuItems.concat(result._id);
-    await restaurant.save();
-    res.status(201).json(menuItem);
+    const result = await menuRepository.save(menuItem);
+    res.status(201).json(result);
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
@@ -223,28 +213,29 @@ export const createOrder = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { user } = req;
   try {
-    const vOrder = Order.parse({
+    const vOrder = OrderSchema.parse({
       tableNumber: req.body.tableNumber,
       orderedItems: req.body.items,
       totalPrice: req.body.totalPrice,
       status: req.body.status,
     });
 
-    const order = new models.Order({
-      ...vOrder,
-      user: req.user._id,
-      restaurant: req.params.id,
+    const user = await userRepository.findOneBy({
+      id: Number(req.user.id),
     });
-    const result = await order.save();
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
+    });
+    const order = new Order();
+    order.tableNumber = vOrder.tableNumber;
+    order.totalPrice = vOrder.totalPrice;
+    order.status = vOrder.status;
+    order.user = user;
+    order.restaurant = restaurant;
 
-    const user = await models.User.findById(req.user._id);
-    user.orders = user.orders.concat(result._id);
-    await user.save();
-
-    const restaurant = await models.Restaurant.findById(req.params.id);
-    restaurant.orders = restaurant.orders.concat(result._id);
-    await restaurant.save();
+    const result = await orderRepository.save(order);
 
     res.status(201).json(result);
   } catch (err) {
@@ -260,13 +251,15 @@ export const updateRestaurant = async (
 ) => {
   const { user } = req;
   try {
-    const restaurant = await models.Restaurant.findById(req.params.id);
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(req.params.id),
+    });
     const logo = req.file ? await uploadToFirebase(req) : restaurant.logo;
-    const vRestaurant = Restaurant.parse({
+    const vRestaurant = RestaurantSchema.parse({
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
-      owner: user._id,
+      owner: user.id,
       menuItems: req.body.menuItems,
       logo: logo,
     });
@@ -276,7 +269,7 @@ export const updateRestaurant = async (
     restaurant.address = vRestaurant.address;
     restaurant.logo = vRestaurant.logo;
 
-    const update = await restaurant.save();
+    const update = await restaurantRepository.save(restaurant);
 
     res.json(update);
   } catch (err) {
@@ -292,17 +285,19 @@ export const updateMenuItem = async (
 ) => {
   const { id, menuId } = req.params;
   try {
-    const restaurant = await models.Restaurant.findById(id).populate<{
-      menuItems: IMenu[];
-    }>("menuItems");
-    const menuItem = await models.Menu.findById(menuId);
+    const restaurant = await restaurantRepository.findOneBy({
+      id: Number(id),
+    });
+    const menuItem = await menuRepository.findOneBy({
+      id: Number(menuId),
+    });
 
     const imgUrl = req.file ? await uploadToFirebase(req) : menuItem.image;
 
-    const vMenuItem = MenuItem.parse({
+    const vMenuItem = MenuItemSchema.parse({
       name: req.body.name,
       description: req.body.description,
-      price: priceSchema.parse(req.body.price),
+      price: PriceSchema.parse(req.body.price),
       category: req.body.category,
       image: imgUrl,
     });
@@ -312,17 +307,7 @@ export const updateMenuItem = async (
     menuItem.price = vMenuItem.price;
     menuItem.category = vMenuItem.category;
     menuItem.image = vMenuItem.image;
-    const updatedMenuItem = await menuItem.save();
-    const restMenuItem = restaurant.menuItems.find(
-      (m) => m._id.toString() === menuId
-    );
-    restMenuItem.name = updatedMenuItem.name;
-    restMenuItem.description = updatedMenuItem.description;
-    restMenuItem.price = updatedMenuItem.price;
-    restMenuItem.category = updatedMenuItem.category;
-    restMenuItem.image = updatedMenuItem.image;
-
-    await restaurant.save();
+    const updatedMenuItem = await menuRepository.save(menuItem);
 
     res.json(updatedMenuItem);
   } catch (err) {
@@ -335,21 +320,15 @@ export const updateOrderStatus = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { orderId, id } = req.params;
+  const { orderId } = req.params;
   try {
-    const order = await models.Order.findById(orderId);
-    const restaurant = await models.Restaurant.findById(id).populate<{
-      orders: IOrder[];
-    }>("orders");
-    const restOrder = restaurant.orders.find(
-      (o) => o._id.toString() === orderId
-    );
+    const order = await orderRepository.findOneBy({
+      id: Number(orderId),
+    });
 
-    const vOrderStatus = Order.shape.status.parse(req.body.status);
+    const vOrderStatus = OrderSchema.shape.status.parse(req.body.status);
     order.status = vOrderStatus;
-    const updatedOrder = await order.save();
-    restOrder.status = vOrderStatus;
-    await restaurant.save();
+    const updatedOrder = await orderRepository.save(order);
     res.json(updatedOrder);
   } catch (err) {
     console.log({ err });

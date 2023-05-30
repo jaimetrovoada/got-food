@@ -7,7 +7,6 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/", restaurantController.getRestaurants);
-
 router.get("/trending", restaurantController.getTrendingRestaurants);
 
 router.get("/:id", restaurantController.getRestaurant);
@@ -15,8 +14,7 @@ router.get("/:id", restaurantController.getRestaurant);
 router.get("/:id/menu", restaurantController.getRestaurantMenu);
 
 router.get("/:id/orders", restaurantController.getRestaurantOrders);
-
-router.get("/:id/data-stream", restaurantController.getRestaurantOrdersStream);
+/* router.get("/:id/data-stream", restaurantController.getRestaurantOrdersStream); */
 
 router.post(
   "/",

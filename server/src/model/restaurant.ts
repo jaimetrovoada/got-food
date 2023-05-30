@@ -1,62 +1,43 @@
-import mongoose, { Document } from "mongoose";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { User } from "./user";
+import { Menu } from "./menu";
+import { Order } from "./order";
 
-const Schema = mongoose.Schema;
+@Entity()
+export class Restaurant {
+  @PrimaryGeneratedColumn("uuid")
+  id: number;
 
-export interface IRestaurant extends Document {
+  @Column()
   name: string;
+
+  @Column()
   description: string;
+
+  @Column()
   address: string;
-  menuItems: mongoose.Types.ObjectId[];
-  owner: mongoose.Types.ObjectId;
+
+  @Column()
   logo: string;
-  orders: mongoose.Types.ObjectId[];
+
+  @OneToMany(() => Menu, (menu) => menu.restaurant, {
+    cascade: true,
+    nullable: true,
+  })
+  menuItems: Menu[];
+
+  @ManyToOne(() => User, (user) => user.restaurants)
+  owner: User;
+
+  @OneToMany(() => Order, (order) => order.restaurant, {
+    cascade: true,
+    nullable: true,
+  })
+  orders: Order[];
 }
-
-const restaurantSchema = new Schema<IRestaurant>({
-  name: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  menuItems: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Menu",
-      required: true,
-    },
-  ],
-  owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  logo: {
-    type: String,
-    required: true,
-  },
-  orders: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-    },
-  ],
-});
-
-restaurantSchema.set("toJSON", {
-  transform: (_, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
-
-const Restaurant = mongoose.model<IRestaurant>("Restaurant", restaurantSchema);
-
-export default Restaurant;
