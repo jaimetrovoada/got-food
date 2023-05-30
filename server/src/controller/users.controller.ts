@@ -111,6 +111,8 @@ export const loginUser = async (
 
     const token = jwt.sign(payload, config.JWT_SECRET);
 
+    delete user.passwordHash;
+
     res.status(200).json({ token, user });
   } catch (err) {
     next(err);
