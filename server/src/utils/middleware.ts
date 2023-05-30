@@ -33,7 +33,7 @@ const userExtractor = async (
       id: decoded.id,
     });
 
-    req.user.email = user.email;
+    req.user = user;
 
     next();
   } catch (err) {
