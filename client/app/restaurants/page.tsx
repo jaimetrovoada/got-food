@@ -6,13 +6,14 @@ import React from "react";
 
 const Page = async () => {
   const { restaurants } = await getRestaurants();
+  const { restaurants: trendingRestaurants } = await getGetTrending();
   return (
     <Container className="flex flex-col gap-8 p-2">
       <div>
         <p className="mb-4 text-3xl font-bold capitalize">
           what&apos;s trending
         </p>
-        <TrendingSlider trending={restaurants} />
+        <TrendingSlider trending={trendingRestaurants} />
       </div>
       <div>
         <p className="mb-4 text-3xl font-bold">All</p>
@@ -28,6 +29,11 @@ export default Page;
 
 async function getRestaurants() {
   const restaurant = await restaurantsService.getRestaurants();
+
+  return restaurant;
+}
+async function getGetTrending() {
+  const restaurant = await restaurantsService.getTrendingRestaurants();
 
   return restaurant;
 }
