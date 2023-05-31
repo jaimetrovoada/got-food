@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
-import { Menu } from "./menu";
 import { Restaurant } from "./restaurant";
 import { User } from "./user";
 
@@ -13,7 +12,7 @@ export class Order {
   tableNumber: number;
 
   @Column("jsonb")
-  orderedItems: { item: Menu; amount: number }[];
+  orderedItems: { item: string; amount: number }[];
 
   @Column()
   totalPrice: number;
