@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { User } from "../model/user";
+import { hashPassword } from "./helpers";
 
 const userRepository = AppDataSource.getRepository(User);
 
@@ -70,10 +71,21 @@ export async function update(
   body: {
     name?: string;
     email?: string;
-    passwordHash?: string;
+    password?: string;
     role?: "business" | "customer";
   }
 ) {
-  const res = await userRepository.update(id, body);
+  const passwordHash = body.password
+    ? await hashPassword(body.password)
+    : undefined;
+
+  const updateBody = {
+    name: body.name,
+    email: body.email,
+    role: body.role,
+    passwordHash: passwordHash,
+  };
+
+  const res = await userRepository.update(id, updateBody);
   return res;
 }

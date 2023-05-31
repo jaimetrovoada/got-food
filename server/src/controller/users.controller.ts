@@ -1,9 +1,10 @@
-import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import config from "../utils/config";
-import { RegisterSchema, LoginSchema, UpdateSchema } from "../lib/schemas";
+import { hashPassword } from "../lib/helpers";
+import { LoginSchema, RegisterSchema } from "../lib/schemas";
 import * as userService from "../lib/userServices";
+import config from "../utils/config";
 
 export const getUser = async (
   req: Request,
@@ -61,8 +62,7 @@ export const createUser = async (
       role: req.body.role,
     });
 
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
+    const passwordHash = await hashPassword(validatedUser.password);
 
     const user = await userService.create({
       name: validatedUser.name,
@@ -126,24 +126,18 @@ export const updateUser = async (
 ) => {
   const userId = req.params.id;
   try {
-    const validatedUser = UpdateSchema.parse({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
-      role: req.body.role,
-    });
-    const user = await userService.get(userId);
-    const saltRounds = 10;
-    const passwordHash = validatedUser.password
-      ? await bcrypt.hash(validatedUser.password, saltRounds)
-      : user.passwordHash;
-
-    user.name = validatedUser.name;
-    user.email = validatedUser.email;
-    user.passwordHash = passwordHash;
-    user.role = validatedUser.role;
-
-    const updatedUser = await userService.update(userId, user);
+    const updateBody: {
+      name?: string;
+      email?: string;
+      password?: string;
+      role?: "business" | "customer";
+    } = {
+      name: req.body?.name,
+      email: req.body?.email,
+      password: req.body?.password,
+      role: req.body?.role,
+    };
+    const updatedUser = await userService.update(userId, updateBody);
 
     return res.status(200).json(updatedUser);
   } catch (err) {
