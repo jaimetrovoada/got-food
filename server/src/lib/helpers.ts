@@ -1,10 +1,7 @@
 import { Request } from "express";
 import { nanoid } from "nanoid/async";
 import { bucket } from "../app";
-import { AppDataSource } from "../data-source";
-import { Order } from "../model/order";
-
-const orderRepository = AppDataSource.getRepository(Order);
+import bcrypt from "bcrypt";
 
 function getExtensionFromMimeType(mimeType: string): string {
   switch (mimeType) {
@@ -54,36 +51,7 @@ export async function uploadToFirebase(req: Request) {
   return firebaseImgUrl;
 }
 
-export async function createOrderId(restaurantId: string): Promise<string> {
-  const today = new Date();
-  const startDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate()
-  );
-  const endDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate() + 1
-  );
-
-  // Count the number of orders made today
-  const count = await orderRepository
-    .createQueryBuilder("order")
-    .where("order.restaurantId = :id", { id: restaurantId })
-    .andWhere("order.date BETWEEN :startDate AND :endDate", {
-      startDate,
-      endDate,
-    })
-    .getCount();
-
-  // Generate the order ID based on the date and order count
-  const year = today.getFullYear().toString().slice(-2);
-  const month = (today.getMonth() + 1).toString().padStart(2, "0");
-  const day = today.getDate().toString().padStart(2, "0");
-  const orderCount = (count + 1).toString().padStart(4, "0");
-
-  const orderId = `${year}${month}${day}-${orderCount}`;
-
-  return orderId;
+export async function hashPassword(password: string) {
+  const saltRounds = 10;
+  return await bcrypt.hash(password, saltRounds);
 }
