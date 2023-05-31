@@ -84,7 +84,7 @@ const OrdersTableWrapper = ({ orders, restaurantId }: Props) => {
             >
               <div className="">
                 <p className="font-bold underline">
-                  Order: #{order.orderId.slice(6)}
+                  Order: #{order.orderId.split("-")[1]}
                 </p>
                 <p className="text-gray-600">{dateString(order.date)}</p>
               </div>
