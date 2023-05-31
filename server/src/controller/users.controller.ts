@@ -144,3 +144,17 @@ export const updateUser = async (
     return next(err);
   }
 };
+
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.params.id;
+  try {
+    await userService.remove(userId);
+    return res.status(204).end();
+  } catch (err) {
+    return next(err);
+  }
+};

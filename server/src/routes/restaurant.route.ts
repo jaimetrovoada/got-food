@@ -55,4 +55,23 @@ router.put(
   middleware.userExtractor,
   restaurantController.updateOrderStatus
 );
+
+router.delete(
+  "/:id",
+  middleware.userExtractor,
+  restaurantController.deleteRestaurant
+);
+
+router.delete(
+  "/:id/menu/:menuId",
+  middleware.userExtractor,
+  restaurantController.deleteMenuItem
+);
+
+router.delete(
+  "/:id/order/:orderId",
+  middleware.userExtractor,
+  restaurantController.deleteOrder
+);
+
 export default router;

@@ -94,3 +94,8 @@ export async function update(id: string, status: "pending" | "completed") {
   const res = await orderRepository.update(id, { status });
   return res;
 }
+
+export async function remove(id: string) {
+  const res = await orderRepository.delete(id);
+  return res;
+}

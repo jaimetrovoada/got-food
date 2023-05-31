@@ -51,3 +51,8 @@ export async function update(
   const res = await menuRepository.update(id, body);
   return res;
 }
+
+export async function remove(id: string) {
+  const res = await menuRepository.delete(id);
+  return res;
+}

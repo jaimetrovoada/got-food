@@ -234,3 +234,45 @@ export const updateOrderStatus = async (
     return next(err);
   }
 };
+
+export const deleteRestaurant = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await restaurantServices.remove(req.params.id);
+
+    return res.status(204).end();
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const deleteMenuItem = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await menuServices.remove(req.params.id);
+
+    return res.status(204).end();
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const deleteOrder = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    await orderServices.remove(req.params.id);
+
+    return res.status(204).end();
+  } catch (err) {
+    return next(err);
+  }
+};

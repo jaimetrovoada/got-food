@@ -1,3 +1,4 @@
+import { string } from "zod";
 import { AppDataSource } from "../data-source";
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
@@ -56,5 +57,10 @@ export async function update(
   }
 ) {
   const res = await restaurantRepository.update(id, body);
+  return res;
+}
+
+export async function remove(id: string) {
+  const res = await restaurantRepository.delete(id);
   return res;
 }

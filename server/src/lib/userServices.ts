@@ -89,3 +89,8 @@ export async function update(
   const res = await userRepository.update(id, updateBody);
   return res;
 }
+
+export async function remove(id: string) {
+  const res = await userRepository.delete(id);
+  return res;
+}
