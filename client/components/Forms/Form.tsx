@@ -73,11 +73,12 @@ export const ImageInput = ({
   labelText,
   className,
   value,
+  disabled,
   ...props
 }: InputProps) => {
-  console.log({ imgUpldValue: value });
+  const [isDisabled, setIsDisabled] = useState<boolean>(disabled);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-row">
       <label
         htmlFor={id}
         className={`flex w-fit cursor-pointer flex-row gap-2 rounded-lg border ${
@@ -99,6 +100,16 @@ export const ImageInput = ({
         className={className + " hidden"}
         {...props}
       />
+      {disabled !== undefined && (
+        <Button
+          type="button"
+          onClick={() => setIsDisabled(!isDisabled)}
+          className="w-fit"
+          variant="custom"
+        >
+          <Edit3 />
+        </Button>
+      )}
     </div>
   );
 };
