@@ -1,12 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../model/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import config from "../utils/config";
 import { RegisterSchema, LoginSchema, UpdateSchema } from "../lib/schemas";
-import { AppDataSource } from "../data-source";
-
-const userRepository = AppDataSource.getRepository(User);
+import * as userService from "../lib/userServices";
 
 export const getUser = async (
   req: Request,
@@ -14,9 +11,7 @@ export const getUser = async (
   next: NextFunction
 ) => {
   try {
-    const user = await userRepository.findOneBy({
-      id: req.params.id,
-    });
+    const user = await userService.get(req.params.id);
     return res.json(user);
   } catch (err) {
     return next(err);
@@ -30,13 +25,7 @@ export const getUserRestaurants = async (
 ) => {
   const id = req.params.id;
   try {
-    const user = await userRepository.findOne({
-      where: {
-        id: id,
-      },
-      relations: ["restaurants"],
-    });
-    const restaurants = user.restaurants;
+    const restaurants = await userService.getRestaurants(id);
 
     return res.json(restaurants);
   } catch (error) {
@@ -51,8 +40,7 @@ export const getUserOrders = async (
 ) => {
   try {
     const id = req.params.id;
-    const user = await userRepository.findOneBy({ id: id });
-    const orders = user.orders;
+    const orders = await userService.getOrders(id);
 
     return res.json(orders);
   } catch (err) {
@@ -76,15 +64,14 @@ export const createUser = async (
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(validatedUser.password, saltRounds);
 
-    const user = new User();
+    const user = await userService.create({
+      name: validatedUser.name,
+      email: validatedUser.email,
+      passwordHash: passwordHash,
+      role: validatedUser.role,
+    });
 
-    user.name = validatedUser.name;
-    user.email = validatedUser.email;
-    user.passwordHash = passwordHash;
-    user.role = validatedUser.role;
-
-    const newUser = await userRepository.save(user);
-    return res.status(201).json(newUser);
+    return res.status(201).json(user);
   } catch (err) {
     return next(err);
   }
@@ -101,11 +88,7 @@ export const loginUser = async (
       password: req.body.password,
     });
 
-    const user = await userRepository
-      .createQueryBuilder("user")
-      .where("user.email = :email", { email: validatedUser.email })
-      .addSelect("user.passwordHash")
-      .getOne();
+    const user = await userService.getUserWithPassword(validatedUser.email);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -149,7 +132,7 @@ export const updateUser = async (
       password: req.body.password,
       role: req.body.role,
     });
-    const user = await userRepository.findOneBy({ id: userId });
+    const user = await userService.get(userId);
     const saltRounds = 10;
     const passwordHash = validatedUser.password
       ? await bcrypt.hash(validatedUser.password, saltRounds)
@@ -160,7 +143,7 @@ export const updateUser = async (
     user.passwordHash = passwordHash;
     user.role = validatedUser.role;
 
-    const updatedUser = await userRepository.save(user);
+    const updatedUser = await userService.update(userId, user);
 
     return res.status(200).json(updatedUser);
   } catch (err) {
