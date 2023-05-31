@@ -3,7 +3,8 @@ import { User } from "../model/user";
 import { Restaurant } from "../model/restaurant";
 import { Order } from "../model/order";
 import { Menu } from "../model/menu";
-import { createOrderId, uploadToFirebase } from "../lib/helpers";
+import { uploadToFirebase } from "../lib/helpers";
+import { createOrderId } from "../lib/orderServices";
 import {
   MenuItemSchema,
   OrderSchema,
@@ -11,6 +12,7 @@ import {
   PriceSchema,
 } from "../lib/schemas";
 import { AppDataSource } from "../data-source";
+import * as restaurantServices from "../lib/restaurantServices";
 
 const menuRepository = AppDataSource.getRepository(Menu);
 const restaurantRepository = AppDataSource.getRepository(Restaurant);
@@ -23,7 +25,7 @@ export const getRestaurants = async (
   next: NextFunction
 ) => {
   try {
-    const restaurants = await restaurantRepository.find({});
+    const restaurants = await restaurantServices.getAll();
 
     return res.json(restaurants);
   } catch (err) {
@@ -37,9 +39,7 @@ export const getTrendingRestaurants = async (
   next: NextFunction
 ) => {
   try {
-    const restaurants = await restaurantRepository.find({
-      relations: ["orders"],
-    });
+    const restaurants = await restaurantServices.getByOrders();
 
     // .filter((restaurant) => restaurant.orders.length > 0)
     const top5 = restaurants
@@ -60,9 +60,7 @@ export const getRestaurant = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
-    });
+    const restaurant = await restaurantServices.get(req.params.id);
 
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant not found" });
@@ -79,14 +77,7 @@ export const getRestaurantMenu = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await restaurantRepository.findOne({
-      where: {
-        id: req.params.id,
-      },
-      relations: ["menuItems"],
-    });
-
-    const menu = restaurant.menuItems;
+    const menu = await restaurantServices.getMenu(req.params.id);
 
     return res.json(menu);
   } catch (err) {
@@ -100,10 +91,7 @@ export const getRestaurantOrders = async (
   next: NextFunction
 ) => {
   try {
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
-    });
-    const orders = restaurant.orders;
+    const orders = await restaurantServices.getOrders(req.params.id);
 
     return res.json(orders);
   } catch (err) {
@@ -124,6 +112,7 @@ export const getRestaurantOrdersStream = async (
   const stream = await orderRepository
     .createQueryBuilder("order")
     .where("order.restaurantId = :id", { id: req.params.id })
+    .andWhere("order.status = :status", { status: "pending" })
     .stream();
 
   const sendEvent = (order) => {
@@ -152,28 +141,19 @@ export const createRestaurant = async (
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
-    const vRestaurant = RestaurantSchema.parse({
+    const result = await restaurantServices.create(user, {
       name: req.body.name,
       description: req.body.description,
       address: req.body.address,
-      menuItems: req.body.menuItems || [],
-      logo: firebaseImgUrl,
+      logo: firebaseImgUrl as string,
     });
-
-    const restaurant = new Restaurant();
-    restaurant.name = vRestaurant.name;
-    restaurant.description = vRestaurant.description;
-    restaurant.address = vRestaurant.address;
-    restaurant.logo = firebaseImgUrl as string;
-    restaurant.owner = user;
-
-    const result = await restaurantRepository.save(restaurant);
 
     return res.status(201).json(result);
   } catch (err) {
     return next(err);
   }
 };
+
 export const createMenuItem = async (
   req: Request,
   res: Response,
@@ -182,27 +162,16 @@ export const createMenuItem = async (
   try {
     const firebaseImgUrl = await uploadToFirebase(req);
 
-    const vMenuItem = MenuItemSchema.parse({
-      restaurant: req.params.id,
+    const restaurant = await restaurantServices.get(req.params.id);
+
+    const result = await restaurantServices.createItem(restaurant, {
       name: req.body.name,
       description: req.body.description,
-      price: PriceSchema.parse(req.body.price),
+      price: req.body.price,
       category: req.body.category,
-      image: firebaseImgUrl,
+      image: firebaseImgUrl as string,
     });
 
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
-    });
-    const menuItem = new Menu();
-    menuItem.name = vMenuItem.name;
-    menuItem.description = vMenuItem.description;
-    menuItem.price = vMenuItem.price;
-    menuItem.category = vMenuItem.category;
-    menuItem.image = firebaseImgUrl as string;
-    menuItem.restaurant = restaurant;
-
-    const result = await menuRepository.save(menuItem);
     return res.status(201).json(result);
   } catch (err) {
     return next(err);
@@ -250,29 +219,17 @@ export const updateRestaurant = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { user } = req;
   try {
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
-    });
-    const logo = req.file ? await uploadToFirebase(req) : restaurant.logo;
-    const vRestaurant = RestaurantSchema.parse({
-      name: req.body.name,
-      description: req.body.description,
-      address: req.body.address,
-      owner: user.id,
-      menuItems: req.body.menuItems,
+    const logo = req.file ? ((await uploadToFirebase(req)) as string) : null;
+
+    const result = await restaurantServices.update(req.params.id, {
+      name: req.body?.name,
+      description: req.body?.description,
+      address: req.body?.address,
       logo: logo,
     });
 
-    restaurant.name = vRestaurant.name;
-    restaurant.description = vRestaurant.description;
-    restaurant.address = vRestaurant.address;
-    restaurant.logo = vRestaurant.logo;
-
-    const update = await restaurantRepository.save(restaurant);
-
-    return res.json(update);
+    return res.json(result);
   } catch (err) {
     return next(err);
   }
@@ -283,33 +240,19 @@ export const updateMenuItem = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { id, menuId } = req.params;
+  const { menuId } = req.params;
   try {
-    const restaurant = await restaurantRepository.findOneBy({
-      id: id,
-    });
-    const menuItem = await menuRepository.findOneBy({
-      id: menuId,
-    });
+    const imgUrl = req.file ? ((await uploadToFirebase(req)) as string) : null;
 
-    const imgUrl = req.file ? await uploadToFirebase(req) : menuItem.image;
-
-    const vMenuItem = MenuItemSchema.parse({
+    const result = await restaurantServices.updateItem(menuId, {
       name: req.body.name,
       description: req.body.description,
-      price: PriceSchema.parse(req.body.price),
+      price: req.body.price,
       category: req.body.category,
       image: imgUrl,
     });
 
-    menuItem.name = vMenuItem.name;
-    menuItem.description = vMenuItem.description;
-    menuItem.price = vMenuItem.price;
-    menuItem.category = vMenuItem.category;
-    menuItem.image = vMenuItem.image;
-    const updatedMenuItem = await menuRepository.save(menuItem);
-
-    return res.json(updatedMenuItem);
+    return res.json(result);
   } catch (err) {
     return next(err);
   }
