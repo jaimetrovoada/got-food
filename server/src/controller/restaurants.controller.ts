@@ -2,19 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import { User } from "../model/user";
 import { Restaurant } from "../model/restaurant";
 import { Order } from "../model/order";
-import { Menu } from "../model/menu";
 import { uploadToFirebase } from "../lib/helpers";
 import { createOrderId } from "../lib/orderServices";
-import {
-  MenuItemSchema,
-  OrderSchema,
-  RestaurantSchema,
-  PriceSchema,
-} from "../lib/schemas";
+import { OrderSchema } from "../lib/schemas";
 import { AppDataSource } from "../data-source";
 import * as restaurantServices from "../lib/restaurantServices";
+import * as menuServices from "../lib/menuServices";
 
-const menuRepository = AppDataSource.getRepository(Menu);
 const restaurantRepository = AppDataSource.getRepository(Restaurant);
 const orderRepository = AppDataSource.getRepository(Order);
 const userRepository = AppDataSource.getRepository(User);
@@ -77,7 +71,7 @@ export const getRestaurantMenu = async (
   next: NextFunction
 ) => {
   try {
-    const menu = await restaurantServices.getMenu(req.params.id);
+    const menu = await menuServices.get(req.params.id);
 
     return res.json(menu);
   } catch (err) {
@@ -164,7 +158,7 @@ export const createMenuItem = async (
 
     const restaurant = await restaurantServices.get(req.params.id);
 
-    const result = await restaurantServices.createItem(restaurant, {
+    const result = await menuServices.create(restaurant, {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
@@ -244,7 +238,7 @@ export const updateMenuItem = async (
   try {
     const imgUrl = req.file ? ((await uploadToFirebase(req)) as string) : null;
 
-    const result = await restaurantServices.updateItem(menuId, {
+    const result = await menuServices.update(menuId, {
       name: req.body.name,
       description: req.body.description,
       price: req.body.price,
