@@ -3,7 +3,7 @@ import { User } from "../model/user";
 import { Restaurant } from "../model/restaurant";
 import { Order } from "../model/order";
 import { Menu } from "../model/menu";
-import { uploadToFirebase } from "../lib/helpers";
+import { createOrderId, uploadToFirebase } from "../lib/helpers";
 import {
   MenuItemSchema,
   OrderSchema,
@@ -113,7 +113,7 @@ export const getRestaurantOrders = async (
     console.log({ err });
   }
 };
-/* 
+
 export const getRestaurantOrdersStream = async (
   req: Request,
   res: Response,
@@ -124,11 +124,13 @@ export const getRestaurantOrdersStream = async (
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
 
-  const cursor = await Order.findBy({
-    restaurant: { id: req.params.id) },
-  }).stream();
+  const stream = await orderRepository
+    .createQueryBuilder("order")
+    .where("order.restaurantId = :id", { id: req.params.id })
+    .stream();
 
   const sendEvent = (order) => {
+    console.log({ order });
     res.write(`data: ${JSON.stringify(order)}\n\n`);
   };
 
@@ -137,14 +139,14 @@ export const getRestaurantOrdersStream = async (
     res.end();
   };
 
-  cursor.on("data", sendEvent);
-  cursor.on("close", sendStreamClosedEvent);
-  cursor.on("error", (error) => {
+  stream.on("data", sendEvent);
+  stream.on("close", sendStreamClosedEvent);
+  stream.on("error", (error) => {
     sendStreamClosedEvent();
     next(error);
   });
 };
- */
+
 export const createRestaurant = async (
   req: Request,
   res: Response,
@@ -218,7 +220,6 @@ export const createOrder = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { user } = req;
   try {
     const vOrder = OrderSchema.parse({
       tableNumber: req.body.tableNumber,
@@ -237,7 +238,8 @@ export const createOrder = async (
     order.tableNumber = vOrder.tableNumber;
     order.totalPrice = vOrder.totalPrice;
     order.status = vOrder.status;
-    order.user = user;
+    order.orderedItems = req.body.items;
+    order.orderId = await createOrderId(req.params.id);
     order.restaurant = restaurant;
     order.user = user;
 
@@ -247,6 +249,7 @@ export const createOrder = async (
   } catch (err) {
     res.status(500).json({ message: err.message });
     console.log({ err });
+    next(err);
   }
 };
 
