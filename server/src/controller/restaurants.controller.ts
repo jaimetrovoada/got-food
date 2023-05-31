@@ -1,17 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { User } from "../model/user";
-import { Restaurant } from "../model/restaurant";
-import { Order } from "../model/order";
 import { uploadToFirebase } from "../lib/helpers";
-import { createOrderId } from "../lib/orderServices";
-import { OrderSchema } from "../lib/schemas";
-import { AppDataSource } from "../data-source";
-import * as restaurantServices from "../lib/restaurantServices";
 import * as menuServices from "../lib/menuServices";
-
-const restaurantRepository = AppDataSource.getRepository(Restaurant);
-const orderRepository = AppDataSource.getRepository(Order);
-const userRepository = AppDataSource.getRepository(User);
+import * as orderServices from "../lib/orderServices";
+import * as restaurantServices from "../lib/restaurantServices";
 
 export const getRestaurants = async (
   req: Request,
@@ -85,7 +76,7 @@ export const getRestaurantOrders = async (
   next: NextFunction
 ) => {
   try {
-    const orders = await restaurantServices.getOrders(req.params.id);
+    const orders = await orderServices.get(req.params.id);
 
     return res.json(orders);
   } catch (err) {
@@ -103,11 +94,7 @@ export const getRestaurantOrdersStream = async (
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
 
-  const stream = await orderRepository
-    .createQueryBuilder("order")
-    .where("order.restaurantId = :id", { id: req.params.id })
-    .andWhere("order.status = :status", { status: "pending" })
-    .stream();
+  const stream = await orderServices.stream(req.params.id);
 
   const sendEvent = (order) => {
     res.write(`data: ${JSON.stringify(order)}\n\n`);
@@ -177,30 +164,11 @@ export const createOrder = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { user } = req;
   try {
-    const vOrder = OrderSchema.parse({
-      tableNumber: req.body.tableNumber,
-      orderedItems: req.body.items,
-      totalPrice: req.body.totalPrice,
-      status: req.body.status,
-    });
+    const restaurant = await restaurantServices.get(req.params.id);
 
-    const user = await userRepository.findOneBy({
-      id: req.user.id,
-    });
-    const restaurant = await restaurantRepository.findOneBy({
-      id: req.params.id,
-    });
-    const order = new Order();
-    order.tableNumber = vOrder.tableNumber;
-    order.totalPrice = vOrder.totalPrice;
-    order.status = vOrder.status;
-    order.orderedItems = req.body.items;
-    order.orderId = await createOrderId(req.params.id);
-    order.restaurant = restaurant;
-    order.user = user;
-
-    const result = orderRepository.save(order);
+    const result = orderServices.create(user, restaurant, req.body);
 
     return res.status(201).json(result);
   } catch (err) {
@@ -259,15 +227,9 @@ export const updateOrderStatus = async (
 ) => {
   const { orderId } = req.params;
   try {
-    const order = await orderRepository.findOneBy({
-      id: orderId,
-    });
+    const result = await orderServices.update(orderId, req.body.status);
 
-    const vOrderStatus = OrderSchema.shape.status.parse(req.body.status);
-    order.status = vOrderStatus;
-    const updatedOrder = await orderRepository.save(order);
-
-    return res.json(updatedOrder);
+    return res.json(result);
   } catch (err) {
     return next(err);
   }
