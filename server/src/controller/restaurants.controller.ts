@@ -25,19 +25,21 @@ export const getRestaurants = async (
   try {
     const restaurants = await restaurantRepository.find({});
 
-    res.json(restaurants);
+    return res.json(restaurants);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+    return next(err);
   }
 };
+
 export const getTrendingRestaurants = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const restaurants = await restaurantRepository.find();
+    const restaurants = await restaurantRepository.find({
+      relations: ["orders"],
+    });
 
     // .filter((restaurant) => restaurant.orders.length > 0)
     const top5 = restaurants
@@ -46,10 +48,9 @@ export const getTrendingRestaurants = async (
       })
       .slice(0, 5);
 
-    res.json(top5);
+    return res.json(top5);
   } catch (err) {
-    console.log({ err });
-    next(err);
+    return next(err);
   }
 };
 
@@ -63,14 +64,12 @@ export const getRestaurant = async (
       id: req.params.id,
     });
 
-    res.json(restaurant);
-
     if (!restaurant) {
       return res.status(404).json({ message: "Restaurant not found" });
     }
+    return res.json(restaurant);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+    return next(err);
   }
 };
 
@@ -91,7 +90,6 @@ export const getRestaurantMenu = async (
 
     return res.json(menu);
   } catch (err) {
-    res.status(500).json({ message: err.message });
     return next(err);
   }
 };
@@ -107,10 +105,9 @@ export const getRestaurantOrders = async (
     });
     const orders = restaurant.orders;
 
-    res.json(orders);
+    return res.json(orders);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+    return next(err);
   }
 };
 
@@ -130,7 +127,6 @@ export const getRestaurantOrdersStream = async (
     .stream();
 
   const sendEvent = (order) => {
-    console.log({ order });
     res.write(`data: ${JSON.stringify(order)}\n\n`);
   };
 
@@ -175,7 +171,7 @@ export const createRestaurant = async (
 
     return res.status(201).json(result);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 export const createMenuItem = async (
@@ -207,10 +203,8 @@ export const createMenuItem = async (
     menuItem.restaurant = restaurant;
 
     const result = await menuRepository.save(menuItem);
-    res.status(201).json(result);
+    return res.status(201).json(result);
   } catch (err) {
-    console.log({ err });
-    res.status(500).json({ message: err.message });
     return next(err);
   }
 };
@@ -245,11 +239,9 @@ export const createOrder = async (
 
     const result = orderRepository.save(order);
 
-    res.status(201).json(result);
+    return res.status(201).json(result);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
-    next(err);
+    return next(err);
   }
 };
 
@@ -280,10 +272,9 @@ export const updateRestaurant = async (
 
     const update = await restaurantRepository.save(restaurant);
 
-    res.json(update);
+    return res.json(update);
   } catch (err) {
-    res.status(500).json({ message: err.message });
-    console.log({ err });
+    return next(err);
   }
 };
 
@@ -318,9 +309,9 @@ export const updateMenuItem = async (
     menuItem.image = vMenuItem.image;
     const updatedMenuItem = await menuRepository.save(menuItem);
 
-    res.json(updatedMenuItem);
+    return res.json(updatedMenuItem);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -338,9 +329,9 @@ export const updateOrderStatus = async (
     const vOrderStatus = OrderSchema.shape.status.parse(req.body.status);
     order.status = vOrderStatus;
     const updatedOrder = await orderRepository.save(order);
-    res.json(updatedOrder);
+
+    return res.json(updatedOrder);
   } catch (err) {
-    console.log({ err });
-    next(err);
+    return next(err);
   }
 };

@@ -35,7 +35,7 @@ const userExtractor = async (
 
     req.user = user;
 
-    next();
+    return next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid Token" });
   }
@@ -49,6 +49,7 @@ const errorHandler = (
   error: Error,
   req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   next: NextFunction
 ) => {
   logger.error({
@@ -60,11 +61,9 @@ const errorHandler = (
   if (error instanceof ZodError) {
     const messages = error.errors.map((err) => err.message);
     return res.status(400).send({ error: messages });
-  } else if (error.name === "ValidationError") {
-    return res.status(409).send({ error: "Email already exists" });
   }
 
-  next(error);
+  return res.status(500).json(error);
 };
 
 export default { userExtractor, unknownEndpoint, errorHandler };

@@ -13,10 +13,14 @@ export const getUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  const user = await userRepository.findOneBy({
-    id: req.params.id,
-  });
-  res.json(user);
+  try {
+    const user = await userRepository.findOneBy({
+      id: req.params.id,
+    });
+    return res.json(user);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 export const getUserRestaurants = async (
@@ -45,11 +49,15 @@ export const getUserOrders = async (
   res: Response,
   next: NextFunction
 ) => {
-  const id = req.params.id;
-  const user = await userRepository.findOneBy({ id: id });
-  const orders = user.orders;
+  try {
+    const id = req.params.id;
+    const user = await userRepository.findOneBy({ id: id });
+    const orders = user.orders;
 
-  res.json(orders);
+    return res.json(orders);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export const createUser = async (
@@ -76,9 +84,9 @@ export const createUser = async (
     user.role = validatedUser.role;
 
     const newUser = await userRepository.save(user);
-    res.status(201).json(newUser);
+    return res.status(201).json(newUser);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -122,9 +130,9 @@ export const loginUser = async (
 
     delete user.passwordHash;
 
-    res.status(200).json({ token, user });
+    return res.status(200).json({ token, user });
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
 
@@ -154,8 +162,8 @@ export const updateUser = async (
 
     const updatedUser = await userRepository.save(user);
 
-    res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 };
