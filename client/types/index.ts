@@ -63,3 +63,8 @@ export interface IMenuItem {
   category: string;
   image: string;
 }
+export enum UserRole {
+  CUSTOMER = "customer",
+  BUSINESS = "business",
+}
+

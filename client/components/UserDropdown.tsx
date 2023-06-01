@@ -4,8 +4,8 @@ import React, { useRef } from "react";
 import Avatar from "@/assets/avatar.svg";
 import Button from "./Button";
 import Link from "next/link";
-import { Role } from "./Forms/RegisterForm";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { UserRole } from "@/types";
 
 interface Props {}
 
@@ -25,7 +25,7 @@ const UserDropdown = ({}: Props) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuList =
-    user?.role === Role.BUSINESS
+    user?.role === UserRole.BUSINESS
       ? [
           {
             name: "Profile",

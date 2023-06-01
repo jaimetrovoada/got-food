@@ -5,17 +5,13 @@ import authService from "@/lib/authService";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useToasts } from "@/lib/hooks";
-
-export enum Role {
-  BUSINESS = "business",
-  CUSTOMER = "customer",
-}
+import { UserRole } from "@/types";
 
 interface Inputs {
   name: string;
   email: string;
   password: string;
-  role: Role;
+  role: UserRole;
 }
 interface Props {}
 
@@ -25,7 +21,7 @@ const RegisterForm = ({}: Props) => {
 
   const { register, watch, handleSubmit, reset } = useForm<Inputs>({
     defaultValues: {
-      role: Role.CUSTOMER,
+      role: UserRole.CUSTOMER,
     },
   });
   const name = watch("name");
@@ -98,7 +94,7 @@ const RegisterForm = ({}: Props) => {
             type="radio"
             id="radio_yes"
             {...register("role", { required: true })}
-            value={Role.BUSINESS}
+            value={UserRole.BUSINESS}
           />
           <label htmlFor="role">Yes</label>
         </div>
@@ -107,7 +103,7 @@ const RegisterForm = ({}: Props) => {
             type="radio"
             id="radio_no"
             {...register("role", { required: true })}
-            value={Role.CUSTOMER}
+            value={UserRole.CUSTOMER}
           />
           <label htmlFor="role">No</label>
         </div>

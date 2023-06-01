@@ -1,10 +1,6 @@
 import axios from "axios";
 import config from "@/utils/config";
-
-enum UserRole {
-  CUSTOMER = "customer",
-  BUSINESS = "business",
-}
+import { UserRole } from "@/types";
 
 interface User {
   id: string;
