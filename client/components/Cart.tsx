@@ -1,9 +1,8 @@
-import React from "react";
-import Button from "./Button";
 import { ICartState } from "@/lib/reducers/cartSlice";
-import Form from "./Forms/Form";
-import { useInput } from "@/lib/hooks";
+import React from "react";
 import { ArrowUp } from "react-feather";
+import { useForm } from "react-hook-form";
+import Button from "./Button";
 
 interface Props {
   cartExpanded: boolean;
@@ -22,9 +21,14 @@ const Cart = ({
   handleCheckout,
   removeFromCart,
 }: Props) => {
-  const [tableValue, tableInput] = useInput("");
+  const { register, reset, watch } = useForm<{ table: number }>({
+    defaultValues: {
+      table: 0,
+    },
+  });
 
-  const checkoutDisabled = !tableValue;
+  const table = watch("table");
+  const checkoutDisabled = !table;
 
   return (
     <section
@@ -43,14 +47,17 @@ const Cart = ({
         {cartExpanded &&
           (cart?.items.length ? (
             <div className="flex h-5/6 flex-1 flex-col gap-4">
-              <Form.Input
-                onChange={tableInput}
-                name="table"
-                id="table"
-                variant="row"
-                labelText="Table Number"
-                className="rounded-none border-0 border-b-2"
-              />
+              <div className="flex flex-row gap-2">
+                <label htmlFor="table">Table:</label>
+                <input
+                  {...register("table", {
+                    required: true,
+                    min: 1,
+                  })}
+                  id="table"
+                  className="rounded-none border-0 border-b-2"
+                />
+              </div>
               <ul className="flex-1 list-inside list-disc overflow-y-auto py-4 scrollbar">
                 {cart.items.map((item) => (
                   <li key={item.name} className="list-item text-gray-700">
@@ -78,7 +85,10 @@ const Cart = ({
                 </Button>
                 <Button
                   className="leading-none"
-                  onClick={() => handleCheckout(Number(tableValue))}
+                  onClick={() => {
+                    reset();
+                    handleCheckout(Number(table));
+                  }}
                   disabled={checkoutDisabled}
                 >
                   Checkout
