@@ -32,26 +32,18 @@ const RegisterForm = ({}: Props) => {
   console.log({ name, email, password, role });
 
   const onSubmit = async (data: Inputs) => {
-    try {
-      const res = await authService.register({
-        role: data.role,
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-      console.log({ res });
-      if (res.status === 201) {
-        setSuccessMsg("Registration Complete");
-        router.replace("/auth/login");
-      }
-    } catch (err) {
+    const [_, err] = await authService.register({
+      role: data.role,
+      name: data.name,
+      email: data.email,
+      password: data.password,
+    });
+    if (err) {
       console.log({ err });
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 409) {
-          return setErrorMsg(err.response?.data?.error);
-        }
-      }
       setErrorMsg("Something went wrong, please try again");
+    } else {
+      setSuccessMsg("Registration Complete");
+      router.replace("/auth/login");
     }
   };
 

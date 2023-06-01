@@ -25,20 +25,17 @@ const UserForm = ({ user }: Props) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const res = await authService.updateUser(user.token, user.id, {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        role: user.role,
-      });
-      if (res.status === 200) {
-        setSuccessMsg("User Updated");
-      }
-      console.log({ res });
-    } catch (err) {
+    const [_, err] = await authService.updateUser(user.token, user.id, {
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      role: user.role,
+    });
+    if (err) {
       console.log(err);
       setErrorMsg(err.message);
+    } else {
+      setSuccessMsg("User Updated");
     }
   };
   return (

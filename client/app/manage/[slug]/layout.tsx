@@ -9,14 +9,21 @@ interface Props {
 }
 
 async function getRestaurant(slug: string) {
-  const { restaurant } = await restaurantsService.getRestaurant(slug);
+  const [restaurant, err] = await restaurantsService.getRestaurant(slug);
+
+  if (err) {
+    return null;
+  }
 
   return restaurant;
 }
 
-
 export default async function Layout({ children, params }: Props) {
   const restaurant = await getRestaurant(params.slug);
 
-  return <ManageLayout params={params} name={restaurant.name}>{children}</ManageLayout>;
+  return (
+    <ManageLayout params={params} name={restaurant.name}>
+      {children}
+    </ManageLayout>
+  );
 }

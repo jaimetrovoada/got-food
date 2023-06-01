@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { AxiosError } from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/lib/reducers/store";
+import Cart from "@/components/Cart";
+import Container from "@/components/Container";
+import Menu from "@/components/Menu";
+import { useToasts } from "@/lib/hooks";
 import {
   addItemToCart,
   clearCartItems,
   removeItemFromCart,
 } from "@/lib/reducers/cartSlice";
-import { useToasts } from "@/lib/hooks";
-import Container from "@/components/Container";
-import Menu from "@/components/Menu";
-import Cart from "@/components/Cart";
+import { RootState } from "@/lib/reducers/store";
 import restaurantsService from "@/lib/restaurantsService";
 import { IMenuItem, IRestaurant, IUser } from "@/types";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
   restaurant: IRestaurant;
@@ -73,28 +72,21 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
   };
 
   const handleCheckout = async (tableNumber: number) => {
-    try {
-      const res = await restaurantsService.placeOrder(
-        restaurant.id,
-        user.token,
-        cart.items.map((item) => {
-          return { item: item.id, amount: item.amount };
-        }),
-        cart.totalPrice,
-        tableNumber
-      );
-      if (res.status === 201) {
-        setSuccessMsg("Order Successful");
-        dispatch(clearCartItems(restaurant?.id as string));
-      }
-    } catch (err) {
+    const [_, err] = await restaurantsService.placeOrder(
+      restaurant.id,
+      user.token,
+      cart.items.map((item) => {
+        return { item: item.id, amount: item.amount };
+      }),
+      cart.totalPrice,
+      tableNumber
+    );
+    if (err) {
       console.log({ err });
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 409) {
-          return setErrorMsg(err.response?.data?.error);
-        }
-      }
       setErrorMsg("Something went wrong, please try again");
+    } else {
+      dispatch(clearCartItems(restaurant?.id as string));
+      setSuccessMsg("Order Successful");
     }
   };
 

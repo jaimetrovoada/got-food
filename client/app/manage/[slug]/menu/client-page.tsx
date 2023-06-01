@@ -22,13 +22,14 @@ const MenuPage = ({ menu, user, slug }: Props) => {
   const [item, setItem] = useState<IMenuItem>(null);
 
   const handleDeleteItem = async (id: string) => {
-    try {
-      const res = await restaurantsService.deleteMenuItem(user.token, slug, id);
-      console.log({ res });
-      if (res.status === 200) {
-        setSuccessMsg("Item deleted");
-      }
-    } catch (err) {
+    const [_, err] = await restaurantsService.deleteMenuItem(
+      user.token,
+      slug,
+      id
+    );
+    if (err) {
+      setSuccessMsg("Item deleted");
+    } else {
       console.log({ err });
       setErrorMsg("something went wrong");
     }

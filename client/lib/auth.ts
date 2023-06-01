@@ -19,13 +19,13 @@ export const nextAuthOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await authService.login(credentials);
-        const user = { ...res.data.user, token: res.data.token };
-        if (res.status === 200 && user) {
-          return user;
-        } else {
+        const [res, err] = await authService.login(credentials);
+        if (err) {
           return null;
         }
+
+        const user = { ...res.user, token: res.token };
+        return user;
       },
     }),
   ],

@@ -18,16 +18,25 @@ const Page = async ({ params }: Props) => {
 export default Page;
 
 async function getRestaurant(params: { slug: string }) {
-  const { menu } = await restaurantsService.getMenu(params.slug);
-  const { restaurant } = await restaurantsService.getRestaurant(params.slug);
+  const [menu, err] = await restaurantsService.getMenu(params.slug);
+  const [restaurant, err2] = await restaurantsService.getRestaurant(
+    params.slug
+  );
+
+  if (err || err2) {
+    return null;
+  }
 
   return { menu, restaurant };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const restaurant = await getRestaurant(params);
+  const [restaurant, err2] = await restaurantsService.getRestaurant(
+    params.slug
+  );
+
   return {
-    title: restaurant.restaurant.name + " | " + "Got Food",
-    description: restaurant.restaurant.description,
+    title: restaurant.name + " | " + "Got Food",
+    description: restaurant.description,
   };
 }

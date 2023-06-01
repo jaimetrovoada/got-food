@@ -9,8 +9,11 @@ interface Props {
 }
 
 async function getRestaurant(slug: string) {
-  const { restaurant } = await restaurantsService.getRestaurant(slug);
+  const [restaurant, err] = await restaurantsService.getRestaurant(slug);
 
+  if (err) {
+    return null;
+  }
   return restaurant;
 }
 

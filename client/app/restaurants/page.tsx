@@ -5,8 +5,8 @@ import restaurantsService from "@/lib/restaurantsService";
 import React from "react";
 
 const Page = async () => {
-  const { restaurants } = await getRestaurants();
-  const { restaurants: trendingRestaurants } = await getGetTrending();
+  const restaurants = await getRestaurants();
+  const trendingRestaurants = await getGetTrending();
   return (
     <Container className="flex flex-col gap-8 p-2">
       <div>
@@ -28,12 +28,19 @@ const Page = async () => {
 export default Page;
 
 async function getRestaurants() {
-  const restaurant = await restaurantsService.getRestaurants();
+  const [res, err] = await restaurantsService.getRestaurants();
 
-  return restaurant;
+  if (err) {
+    return null;
+  }
+
+  return res;
 }
 async function getGetTrending() {
-  const restaurant = await restaurantsService.getTrendingRestaurants();
+  const [restaurant, err] = await restaurantsService.getTrendingRestaurants();
 
+  if (err) {
+    throw err;
+  }
   return restaurant;
 }

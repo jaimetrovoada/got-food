@@ -15,12 +15,16 @@ interface LoginRes {
 }
 
 const login = async (credentials: Record<"email" | "password", string>) => {
-  const res = await axios.post<LoginRes>(
-    `${config.BACKEND_URL}/api/users/login`,
-    credentials
-  );
+  try {
+    const res = await axios.post<LoginRes>(
+      `${config.BACKEND_URL}/api/users/login`,
+      credentials
+    );
 
-  return { data: res.data, status: res.status };
+    return [res.data, null] as [LoginRes, null];
+  } catch (err) {
+    return [null, err] as [null, Error];
+  }
 };
 
 const register = async (payload: {
@@ -29,12 +33,15 @@ const register = async (payload: {
   password: string;
   role: "customer" | "business";
 }) => {
-  const res = await axios.post(
-    `${config.BACKEND_URL}/api/users/register`,
-    payload
-  );
-
-  return { data: res.data, status: res.status };
+  try {
+    const res = await axios.post(
+      `${config.BACKEND_URL}/api/users/register`,
+      payload
+    );
+    return [res.status, null] as [number, null];
+  } catch (err) {
+    return [null, err] as [null, Error];
+  }
 };
 
 const updateUser = async (
@@ -47,17 +54,21 @@ const updateUser = async (
     role: string;
   }
 ) => {
-  const res = await axios.put(
-    `${config.BACKEND_URL}/api/users/${id}`,
-    payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  try {
+    const res = await axios.put(
+      `${config.BACKEND_URL}/api/users/${id}`,
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-  return { data: res.data, status: res.status };
+    return [res.status, null] as [number, null];
+  } catch (err) {
+    return [null, err] as [null, Error];
+  }
 };
 
 const authService = {

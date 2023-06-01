@@ -1,7 +1,5 @@
-import { IMenuItem } from "@/types";
 import { getUser } from "@/lib/auth";
-import axios from "axios";
-import config from "@/utils/config";
+import restaurantsService from "@/lib/restaurantsService";
 import MenuPage from "./client-page";
 
 interface Props {
@@ -11,11 +9,12 @@ interface Props {
 }
 
 async function getMenu(slug) {
-  const res = await axios.get<IMenuItem[]>(
-    `${config.BACKEND_URL}/api/restaurants/${slug}/menu`
-  );
+  const [menu, err] = await restaurantsService.getMenu(slug);
 
-  return res.data;
+  if (err) {
+    return null;
+  }
+  return menu;
 }
 
 const Page = async ({ params }: Props) => {

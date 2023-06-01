@@ -44,21 +44,19 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
   const image = watch("image");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const res = await restaurantsService.addMenuItem(user.token, slug, {
-        name: data.name,
-        description: data.description,
-        price: Number(data.price),
-        category: data.category,
-        image: data.image,
-      });
-      console.log({ data });
-      if (res.status === 201) {
-        setSuccessMsg("Item added");
-      }
-    } catch (err) {
+    const [_, err] = await restaurantsService.addMenuItem(user.token, slug, {
+      name: data.name,
+      description: data.description,
+      price: Number(data.price),
+      category: data.category,
+      image: data.image,
+    });
+
+    if (err) {
       console.log({ err });
       setErrorMsg("something went wrong");
+    } else {
+      setSuccessMsg("Item added");
     }
   };
 

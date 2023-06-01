@@ -36,36 +36,32 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
   console.log({ logo });
 
   const handleDeleteRestaurant = async () => {
-    try {
-      const res = await restaurantsService.deleteRestaurant(
-        user?.token,
-        initialValues?.id
-      );
+    const [_, err] = await restaurantsService.deleteRestaurant(
+      user?.token,
+      initialValues?.id
+    );
 
-      if (res.status === 200) {
-        setSuccessMsg("Restaurant deleted successfully");
-        router.replace(`/users/${user.id}/restaurants`);
-      }
-      console.log({ res });
-    } catch (error) {
-      console.log({ delError: error });
+    if (err) {
+      console.log(err);
       setErrorMsg("Something went wrong");
+    } else {
+      setSuccessMsg("Restaurant deleted successfully");
+      router.replace(`/users/${user.id}/restaurants`);
     }
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const res = await restaurantsService.createRestaurant(user.token, {
-        name: data.name,
-        description: data.description,
-        address: data.address,
-        logo: data.logo,
-      });
+    const [res, err] = await restaurantsService.createRestaurant(user.token, {
+      name: data.name,
+      description: data.description,
+      address: data.address,
+      logo: data.logo,
+    });
 
-      if (res.status === 201) {
-        setSuccessMsg("Restaurant created");
-      }
-    } catch (err) {
-      setErrorMsg("something went wrong");
+    if (res === 201) {
+      setSuccessMsg("Restaurant created");
+    }
+    if (err) {
+      setErrorMsg("Something went wrong");
     }
   };
 
