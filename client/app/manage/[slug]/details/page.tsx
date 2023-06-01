@@ -1,7 +1,6 @@
+import RestaurantForm from "@/components/Forms/RestaurantForm";
 import { getUser } from "@/lib/auth";
 import restaurantsService from "@/lib/restaurantsService";
-import React from "react";
-import RestaurantDetailsForm from "./client-page";
 
 interface Props {
   params: {
@@ -23,7 +22,7 @@ const Page = async ({ params }: Props) => {
 
   return (
     <section className="mx-auto w-full max-w-screen-md">
-      <RestaurantDetailsForm restaurant={restaurant} user={user} />
+      <RestaurantForm user={user} initialValues={restaurant} />
     </section>
   );
 };
