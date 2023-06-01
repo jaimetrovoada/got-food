@@ -4,11 +4,12 @@ import Card from "@/components/Card";
 import CardWrapper from "@/components/CardWrapper";
 import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
-import { useToasts, useInput, useFileInput } from "@/lib/hooks";
+import { useToasts } from "@/lib/hooks";
 import restaurantsService from "@/lib/restaurantsService";
 import { IMenuItem, IUser } from "@/types";
-import React, { useRef } from "react";
 import Image from "next/image";
+import { useRef, useState } from "react";
+import { Edit3, Trash, XCircle } from "react-feather";
 
 interface Props {
   menu: IMenuItem[];
@@ -18,46 +19,7 @@ interface Props {
 
 const MenuPage = ({ menu, user, slug }: Props) => {
   const { setSuccessMsg, setErrorMsg } = useToasts();
-
-  const [nameValue, handleNameChange, setNameValue] = useInput("");
-  const [descriptionValue, handleDescriptionChange, setDescriptionValue] =
-    useInput("");
-  const [priceValue, handlePriceChange, setPriceValue] = useInput("");
-  const [categoryValue, handleCategoryChange, setCategoryValue] = useInput("");
-  const [imageValue, handleImageChange] = useFileInput();
-
-  const formHandlers = {
-    handleSubmit: async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      console.log("handleSubmit");
-      try {
-        const res = await restaurantsService.addMenuItem(user.token, slug, {
-          name: nameValue,
-          description: descriptionValue,
-          price: Number(priceValue),
-          category: categoryValue,
-          image: imageValue,
-        });
-        console.log({ res });
-        if (res.status === 201) {
-          setSuccessMsg("Item added");
-        }
-      } catch (err) {
-        console.log({ err });
-        setErrorMsg("something went wrong");
-      }
-    },
-    handleNameChange,
-    handleDescriptionChange,
-    handlePriceChange,
-    handleImageChange,
-    handleCategoryChange,
-    nameValue,
-    descriptionValue,
-    priceValue,
-    imageValue,
-    categoryValue,
-  };
+  const [item, setItem] = useState<IMenuItem>(null);
 
   const handleDeleteItem = async (id: string) => {
     try {
@@ -74,58 +36,50 @@ const MenuPage = ({ menu, user, slug }: Props) => {
 
   const modalRef = useRef<ModalHandler>(null);
 
-  const editModalRef = useRef<ModalHandler>(null);
-
   const handleEditItem = (item: IMenuItem) => {
-    setNameValue(item.name);
-    setDescriptionValue(item.description);
-    setPriceValue(item.price.toString());
-    setCategoryValue(item.category);
-    editModalRef.current?.show();
-  };
-
-  const editFormHandlers = {
-    handleSubmit: async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      console.log("handleSubmit");
-    },
-    handleNameChange,
-    handleDescriptionChange,
-    handlePriceChange,
-    handleImageChange,
-    handleCategoryChange,
-    nameValue,
-    descriptionValue,
-    priceValue,
-    imageValue,
-    categoryValue,
+    setItem(item);
+    modalRef.current?.show();
   };
 
   return (
     <section className="mx-auto w-full max-w-screen-md overflow-hidden pb-10">
       <Modal ref={modalRef}>
-        <MenuForm {...formHandlers} />
-      </Modal>
-      <Modal ref={editModalRef}>
-        <MenuForm {...editFormHandlers} />
+        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border-2 border-black/50 bg-white p-2 shadow-custom">
+          <Button
+            variant="tertiary"
+            onClick={() => modalRef?.current.hide()}
+            className="ml-auto text-red-700"
+          >
+            <XCircle />
+          </Button>
+          {item ? (
+            <MenuForm user={user} slug={slug} initialValues={item} />
+          ) : (
+            <MenuForm user={user} slug={slug} />
+          )}
+        </div>
       </Modal>
       <CardWrapper>
         <Button
           variant="custom"
           className="w-full rounded-lg bg-blue-200/50 p-4 font-bold text-blue-600"
-          onClick={() => modalRef.current?.show()}
+          onClick={() => {
+            modalRef.current?.show();
+            setItem(null);
+          }}
         >
           Add item
         </Button>
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-none">
-          {menu?.map((item) => (
-            <MenuCard
-              key={item.id}
-              item={item}
-              deleteItem={handleDeleteItem}
-              editItem={handleEditItem}
-            />
-          ))}
+          {menu.length > 0 &&
+            menu?.map((item) => (
+              <MenuCard
+                key={item.id}
+                item={item}
+                deleteItem={handleDeleteItem}
+                editItem={handleEditItem}
+              />
+            ))}
         </div>
       </CardWrapper>
     </section>
@@ -141,7 +95,7 @@ interface MenuCardProps {
 }
 const MenuCard = ({ item, editItem, deleteItem }: MenuCardProps) => {
   return (
-    <Card className="flex flex-row items-center justify-between border-black/10 shadow-sm">
+    <Card className="flex flex-row items-center justify-between !border shadow-md">
       <div className="flex flex-row gap-2 rounded-l-2xl">
         <Image
           src={item.image}
@@ -157,19 +111,11 @@ const MenuCard = ({ item, editItem, deleteItem }: MenuCardProps) => {
       </div>
       <div className="p-2">
         <p className="text-lg font-bold">${item.price}</p>
-        <Button
-          variant="custom"
-          onClick={() => editItem(item)}
-          className="h-8 w-8 leading-none"
-        >
-          ✒️
+        <Button variant="custom" onClick={() => editItem(item)}>
+          <Edit3 className="mr-2 stroke-blue-600" />
         </Button>
-        <Button
-          variant="custom"
-          onClick={(e) => deleteItem(item.id)}
-          className="h-8 w-8 leading-none"
-        >
-          🗑️
+        <Button variant="custom" onClick={(e) => deleteItem(item.id)}>
+          <Trash className="fill-red-600 stroke-red-600" />
         </Button>
       </div>
     </Card>

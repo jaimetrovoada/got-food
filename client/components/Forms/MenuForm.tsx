@@ -1,78 +1,136 @@
-import React from "react";
-import Form from "./Form";
+import { useToasts } from "@/lib/hooks";
+import restaurantsService from "@/lib/restaurantsService";
+import { IUser } from "@/types";
+import { UploadCloud } from "react-feather";
+import { SubmitHandler, useForm } from "react-hook-form";
+import Button from "../Button";
 
-interface MenuFormProps {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  handleNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDescriptionChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleCategoryChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  nameValue: string;
-  descriptionValue: string;
-  priceValue: string;
-  categoryValue: string;
+interface Inputs {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image?: File;
 }
 
-const MenuForm = ({
-  handleSubmit,
-  handleCategoryChange,
-  handleDescriptionChange,
-  handleImageChange,
-  handleNameChange,
-  handlePriceChange,
-  nameValue,
-  descriptionValue,
-  priceValue,
-  categoryValue,
-}: MenuFormProps) => {
+interface MenuFormProps {
+  user: IUser;
+  slug: string;
+  initialValues?: {
+    name: string;
+    description: string;
+    price: number;
+    category: string;
+    image?: string;
+  };
+}
+
+const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
+  const { setSuccessMsg, setErrorMsg } = useToasts();
+
+  const { register, handleSubmit, watch, reset, setValue } = useForm<Inputs>({
+    values: {
+      name: initialValues?.name || "",
+      description: initialValues?.description || "",
+      price: initialValues?.price || 0,
+      category: initialValues?.category || "",
+    },
+  });
+
+  const name = watch("name");
+  const description = watch("description");
+  const price = watch("price");
+  const category = watch("category");
+  const image = watch("image");
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const res = await restaurantsService.addMenuItem(user.token, slug, {
+        name: data.name,
+        description: data.description,
+        price: Number(data.price),
+        category: data.category,
+        image: data.image[0] as unknown as File,
+      });
+      console.log({ data });
+      if (res.status === 201) {
+        setSuccessMsg("Item added");
+      }
+    } catch (err) {
+      console.log({ err });
+      setErrorMsg("something went wrong");
+    }
+  };
+
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Input
-        name="name"
-        id="name"
-        onChange={handleNameChange}
-        labelText="Name"
-        value={nameValue}
-        disabled
-      />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onReset={() => reset()}
+      className="flex flex-col gap-4 p-4"
+    >
+      <div className="flex flex-col">
+        <label htmlFor="name">Name</label>
+        <input
+          className="rounded-xl border p-2 focus:outline-none"
+          {...register("name", { required: !initialValues?.name })}
+        />
+      </div>
 
-      <Form.Input
-        name="description"
-        id="description"
-        onChange={handleDescriptionChange}
-        labelText="Description"
-        value={descriptionValue}
-        disabled
-      />
+      <div className="flex flex-col">
+        <label htmlFor="description">Description</label>
+        <input
+          className="rounded-xl border p-2 focus:outline-none"
+          {...register("description", { required: !initialValues?.name })}
+        />
+      </div>
 
-      <Form.Input
-        type="number"
-        name="price"
-        id="price"
-        min={0}
-        onChange={handlePriceChange}
-        labelText="Price"
-        value={priceValue}
-        disabled
-      />
-      <Form.Input
-        name="category"
-        id="category"
-        onChange={handleCategoryChange}
-        labelText="Category"
-        value={categoryValue}
-        disabled
-      />
+      <div className="flex flex-col">
+        <label htmlFor="category">Category</label>
+        <input
+          className="rounded-xl border p-2 focus:outline-none"
+          {...register("category", { required: !initialValues?.name })}
+        />
+      </div>
+      <div className="flex flex-col">
+        <label htmlFor="price">Price</label>
+        <input
+          className="rounded-xl border p-2 focus:outline-none"
+          type="number"
+          {...register("price", { min: 0, required: !initialValues?.name })}
+        />
+      </div>
 
-      <Form.ImageInput
-        name="image"
-        id="image"
-        onChange={handleImageChange}
-        labelText="Image"
-        disabled
-      />
-    </Form>
+      <div className="flex flex-row">
+        <label
+          htmlFor="image"
+          className={`flex w-fit cursor-pointer flex-row gap-2 rounded-lg border ${
+            image
+              ? "border-green-600 text-green-600"
+              : "border-blue-600 text-blue-600"
+          } p-2 font-bold shadow-lg`}
+        >
+          <UploadCloud />
+          <span>{image ? "Selected" : "Upload Image"}</span>
+        </label>
+        <input
+          id="image"
+          type="file"
+          accept="image/png,image/jpeg,image/webp"
+          multiple={false}
+          className="hidden"
+          {...(register("image"), { required: !initialValues?.name })}
+          onChange={(e) => {
+            setValue("image", e.target.files[0]);
+          }}
+        />
+      </div>
+      <div className="flex gap-4">
+        <Button type="submit">Submit</Button>
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+      </div>
+    </form>
   );
 };
 
