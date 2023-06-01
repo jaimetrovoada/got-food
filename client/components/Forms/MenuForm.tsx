@@ -50,7 +50,7 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
         description: data.description,
         price: Number(data.price),
         category: data.category,
-        image: data.image[0] as unknown as File,
+        image: data.image,
       });
       console.log({ data });
       if (res.status === 201) {

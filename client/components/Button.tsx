@@ -15,6 +15,7 @@ type PolymorphicComponentProp<
 
 type ButtonProps = {
   variant?: "primary" | "secondary" | "tertiary" | "custom";
+  useResetStyles?: boolean;
 };
 
 type Props<C extends React.ElementType> = PolymorphicComponentProp<
@@ -62,13 +63,16 @@ const Button = <C extends React.ElementType = "button">({
   as,
   children,
   variant = "primary",
+  useResetStyles = false,
   ...props
 }: Props<C>) => {
   const Component = as || "button";
 
   const getStyles = () => {
     let style =
-      props.type === "reset" ? resetStyles[variant] : normalStyles[variant];
+      props.type === "reset" || useResetStyles
+        ? resetStyles[variant]
+        : normalStyles[variant];
 
     style += " " + baseStyles[variant];
     style += " " + disabledStyles[variant];
