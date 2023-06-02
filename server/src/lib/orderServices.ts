@@ -56,7 +56,9 @@ export async function get(id: string) {
 export async function stream(id: string) {
   const stream = await orderRepository
     .createQueryBuilder("order")
-    .where("order.restaurantId = :id", { id: id })
+    .leftJoinAndSelect("order.user", "user")
+    .leftJoinAndSelect("order.restaurant", "restaurant")
+    .where("order.restaurant = :id", { id: id })
     .andWhere("order.status = :status", { status: "pending" })
     .stream();
 

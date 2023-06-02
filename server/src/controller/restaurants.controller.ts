@@ -96,7 +96,18 @@ export const getRestaurantOrdersStream = async (
 
   const stream = await orderServices.stream(req.params.id);
 
-  const sendEvent = (order) => {
+  const sendEvent = (_order) => {
+    const order = {
+      id: _order.order_id,
+      tableNumber: _order.order_tableNumber.toString(),
+      orderedItems: _order.order_orderedItems,
+      totalPrice: _order.order_totalPrice,
+      date: _order.order_date,
+      orderId: _order.order_orderId,
+      status: _order.order_status,
+      restaurant: _order.restaurant_name,
+      user: _order.user_name,
+    };
     res.write(`data: ${JSON.stringify(order)}\n\n`);
   };
 

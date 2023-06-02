@@ -1,43 +1,7 @@
-import axios from "axios";
-import config from "@/utils/config";
-import useSWR from "swr";
-import { IRestaurant, IMenuItem, IOrder } from "@/types";
-import { useState, useEffect } from "react";
-
-export const useRestaurant = (restaurantId: string) => {
-  const fetcher = (url: string) =>
-    axios.get<IRestaurant>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
-    fetcher
-  );
-
-  return {
-    restaurant: data,
-    isLoading,
-    isError: error,
-  };
-};
-
-export const useRestaurantMenu = (restaurantId: string) => {
-  const fetcher = (url: string) =>
-    axios.get<IMenuItem[]>(url).then((res) => res.data);
-
-  const { data, isLoading, error } = useSWR(
-    `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
-    fetcher
-  );
-
-  return {
-    menu: data,
-    isLoading,
-    isError: error,
-  };
-};
+import { useEffect, useState } from "react";
 
 export const useRestaurantOrders = (restaurantId: string) => {
-  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const eventSource = new EventSource(
@@ -45,7 +9,8 @@ export const useRestaurantOrders = (restaurantId: string) => {
     );
 
     eventSource.onmessage = (event) => {
-      const order: IOrder = JSON.parse(event.data);
+      const order = JSON.parse(event.data);
+      console.log({ order });
       setOrders((prevOrders) => [...prevOrders, order]);
     };
 
