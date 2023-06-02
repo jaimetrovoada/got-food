@@ -38,23 +38,28 @@ const baseStyles: VariantStyles = {
 };
 
 const disabledStyles: VariantStyles = {
-  primary: "disabled:bg-gray-500 disabled:cursor-not-allowed",
+  primary:
+    "disabled:bg-gray-500 disabled:cursor-not-allowed disabled:hover:outline-0",
   secondary:
-    "disabled:cursor-not-allowed disabled:text-gray-500 disabled:border-gray-500",
+    "disabled:cursor-not-allowed disabled:text-gray-500 disabled:border-gray-500 disabled:hover:outline-0",
   tertiary: "disabled:cursor-not-allowed disabled:text-gray-500",
   custom: "disabled:cursor-not-allowed",
 };
 
 const resetStyles: VariantStyles = {
-  primary: "bg-red-700 text-white shadow-lg",
-  secondary: "border border-red-400 shadow-lg text-red-400",
+  primary:
+    "bg-red-400 text-white shadow-lg hover:outline hover:outline-2 hover:outline-offset-2 hover:outline-red-400",
+  secondary:
+    "border border-red-400 shadow-lg text-red-400 hover:outline hover:outline-2 hover:outline-red-400",
   tertiary: "text-red-400 underline",
   custom: "",
 };
 
 const normalStyles: VariantStyles = {
-  primary: "shadow-lg bg-blue-600 text-white",
-  secondary: "border border-blue-600 shadow-lg text-blue-600",
+  primary:
+    "shadow-lg bg-blue-600 text-white hover:outline hover:outline-2 hover:outline-offset-2 hover:outline-blue-600",
+  secondary:
+    "border border-blue-600 shadow-lg text-blue-600 hover:outline hover:outline-2 hover:outline-blue-600",
   tertiary: "underline text-blue-600",
   custom: ``,
 };
