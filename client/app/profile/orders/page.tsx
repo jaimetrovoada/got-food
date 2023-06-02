@@ -3,13 +3,11 @@ import { IOrder } from "@/types";
 import { OrderCard } from "@/components/Card";
 import axios from "axios";
 import { getUser } from "@/lib/auth";
-import config from "@/utils/config";
+import { API } from "@/lib/constants";
 
 const getUserOrders = async () => {
   const user = await getUser();
-  const res = await axios.get<IOrder[]>(
-    `${config.BACKEND_URL}/api/users/${user.id}/orders`
-  );
+  const res = await axios.get<IOrder[]>(`${API.users}/${user.id}/orders`);
   return res.data;
 };
 

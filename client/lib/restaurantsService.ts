@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "@/utils/config";
+import { API } from "./constants";
 import { IRestaurant, IMenuItem } from "@/types";
 
 const createRestaurant = async (
@@ -13,16 +13,12 @@ const createRestaurant = async (
 ) => {
   console.log({ token, payload });
   try {
-    const res = await axios.post(
-      `${config.BACKEND_URL}/api/restaurants`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await axios.post(API.restaurants, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -31,9 +27,7 @@ const createRestaurant = async (
 
 const getRestaurants = async () => {
   try {
-    const res = await axios.get<IRestaurant[]>(
-      `${config.BACKEND_URL}/api/restaurants`
-    );
+    const res = await axios.get<IRestaurant[]>(API.restaurants);
     return [res.data, null] as [IRestaurant[], null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -43,7 +37,7 @@ const getRestaurants = async () => {
 const getRestaurant = async (restaurantId: string) => {
   try {
     const res = await axios.get<IRestaurant>(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}`
+      `${API.restaurants}/${restaurantId}`
     );
     return [res.data, null] as [IRestaurant, null];
   } catch (err) {
@@ -54,7 +48,7 @@ const getRestaurant = async (restaurantId: string) => {
 const getMenu = async (restaurantId: string) => {
   try {
     const res = await axios.get<IMenuItem[]>(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`
+      `${API.restaurants}/${restaurantId}/menu`
     );
     return [res.data, null] as [IMenuItem[], null];
   } catch (err) {
@@ -64,9 +58,7 @@ const getMenu = async (restaurantId: string) => {
 
 const getTrendingRestaurants = async () => {
   try {
-    const res = await axios.get<IRestaurant[]>(
-      `${config.BACKEND_URL}/api/restaurants/trending`
-    );
+    const res = await axios.get<IRestaurant[]>(`${API.trending}`);
     return [res.data, null] as [IRestaurant[], null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -86,7 +78,7 @@ const addMenuItem = async (
 ) => {
   try {
     const res = await axios.post(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu`,
+      `${API.restaurants}/${restaurantId}/menu`,
       payload,
       {
         headers: {
@@ -114,7 +106,7 @@ const placeOrder = async (
 ) => {
   try {
     const res = await axios.post(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}/order`,
+      `${API.restaurants}/${restaurantId}/order`,
       {
         tableNumber,
         items,
@@ -137,7 +129,7 @@ const placeOrder = async (
 const updateOrder = async (restaurantId: string, orderId: string) => {
   try {
     const res = await axios.put(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}/order/${orderId}`,
+      `${API.restaurants}/${restaurantId}/order/${orderId}`,
       {
         status: "fullfilled",
       }
@@ -155,7 +147,7 @@ const deleteMenuItem = async (
 ) => {
   try {
     const res = await axios.delete(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}/menu/${itemId}`,
+      `${API.restaurants}/${restaurantId}/menu/${itemId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -170,14 +162,11 @@ const deleteMenuItem = async (
 
 const deleteRestaurant = async (token: string, restaurantId: string) => {
   try {
-    const res = await axios.delete(
-      `${config.BACKEND_URL}/api/restaurants/${restaurantId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await axios.delete(`${API.restaurants}/${restaurantId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];

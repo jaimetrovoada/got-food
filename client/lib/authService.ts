@@ -1,6 +1,6 @@
 import axios from "axios";
-import config from "@/utils/config";
 import { UserRole } from "@/types";
+import { API } from "./constants";
 
 interface User {
   id: string;
@@ -16,10 +16,7 @@ interface LoginRes {
 
 const login = async (credentials: Record<"email" | "password", string>) => {
   try {
-    const res = await axios.post<LoginRes>(
-      `${config.BACKEND_URL}/api/users/login`,
-      credentials
-    );
+    const res = await axios.post<LoginRes>(API.login, credentials);
 
     return [res.data, null] as [LoginRes, null];
   } catch (err) {
@@ -34,10 +31,7 @@ const register = async (payload: {
   role: "customer" | "business";
 }) => {
   try {
-    const res = await axios.post(
-      `${config.BACKEND_URL}/api/users/register`,
-      payload
-    );
+    const res = await axios.post(API.register, payload);
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -55,15 +49,11 @@ const updateUser = async (
   }
 ) => {
   try {
-    const res = await axios.put(
-      `${config.BACKEND_URL}/api/users/${id}`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await axios.put(`${API.users}/${id}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     return [res.status, null] as [number, null];
   } catch (err) {

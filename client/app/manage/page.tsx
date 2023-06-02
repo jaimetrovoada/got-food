@@ -1,12 +1,12 @@
 import UserRestaurantPage from "./client_page";
-import config from "@/utils/config";
 import { IUserRestaurants } from "@/types";
 import axios from "axios";
 import { getUser } from "@/lib/auth";
+import { API } from "@/lib/constants";
 
 const getUserRestaurants = async (userId: string) => {
   const res = await axios.get<IUserRestaurants[]>(
-    `${config.BACKEND_URL}/api/users/${userId}/restaurants`
+    `${API.users}/${userId}/restaurants`
   );
   const restaurants = res.data;
   return restaurants;
