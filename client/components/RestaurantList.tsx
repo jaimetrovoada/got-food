@@ -1,9 +1,10 @@
 import { IRestaurant } from "@/types";
 import React from "react";
 import { LinkCard } from "./Card";
+import { RestaurantResponse } from "@shared/types";
 
 interface Props {
-  restaurants: IRestaurant[];
+  restaurants: RestaurantResponse[];
 }
 
 const RestaurantList = ({ restaurants }: Props) => {

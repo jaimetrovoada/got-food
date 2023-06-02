@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API } from "./constants";
 import { IRestaurant, IMenuItem } from "@/types";
+import { RestaurantResponse } from "@shared/types";
 
 const createRestaurant = async (
   token: string,
@@ -27,8 +28,8 @@ const createRestaurant = async (
 
 const getRestaurants = async () => {
   try {
-    const res = await axios.get<IRestaurant[]>(API.restaurants);
-    return [res.data, null] as [IRestaurant[], null];
+    const res = await axios.get<RestaurantResponse[]>(API.restaurants);
+    return [res.data, null] as [RestaurantResponse[], null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
