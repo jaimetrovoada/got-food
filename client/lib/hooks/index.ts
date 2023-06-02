@@ -1,6 +1,2 @@
+export { useRestaurantOrders } from "./restaurant";
 export { default as useToasts } from "./useToasts";
-export {
-  useRestaurant,
-  useRestaurantMenu,
-  useRestaurantOrders,
-} from "./restaurant";
