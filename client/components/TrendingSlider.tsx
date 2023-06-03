@@ -7,12 +7,10 @@ interface Props {
 
 const TrendingSlider = ({ trending }: Props) => {
   return (
-    <div className="flex flex-row items-center gap-2">
-      <div className="flex flex-1 snap-x snap-mandatory scroll-py-4 flex-nowrap gap-2 overflow-x-auto scroll-smooth scrollbar-thin">
-        {trending.map((restaurant) => (
-          <TrendingSlide key={restaurant.id} restaurant={restaurant} />
-        ))}
-      </div>
+    <div className="flex flex-1 snap-x snap-mandatory scroll-py-4 flex-nowrap gap-2 overflow-x-auto scroll-smooth rounded-3xl p-2 scrollbar-thin">
+      {trending.map((restaurant) => (
+        <TrendingSlide key={restaurant.id} restaurant={restaurant} />
+      ))}
     </div>
   );
 };
