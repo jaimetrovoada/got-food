@@ -2,7 +2,6 @@ import Container from "@/components/Container";
 import RestaurantList from "@/components/RestaurantList";
 import TrendingSlider from "@/components/TrendingSlider";
 import restaurantsService from "@/lib/restaurantsService";
-import React from "react";
 
 const Page = async () => {
   const restaurantsData = getRestaurants();

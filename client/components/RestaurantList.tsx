@@ -1,6 +1,5 @@
-import React from "react";
-import { LinkCard } from "./Card";
 import { RestaurantResponse } from "@shared/types";
+import { LinkCard } from "./Card";
 
 interface Props {
   restaurants: RestaurantResponse[];
