@@ -1,6 +1,6 @@
 import { ICartState } from "@/lib/reducers/cartSlice";
 import React from "react";
-import { ArrowUp } from "react-feather";
+import { ArrowUp, Minus } from "react-feather";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
 
@@ -63,14 +63,15 @@ const Cart = ({
                   <li key={item.name} className="list-item text-gray-700">
                     {item.name} - {item.amount}x
                     <Button
-                      className="ml-2 h-8 w-8 leading-none"
+                      className="ml-2 !rounded-full p-1"
                       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.preventDefault();
                         removeFromCart(item.name);
                       }}
                       type="reset"
+                      variant="secondary"
                     >
-                      -
+                      <Minus size={16} />
                     </Button>
                   </li>
                 ))}
@@ -80,6 +81,7 @@ const Cart = ({
                   className="leading-none"
                   onClick={clearCart}
                   variant="secondary"
+                  useResetStyles
                 >
                   Clear
                 </Button>

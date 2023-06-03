@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/Button";
 import Cart from "@/components/Cart";
 import Container from "@/components/Container";
 import Menu from "@/components/Menu";
@@ -12,7 +13,8 @@ import {
 import { RootState } from "@/lib/reducers/store";
 import restaurantsService from "@/lib/restaurantsService";
 import { IMenuItem, IRestaurant, IUser } from "@/types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 
 interface Props {
@@ -33,19 +35,17 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
 
   console.log({ cart });
 
-  // group by category
-  const categories: Record<string, IMenuItem[]> | undefined = menu?.reduce(
+  const categories: string[] = menu?.reduce(
     (acc, curr) => {
-      if (!acc[curr.category]) {
-        acc[curr.category] = [];
+      if (!acc.find((cat) => cat === curr.category)) {
+        acc.push(curr.category);
       }
-      acc[curr.category].push(curr);
       return acc;
     },
-    {} as Record<string, IMenuItem[]>
+    ["all"]
   );
 
-  const [category, setCategory] = React.useState<string>("all");
+  const [category, setCategory] = React.useState<string>(categories[0]);
 
   const addToCart = (price: number, name: string, id: string) => {
     dispatch(
@@ -90,19 +90,72 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
     }
   };
 
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollRight = () => {
+    if (buttonsContainerRef.current) {
+      buttonsContainerRef.current.scrollLeft +=
+        buttonsContainerRef.current.offsetWidth;
+    }
+  };
+
+  const scrollLeft = () => {
+    if (buttonsContainerRef.current) {
+      buttonsContainerRef.current.scrollLeft -=
+        buttonsContainerRef.current.offsetWidth;
+    }
+  };
+
   if (!menu || !menu.length) {
     return <div>No menu</div>;
   }
 
   return (
-    <Container className="relative overflow-hidden">
-      <Menu
-        menu={menu}
-        categories={categories}
-        category={category}
-        setCategory={setCategory}
-        addToCart={addToCart}
-      />
+    <Container className="relative overflow-hidden p-4">
+      <section className="mb-24 flex flex-col gap-4 overflow-hidden">
+        <div className="flex flex-row items-center gap-2">
+          <Button
+            className="rounded-full bg-gray-300 p-1 text-gray-600 shadow-sm"
+            variant="custom"
+            onClick={scrollLeft}
+          >
+            <ChevronLeft size={16} />
+          </Button>
+          <div
+            className="flex w-full max-w-full flex-row gap-2 overflow-auto scroll-smooth px-2"
+            ref={buttonsContainerRef}
+          >
+            {categories.map((cat) => (
+              <Button
+                className={`rounded-lg border p-2 uppercase hover:border-gray-400 ${
+                  category === cat
+                    ? "border-gray-900 bg-white font-bold text-gray-800"
+                    : "border-slate-200 bg-slate-200 text-gray-600"
+                }`}
+                onClick={() => setCategory(cat)}
+                key={cat}
+                variant="custom"
+              >
+                {cat}
+              </Button>
+            ))}
+          </div>
+          <Button
+            className="rounded-full bg-gray-300 p-1 text-gray-600 shadow-sm"
+            variant="custom"
+            onClick={scrollRight}
+          >
+            <ChevronRight size={16} />
+          </Button>
+        </div>
+
+        <Menu
+          menu={menu.filter((item) =>
+            category === "all" ? item : item.category === category
+          )}
+          addToCart={addToCart}
+        />
+      </section>
       <Cart
         cart={cart}
         cartExpanded={cartExpanded}
