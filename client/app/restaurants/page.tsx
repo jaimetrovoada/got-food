@@ -12,7 +12,7 @@ const Page = async () => {
     trendingRestaurantsData,
   ]);
   return (
-    <Container className="flex flex-col gap-8 p-2">
+    <Container className="flex flex-col gap-8 pt-4">
       {trendingRestaurants ? (
         <div>
           <p className="mb-4 text-3xl font-bold capitalize">
@@ -21,20 +21,16 @@ const Page = async () => {
           <TrendingSlider trending={trendingRestaurants} />
         </div>
       ) : null}
-      <div>
-        {restaurants ? (
-          <>
-            <p className="mb-4 text-3xl font-bold">All</p>
-            <section className="grid grid-flow-row grid-cols-1 gap-4 p-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <RestaurantList restaurants={restaurants} />
-            </section>
-          </>
-        ) : (
-          <>
-            <p>Nothing yet!!! Comeback some other time</p>
-          </>
-        )}
-      </div>
+      {restaurants ? (
+        <div>
+          <p className="mb-4 text-3xl font-bold">All</p>
+          <RestaurantList restaurants={restaurants} />
+        </div>
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center">
+          <p>Nothing yet!!! Comeback some other time</p>
+        </div>
+      )}
     </Container>
   );
 };
