@@ -1,4 +1,3 @@
-import { IRestaurant } from "@/types";
 import React from "react";
 import { LinkCard } from "./Card";
 import { RestaurantResponse } from "@shared/types";
@@ -9,7 +8,7 @@ interface Props {
 
 const RestaurantList = ({ restaurants }: Props) => {
   return (
-    <>
+    <section className="grid flex-1 grid-cols-1 gap-4 p-2 md:grid-cols-2 lg:grid-cols-3">
       {restaurants.map((restaurant) => (
         <LinkCard
           href={`/restaurants/${restaurant.id}`}
@@ -17,9 +16,10 @@ const RestaurantList = ({ restaurants }: Props) => {
           name={restaurant.name}
           imageUrl={restaurant.logo}
           description={restaurant.description}
+          address={restaurant.address}
         />
       ))}
-    </>
+    </section>
   );
 };
 

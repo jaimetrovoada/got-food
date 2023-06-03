@@ -6,7 +6,7 @@ import Link from "next/link";
 import Button from "./Button";
 import Skeleton from "./Skeleton";
 import { IMenuItem, IOrder } from "@/types";
-import { Plus } from "react-feather";
+import { MapPin, Plus } from "react-feather";
 
 interface ItemCardProps {
   id: string;
@@ -20,8 +20,9 @@ interface ItemCardProps {
 interface LinkCardProps {
   href: string;
   name: string;
-  imageUrl?: string;
-  description?: string;
+  imageUrl: string;
+  description: string;
+  address: string;
 }
 
 type AsProp<C extends React.ElementType> = {
@@ -46,7 +47,7 @@ type CardProps = {
   children: React.ReactNode;
 };
 
-const baseStyle = "bg-white border-2 border-black/50 shadow-custom";
+const baseStyle = "bg-white border border-gray-600";
 const styles = {
   rounded: `${baseStyle} rounded-2xl`,
   square: `${baseStyle}`,
@@ -122,22 +123,39 @@ export const LinkCard = ({
   name,
   imageUrl,
   description,
+  address,
 }: LinkCardProps) => {
   return (
-    <Card as={Link} href={href} className="flex h-20 flex-row">
+    <Card
+      as={Link}
+      href={href}
+      className="group flex flex-col items-start justify-between shadow-lg"
+    >
       {imageUrl && (
-        <div className="relative w-full max-w-[80px]">
+        <div className="relative h-40 w-full overflow-hidden rounded-t-2xl">
           <Image
             src={imageUrl}
             alt={name + " " + "logo"}
             fill
-            className="h-auto overflow-hidden rounded-tl-2xl rounded-bl-2xl object-cover"
+            className="h-auto overflow-hidden object-cover"
           />
         </div>
       )}
-      <div className="flex flex-1 flex-col justify-between p-2">
-        <h3 className="text-2xl font-bold underline">{name}</h3>
-        {description && <p className="text-gray-500">{description}</p>}
+      <div className="flex w-full flex-1 flex-col justify-between gap-4 px-4 py-2">
+        <h3 className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+          {name}
+        </h3>
+        <div className="flex w-fit items-center gap-1 rounded-full bg-gray-50 px-2 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100">
+          <MapPin size={16} />
+          <span>{address}</span>
+        </div>
+        <p className="px-3 text-sm capitalize leading-6 text-gray-600 line-clamp-3">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sed
+          saepe cumque quas ea, maxime amet accusamus vitae, aliquid ullam
+          expedita earum nisi a commodi, culpa minima distinctio deserunt omnis
+          consectetur autem molestiae est numquam. At nulla non nisi, quae illum
+          quo, odit iste a, quisquam ducimus placeat recusandae ab.
+        </p>
       </div>
     </Card>
   );
