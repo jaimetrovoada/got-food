@@ -150,11 +150,7 @@ export const LinkCard = ({
           <span>{address}</span>
         </div>
         <p className="px-3 text-sm capitalize leading-6 text-gray-600 line-clamp-3">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident sed
-          saepe cumque quas ea, maxime amet accusamus vitae, aliquid ullam
-          expedita earum nisi a commodi, culpa minima distinctio deserunt omnis
-          consectetur autem molestiae est numquam. At nulla non nisi, quae illum
-          quo, odit iste a, quisquam ducimus placeat recusandae ab.
+          {description}
         </p>
       </div>
     </Card>
