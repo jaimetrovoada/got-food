@@ -4,25 +4,25 @@ import Link from "next/link";
 
 const Page = async () => {
   return (
-    <Container className="items-center justify-center gap-8">
-      <div className="text-center">
-        <p className="mb-4 text-3xl font-bold">
+    <Container className="max-w-full items-center justify-center gap-8 bg-white">
+      <div className="mx-auto max-w-2xl py-32 text-center sm:py-48 lg:py-56">
+        <p className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
           Boost Your Restaurant&apos;s Success with Our Platform!
         </p>
-        <p className="mx-auto w-full max-w-2xl text-xl text-gray-700">
+        <p className="mt-6 text-lg leading-8 text-gray-600">
           Elevate customer experience by offering direct food ordering through
           our user-friendly app. Maximize convenience, streamline operations,
           and expand your reach. Join us today and revolutionize your
           restaurant&apos;s growth!
         </p>
-      </div>
-      <div className="flex flex-row gap-4">
-        <Button as={Link} href="/auth/register">
-          Sign Up
-        </Button>
-        <Button as={Link} href="/restaurants" variant="secondary">
-          Explore
-        </Button>
+        <div className="mt-6 flex flex-row justify-center gap-4">
+          <Button as={Link} href="/auth/register">
+            Sign Up
+          </Button>
+          <Button as={Link} href="/restaurants" variant="secondary">
+            Explore
+          </Button>
+        </div>
       </div>
     </Container>
   );
