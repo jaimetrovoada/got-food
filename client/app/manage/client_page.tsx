@@ -1,8 +1,8 @@
 "use client";
 
 import Button from "@/components/Button";
-import { LinkCard } from "@/components/Card";
 import CardWrapper from "@/components/CardWrapper";
+import { UserRestaurantCard } from "@/components/Cards";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import { IUser, IUserRestaurants } from "@/types";
@@ -43,13 +43,7 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
         {restaurants ? (
           <div className="flex flex-col gap-4">
             {restaurants?.map((restaurant) => (
-              <LinkCard
-                href={`/manage/${restaurant.id}/details`}
-                key={restaurant.id}
-                name={restaurant.name}
-                description={restaurant.description}
-                imageUrl={restaurant.logo}
-              />
+              <UserRestaurantCard key={restaurant.id} restaurant={restaurant} />
             ))}
           </div>
         ) : null}
