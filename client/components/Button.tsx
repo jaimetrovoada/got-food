@@ -31,9 +31,9 @@ interface VariantStyles {
 }
 
 const baseStyles: VariantStyles = {
-  primary: "rounded-xl p-2 font-bold",
-  secondary: "rounded-xl p-2 font-bold",
-  tertiary: "font-bold",
+  primary: "rounded-xl p-2 font-semibold",
+  secondary: "rounded-xl p-2 font-semibold",
+  tertiary: "font-semibold",
   custom: "",
 };
 
