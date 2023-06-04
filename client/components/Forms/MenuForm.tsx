@@ -91,11 +91,16 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
       </div>
       <div className="flex flex-col">
         <label htmlFor="price">Price</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          type="number"
-          {...register("price", { min: 0, required: !initialValues?.name })}
-        />
+        <div className="flex w-full flex-row">
+          <span className="rounded-xl rounded-r-none border bg-gray-200 p-2 text-gray-600">
+            $
+          </span>
+          <input
+            className="flex-1 rounded-xl rounded-l-none border p-2 focus:outline-none"
+            type="number"
+            {...register("price", { min: 0, required: !initialValues?.name })}
+          />
+        </div>
       </div>
 
       <div className="flex flex-row">
