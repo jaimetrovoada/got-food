@@ -177,7 +177,7 @@ export const MenuItemCard = ({ item, addToCart }: MenuCardProps) => {
   return (
     <Card
       key={item.id}
-      className="group flex flex-col gap-2 p-2 hover:shadow-lg"
+      className="group flex flex-col gap-2 p-2 hover:border-blue-500 hover:shadow-lg"
     >
       <div className="flex flex-row gap-2">
         <div className="relative aspect-square w-1/3 overflow-hidden rounded-2xl">
@@ -189,7 +189,7 @@ export const MenuItemCard = ({ item, addToCart }: MenuCardProps) => {
           />
         </div>
         <div className="flex flex-1 flex-col gap-2">
-          <p className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+          <p className="text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 group-hover:underline">
             {item.name}
           </p>
           <p className="text-sm text-gray-600 line-clamp-3">
