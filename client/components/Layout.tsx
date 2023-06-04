@@ -14,7 +14,7 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <header className="relative bg-white">
-        <nav className="container mx-auto flex flex-row items-center justify-between py-2 px-2 md:px-4">
+        <nav className="container mx-auto flex flex-row items-center justify-between py-2 px-4 xl:px-0">
           <Link href="/" className="text-3xl font-bold uppercase">
             got food?
           </Link>
