@@ -1,9 +1,10 @@
 import Container from "@/components/Container";
+import { Loader } from "react-feather";
 
 const Loading = () => {
   return (
-    <Container className="flex items-center justify-center">
-      <span className="animate-spin text-3xl font-bold">loading...</span>
+    <Container className="flex h-full items-center justify-center">
+      <Loader className="animate-spin" size={80} />
     </Container>
   );
 };
