@@ -40,7 +40,7 @@ const LoginForm = ({}: Props) => {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 rounded-2xl border-2 border-black/50 bg-white p-4 shadow-custom"
+      className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
       onReset={() => reset()}
     >
       <div className="flex flex-col">

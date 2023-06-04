@@ -45,7 +45,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
   return (
     <section className="mx-auto w-full max-w-screen-md overflow-hidden pb-10">
       <Modal ref={modalRef}>
-        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border-2 border-black/50 bg-white p-2 shadow-custom">
+        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border border-gray-200 bg-white p-2 shadow-lg">
           <Button
             variant="tertiary"
             onClick={() => modalRef?.current.hide()}

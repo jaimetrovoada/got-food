@@ -7,9 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      boxShadow: {
-        custom: "0px 3px 0px rgba(0, 0, 0, 0.5)",
-      },
       backgroundImage: {
         "hero-pattern":
           "linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.75)), var(--image-url)",

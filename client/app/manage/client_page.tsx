@@ -19,7 +19,7 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
   return (
     <section className="mx-auto w-full max-w-screen-lg">
       <Modal ref={modalRef}>
-        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border-2 border-black/50 bg-white p-2 shadow-custom">
+        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border border-gray-200 bg-white p-2 shadow-lg">
           <Button
             variant="tertiary"
             onClick={() => modalRef?.current.hide()}

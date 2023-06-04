@@ -16,7 +16,7 @@ const OrdersTableDetail = ({
   restaurantId: string;
 }) => {
   return (
-    <aside className="hidden w-1/3 flex-col rounded-xl border-2 border-black/50 bg-white shadow-custom transition-all md:flex">
+    <aside className="hidden w-1/3 flex-col rounded-2xl border border-gray-600 bg-white shadow-lg transition-all md:flex">
       <p className="border-b border-black/50 p-2 font-bold uppercase shadow-md">
         Details
       </p>

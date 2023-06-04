@@ -71,7 +71,7 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
       onReset={() => reset()}
       className={
         initialValues
-          ? "flex flex-col gap-4 rounded-2xl border-2 border-black/50 bg-white p-4 shadow-custom"
+          ? "flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
           : "flex flex-col gap-4 p-4"
       }
     >
