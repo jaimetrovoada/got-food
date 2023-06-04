@@ -22,7 +22,9 @@ const Layout = ({ children }: Props) => {
         </nav>
       </header>
       <ToastsProvider>
-        {children}
+        <main className="flex-1 overflow-auto scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-gray-300 scrollbar-track-rounded-md scrollbar-thumb-rounded-md">
+          {children}
+        </main>
         <Toasts />
       </ToastsProvider>
     </>
