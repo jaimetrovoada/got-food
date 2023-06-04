@@ -3,6 +3,7 @@ import { IUserRestaurants } from "@/types";
 import axios from "axios";
 import { getUser } from "@/lib/auth";
 import { API } from "@/lib/constants";
+import Container from "@/components/Container";
 
 const getUserRestaurants = async (userId: string) => {
   const res = await axios.get<IUserRestaurants[]>(
@@ -15,7 +16,11 @@ const Page = async () => {
   const user = await getUser();
   const restaurants = await getUserRestaurants(user.id);
 
-  return <UserRestaurantPage restaurants={restaurants} user={user} />;
+  return (
+    <Container>
+      <UserRestaurantPage restaurants={restaurants} user={user} />;
+    </Container>
+  );
 };
 
 export default Page;

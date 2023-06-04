@@ -40,7 +40,7 @@ const ManageLayout = ({ children, params, name }: Props) => {
 
   return (
     <>
-      <nav className="mb-4">
+      <nav className="container mx-auto p-4 xl:px-0">
         <ul className="flex gap-2">
           <span className="font-bold">{name}/</span>
           {routes.map((route) => (
