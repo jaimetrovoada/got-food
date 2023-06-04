@@ -4,5 +4,5 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
-  return <Container className="py-4">{children}</Container>;
+  return <Container>{children}</Container>;
 }
