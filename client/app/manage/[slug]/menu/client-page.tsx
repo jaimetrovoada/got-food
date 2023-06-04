@@ -96,7 +96,7 @@ interface MenuCardProps {
 }
 const MenuCard = ({ item, editItem, deleteItem }: MenuCardProps) => {
   return (
-    <Card className="flex flex-row items-center justify-between !border shadow-md">
+    <div className="group flex flex-row items-center justify-between gap-4 border-b border-gray-200 py-2 px-4 hover:bg-gray-50">
       <div className="flex flex-row gap-2 rounded-l-2xl">
         <Image
           src={item.image}
@@ -107,18 +107,19 @@ const MenuCard = ({ item, editItem, deleteItem }: MenuCardProps) => {
         />
         <div className="flex flex-col gap-2 p-2">
           <p className="text-xl font-bold">{item.name}</p>
-          <p className="text-gray-500">{item.description}</p>
+          <p className="w-fit rounded-full bg-gray-50 px-2 py-1.5 text-xs font-medium capitalize text-gray-600 group-hover:bg-gray-100">
+            {item.category}
+          </p>
         </div>
       </div>
-      <div className="p-2">
-        <p className="text-lg font-bold">${item.price}</p>
+      <div className="flex flex-col gap-2">
         <Button variant="custom" onClick={() => editItem(item)}>
-          <Edit3 className="mr-2 stroke-blue-600" />
+          <Edit3 className="mr-2 stroke-blue-400" />
         </Button>
         <Button variant="custom" onClick={(e) => deleteItem(item.id)}>
-          <Trash className="fill-red-600 stroke-red-600" />
+          <Trash className="stroke-red-400" />
         </Button>
       </div>
-    </Card>
+    </div>
   );
 };
