@@ -69,14 +69,14 @@ const OrdersTableWrapper = ({ orders, restaurantId }: Props) => {
 
   return (
     <div className="flex h-full flex-1 gap-2 overflow-y-hidden pb-4 lg:gap-8">
-      <aside className="grid flex-1 grid-cols-1 gap-4 overflow-y-auto scrollbar-none md:grid-cols-2 lg:grid-cols-3">
+      <aside className="grid h-fit flex-1 grid-cols-1 gap-4 overflow-y-auto scrollbar-none md:grid-cols-2 lg:grid-cols-3">
         {orders
           ?.filter((order) => order.status === "pending")
           ?.sort((a, b) => Number(a.orderId) - Number(b.orderId))
           ?.map((order) => (
             <Card
               key={order.id}
-              className="flex h-fit cursor-pointer flex-col gap-2 bg-white p-2 last:mb-2"
+              className="flex h-fit cursor-pointer flex-col gap-2 bg-white p-2"
               onClick={() => setActiveOrder(order)}
               role="button"
               tabIndex={0}
