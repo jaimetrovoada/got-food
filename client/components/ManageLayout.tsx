@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
-import Button from "./Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import React from "react";
+import Button from "./Button";
 
 interface Props {
   children: React.ReactNode;
@@ -40,7 +40,7 @@ const ManageLayout = ({ children, params, name }: Props) => {
 
   return (
     <>
-      <nav>
+      <nav className="mb-4">
         <ul className="flex gap-2">
           <span className="font-bold">{name}/</span>
           {routes.map((route) => (
