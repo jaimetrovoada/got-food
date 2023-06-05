@@ -1,6 +1,5 @@
 import Container from "@/components/Container";
-import RestaurantList from "@/components/RestaurantList";
-import TrendingSlider from "@/components/TrendingSlider";
+import { List, Slider } from "@/components/Restaurants";
 import restaurantsService from "@/lib/restaurantsService";
 
 const Page = async () => {
@@ -17,13 +16,13 @@ const Page = async () => {
           <p className="mb-4 text-3xl font-bold capitalize">
             what&apos;s trending
           </p>
-          <TrendingSlider trending={trendingRestaurants} />
+          <Slider trending={trendingRestaurants} />
         </div>
       ) : null}
       {restaurants ? (
         <div>
           <p className="mb-4 text-3xl font-bold">All</p>
-          <RestaurantList restaurants={restaurants} />
+          <List restaurants={restaurants} />
         </div>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center">

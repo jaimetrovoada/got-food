@@ -1,7 +1,7 @@
 import { IRestaurant } from "@/types";
 import Link from "next/link";
 import React from "react";
-import Button from "./Button";
+import Button from "../Button";
 
 interface Props {
   restaurant: IRestaurant;

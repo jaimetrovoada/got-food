@@ -1,6 +1,6 @@
 import React from "react";
 import { IOrder } from "@/types";
-import { OrderCard } from "@/components/Card";
+import { Item } from "@/components/Profile";
 import axios from "axios";
 import { getUser } from "@/lib/auth";
 import { API } from "@/lib/constants";
@@ -24,7 +24,7 @@ const OrdersPage = async () => {
       <p>Order History:</p>
       <div className="flex flex-col gap-2">
         {orders.map((order) => (
-          <OrderCard key={order.id} order={order} />
+          <Item key={order.id} order={order} />
         ))}
       </div>
     </section>

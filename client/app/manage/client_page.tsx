@@ -2,7 +2,7 @@
 
 import Button from "@/components/Button";
 import CardWrapper from "@/components/CardWrapper";
-import { UserRestaurantCard } from "@/components/Cards";
+import { RestaurantItem as Item } from "@/components/Manage";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import { IUser, IUserRestaurants } from "@/types";
@@ -43,7 +43,7 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
         {restaurants ? (
           <div className="flex flex-col gap-4">
             {restaurants?.map((restaurant) => (
-              <UserRestaurantCard key={restaurant.id} restaurant={restaurant} />
+              <Item key={restaurant.id} restaurant={restaurant} />
             ))}
           </div>
         ) : null}

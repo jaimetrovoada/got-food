@@ -1,9 +1,8 @@
 "use client";
 
 import Button from "@/components/Button";
-import Cart from "@/components/Cart";
 import Container from "@/components/Container";
-import Menu from "@/components/Menu";
+import { Menu, Cart } from "@/components/Menu";
 import { useToasts } from "@/lib/hooks";
 import {
   addItemToCart,

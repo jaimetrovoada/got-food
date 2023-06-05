@@ -2,7 +2,7 @@ import { ICartState } from "@/lib/reducers/cartSlice";
 import React from "react";
 import { ArrowUp, Minus } from "react-feather";
 import { useForm } from "react-hook-form";
-import Button from "./Button";
+import Button from "../Button";
 
 interface Props {
   cartExpanded: boolean;

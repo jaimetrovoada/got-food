@@ -1,16 +1,18 @@
-import { RestaurantResponse } from "@shared/types";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowRightCircle, MapPin } from "react-feather";
+import React from "react";
+import ListItem from "../ListItem";
+import { MapPin, ArrowRightCircle } from "react-feather";
 import Button from "../Button";
+import Link from "next/link";
+import Image from "next/image";
+import { RestaurantResponse } from "@shared/types";
 
 interface Props {
   restaurant: RestaurantResponse;
 }
 
-const UserRestaurantCard = ({ restaurant }: Props) => {
+const RestaurantItem = ({ restaurant }: Props) => {
   return (
-    <div className="group flex flex-row items-center gap-4 border-b border-gray-200 py-2 px-4 hover:bg-gray-50">
+    <ListItem>
       <div className="relative aspect-square w-20 overflow-hidden rounded-xl">
         <Image src={restaurant.logo} fill alt={restaurant.name} />
       </div>
@@ -32,8 +34,8 @@ const UserRestaurantCard = ({ restaurant }: Props) => {
         <span>View</span>
         <ArrowRightCircle size={20} />
       </Button>
-    </div>
+    </ListItem>
   );
 };
 
-export default UserRestaurantCard;
+export default RestaurantItem;

@@ -1,15 +1,15 @@
 import { RestaurantResponse } from "@shared/types";
-import { LinkCard } from "./Card";
+import Item from "./Item";
 
 interface Props {
   restaurants: RestaurantResponse[];
 }
 
-const RestaurantList = ({ restaurants }: Props) => {
+const List = ({ restaurants }: Props) => {
   return (
     <section className="grid flex-1 grid-cols-1 gap-4 p-2 md:grid-cols-2 lg:grid-cols-3">
       {restaurants.map((restaurant) => (
-        <LinkCard
+        <Item
           href={`/restaurants/${restaurant.id}`}
           key={restaurant.id}
           name={restaurant.name}
@@ -22,4 +22,4 @@ const RestaurantList = ({ restaurants }: Props) => {
   );
 };
 
-export default RestaurantList;
+export default List;
