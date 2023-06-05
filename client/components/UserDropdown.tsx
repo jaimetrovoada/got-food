@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useRef } from "react";
 import Avatar from "@/assets/avatar.svg";
-import Button from "./Button";
+import { IUser, UserRole } from "@/types";
+import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { UserRole } from "@/types";
+import { useRef } from "react";
+import Button from "./Button";
 
-interface Props {}
+interface Props {
+  user: IUser;
+}
 
-const UserDropdown = ({}: Props) => {
-  const { data: session } = useSession();
-  const user = session?.user;
+const UserDropdown = ({ user }: Props) => {
   const showMenu = () => {
     const el = menuRef.current;
     el.classList.toggle("hidden");
