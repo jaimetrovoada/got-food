@@ -46,4 +46,4 @@ const Item = ({ order }: Props) => {
   );
 };
 
-export default Item
+export default Item;
