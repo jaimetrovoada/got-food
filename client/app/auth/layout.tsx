@@ -6,7 +6,7 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <Container className="w-full max-w-screen-md justify-center">
+    <Container>
       {children}
     </Container>
   );

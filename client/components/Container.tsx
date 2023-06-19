@@ -1,24 +1,17 @@
-import React from "react";
+import { getClasses } from "@/lib/helpers";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-const baseClassName = "container mx-auto flex flex-col p-4 xl:px-0";
-
 const Container = ({ children, className, ...props }: Props) => {
-  const getStyles = () => {
-    return {
-      base: baseClassName,
-      ...(className ? { className } : {}),
-    };
-  };
-
-  const styles = getStyles();
   return (
-    <div className={styles.base + " " + styles.className} {...props}>
+    <main
+      className={getClasses("container mx-auto flex-1 p-4 lg:px-0", className)}
+      {...props}
+    >
       {children}
-    </div>
+    </main>
   );
 };
 
