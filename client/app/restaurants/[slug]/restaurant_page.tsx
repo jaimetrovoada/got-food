@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Menu, Cart } from "@/components/Menu";
+import { getClasses } from "@/lib/helpers";
 import { useToasts } from "@/lib/hooks";
 import {
   addItemToCart,
@@ -114,7 +115,7 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
       <section className="mb-24 flex flex-col gap-4 overflow-hidden">
         <div className="flex flex-row items-center gap-2">
           <Button
-            className="rounded-full bg-gray-300 p-1 text-gray-600 shadow-sm"
+            className="rounded-full bg-gray-700 p-1 text-gray-100 shadow-sm"
             variant="custom"
             onClick={scrollLeft}
           >
@@ -126,11 +127,15 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
           >
             {categories.map((cat) => (
               <Button
-                className={`rounded-lg border p-2 uppercase hover:border-gray-400 ${
-                  category === cat
-                    ? "border-gray-900 bg-white font-bold text-gray-800"
-                    : "border-slate-200 bg-slate-200 text-gray-600"
-                }`}
+                className={getClasses(
+                  "rounded-lg border p-2 uppercase hover:border-gray-400",
+                  {
+                    "border-gray-800 bg-gray-800 font-bold text-gray-200":
+                      category === cat,
+                    "border-gray-300 text-gray-300":
+                      category !== cat,
+                  }
+                )}
                 onClick={() => setCategory(cat)}
                 key={cat}
                 variant="custom"
@@ -140,7 +145,7 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
             ))}
           </div>
           <Button
-            className="rounded-full bg-gray-300 p-1 text-gray-600 shadow-sm"
+            className="rounded-full bg-gray-700 p-1 text-gray-100 shadow-sm"
             variant="custom"
             onClick={scrollRight}
           >
