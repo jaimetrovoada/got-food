@@ -62,14 +62,14 @@ const UserDropdown = ({ user }: Props) => {
       <div
         ref={menuRef}
         className={`absolute right-0 -bottom-0 z-10
-         hidden w-full translate-y-full flex-row rounded-b-md bg-white opacity-0 shadow-lg transition-all`}
+         hidden w-full translate-y-full flex-row rounded-b-md bg-black opacity-0 shadow-lg transition-all`}
       >
         {menuList.map((item) => (
           <Button
             as={Link}
             href={item.link}
             variant="custom"
-            className="flex-1 rounded-xl p-2 text-center font-semibold text-gray-900 hover:bg-gray-50"
+            className="flex-1 rounded-xl p-2 text-center font-semibold text-slate-200 hover:bg-zinc-900/50"
             key={item.name}
           >
             {item.name}
@@ -78,7 +78,7 @@ const UserDropdown = ({ user }: Props) => {
         <Button
           onClick={() => signOut()}
           variant="custom"
-          className="flex-1 rounded-xl p-2 text-center font-semibold text-gray-900 hover:bg-gray-50"
+          className="flex-1 rounded-xl p-2 text-center font-semibold text-slate-200 hover:bg-zinc-900/50"
         >
           Logout
         </Button>
