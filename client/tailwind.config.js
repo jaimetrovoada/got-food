@@ -11,10 +11,12 @@ module.exports = {
         "hero-pattern":
           "linear-gradient(to right bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.75)), var(--image-url)",
       },
+      height: {
+        dynamic: ["100vh /* fallback */", "100dvh"],
+      },
     },
   },
   plugins: [
     require("tailwind-scrollbar")({ nocompatible: true }),
-    require("@tailwindcss/line-clamp"),
   ],
 };
