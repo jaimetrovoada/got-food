@@ -1,31 +1,36 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { getClasses } from "@/lib/helpers";
+import { Path, UseFormRegister, RegisterOptions } from "react-hook-form";
 
-interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+type Props<TFormValues> = {
   variant?: "row" | "col";
-  name: string;
   label: string;
-}
+  register: UseFormRegister<TFormValues>;
+  rules?: RegisterOptions;
+  name: Path<TFormValues>;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "name">;
 
-const Input: React.ForwardRefRenderFunction<HTMLInputElement, Props> = ({
+const Input = <TFormValues extends Record<string, unknown>>({
   className,
   name,
   label,
   variant = "col",
+  register,
+  rules,
   ...props
-}) => {
+}: Props<TFormValues>) => {
   return (
     <label
       htmlFor={name}
       className={getClasses("flex", {
         "flex-col": variant === "col",
-        "flex-row gap-2 items-center": variant === "row",
+        "flex-row items-center gap-2": variant === "row",
       })}
     >
       {label}
       <input
         {...props}
-        name={name}
+        {...register(name, rules)}
         className={getClasses(
           "rounded border border-gray-400/40 bg-zinc-900 p-2 placeholder:capitalize",
           className
@@ -35,6 +40,4 @@ const Input: React.ForwardRefRenderFunction<HTMLInputElement, Props> = ({
   );
 };
 
-const FormInput = React.forwardRef(Input);
-
-export default FormInput;
+export default Input;
