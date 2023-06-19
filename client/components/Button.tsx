@@ -1,3 +1,4 @@
+import { getClasses } from "@/lib/helpers";
 import Link from "next/link";
 import React from "react";
 
@@ -69,26 +70,18 @@ const Button = <C extends React.ElementType = "button">({
   children,
   variant = "primary",
   useResetStyles = false,
+  className,
   ...props
 }: Props<C>) => {
   const Component = as || "button";
 
-  const getStyles = () => {
-    let style =
-      props.type === "reset" || useResetStyles
-        ? resetStyles[variant]
-        : normalStyles[variant];
-
-    style += " " + baseStyles[variant];
-    style += " " + disabledStyles[variant];
-    style += " " + props.className;
-
-    return style;
-  };
-  const styles = getStyles();
+  const isReset = props.type === "reset" || useResetStyles;
 
   return (
-    <Component {...props} className={styles}>
+    <Component
+      {...props}
+      className={getClasses(baseStyles[variant], !isReset && normalStyles[variant], disabledStyles[variant], isReset && resetStyles[variant], className)}
+    >
       {children}
     </Component>
   );
