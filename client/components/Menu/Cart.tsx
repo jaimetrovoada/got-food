@@ -3,6 +3,7 @@ import React from "react";
 import { ArrowUp, Minus } from "react-feather";
 import { useForm } from "react-hook-form";
 import Button from "../Button";
+import Input from "../Forms/Input";
 
 interface Props {
   cartExpanded: boolean;
@@ -32,7 +33,7 @@ const Cart = ({
 
   return (
     <section
-      className={`container fixed left-1/2 bottom-0 z-10 flex w-full -translate-x-1/2 flex-col rounded-t-2xl border-2 border-b-0 border-black/50 bg-white transition-all ${
+      className={`container fixed left-1/2 bottom-0 z-10 flex w-full -translate-x-1/2 flex-col rounded-t-2xl border border-gray-600/50 border-b-0 bg-neutral-950 transition-all ${
         cartExpanded ? "h-5/6" : "h-20"
       }`}
     >
@@ -43,24 +44,24 @@ const Cart = ({
         >
           <ArrowUp className={cartExpanded ? "rotate-180" : ""} />
         </Button>
-        <h1 className="text-lg font-bold">Total = ${cart?.totalPrice || 0}</h1>
+        <p className="text-lg font-semibold">Total = ${cart?.totalPrice || 0}</p>
         {cartExpanded &&
           (cart?.items.length ? (
             <div className="flex h-5/6 flex-1 flex-col gap-4">
-              <div className="flex flex-row gap-2">
-                <label htmlFor="table">Table:</label>
-                <input
+                <Input
+                  label="Table:"
+                  variant="row"
                   {...register("table", {
                     required: true,
                     min: 1,
                   })}
+                  type="number"
                   id="table"
-                  className="rounded-none border-0 border-b-2"
+                  className="w-10 p-0 px-1"
                 />
-              </div>
               <ul className="flex-1 list-inside list-disc overflow-y-auto py-4 scrollbar">
                 {cart.items.map((item) => (
-                  <li key={item.name} className="list-item text-gray-700">
+                  <li key={item.name} className="list-item text-slate-300">
                     {item.name} - {item.amount}x
                     <Button
                       className="ml-2 !rounded-full p-1"
