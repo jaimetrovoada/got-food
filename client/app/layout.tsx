@@ -8,7 +8,6 @@ import Header from "@/components/Header";
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
   subsets: ["latin"],
-  display: "swap",
 });
 
 export default async function RootLayout({
@@ -20,11 +19,16 @@ export default async function RootLayout({
 }) {
   const user = await getUser();
   return (
-    <html lang="en" className={inter.className}>
-      <body>
+    <html lang="en">
+      <body
+        className={
+          inter.className +
+          " flex h-dynamic flex-col bg-zinc-900 text-slate-200"
+        }
+      >
         <Providers>
           <Header user={user} />
-          <Layout>{children}</Layout>
+          {children}
         </Providers>
       </body>
     </html>
