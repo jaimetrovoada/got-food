@@ -2,17 +2,18 @@
 import Button from "../Button";
 import { useForm } from "react-hook-form";
 import authService from "@/lib/authService";
-import { AxiosError } from "axios";
+import Form from "../Form";
+import Input from "./Input";
 import { useRouter } from "next/navigation";
 import { useToasts } from "@/lib/hooks";
 import { UserRole } from "@/types";
 
-interface Inputs {
+type Inputs = {
   name: string;
   email: string;
   password: string;
   role: UserRole;
-}
+};
 interface Props {}
 
 const RegisterForm = ({}: Props) => {
@@ -48,36 +49,27 @@ const RegisterForm = ({}: Props) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
-    >
-      <div className="flex flex-col">
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("name", { required: true })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("email", { required: true })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("password", { required: true })}
-        />
-      </div>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        label="Name"
+        name="name"
+        register={register}
+        rules={{ required: true }}
+      />
+      <Input
+        label="Email"
+        type="email"
+        name="email"
+        register={register}
+        rules={{ required: true }}
+      />
+      <Input
+        type="password"
+        name="password"
+        label="Password"
+        register={register}
+        rules={{ required: true }}
+      />
 
       <fieldset className="flex flex-row gap-4">
         <legend>I want to add my restaurants: </legend>
@@ -108,7 +100,7 @@ const RegisterForm = ({}: Props) => {
           Reset
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 

@@ -4,14 +4,16 @@ import { IUser } from "@/types";
 import { UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
+import Form from "../Form";
+import Input from "./Input";
 
-interface Inputs {
+type Inputs = {
   name: string;
   description: string;
   price: number;
   category: string;
   image?: File;
-}
+};
 
 interface MenuFormProps {
   user: IUser;
@@ -61,47 +63,34 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      onReset={() => reset()}
-      className="flex flex-col gap-4 p-4"
-    >
-      <div className="flex flex-col">
-        <label htmlFor="name">Name</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("name", { required: !initialValues?.name })}
-        />
-      </div>
+    <Form onSubmit={handleSubmit(onSubmit)} onReset={() => reset()}>
+      <Input
+        label="Name"
+        name="name"
+        register={register}
+        rules={{ required: !initialValues?.name }}
+      />
 
-      <div className="flex flex-col">
-        <label htmlFor="description">Description</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("description", { required: !initialValues?.name })}
-        />
-      </div>
+      <Input
+        label="Description"
+        name="description"
+        register={register}
+        rules={{ required: !initialValues?.description }}
+      />
 
-      <div className="flex flex-col">
-        <label htmlFor="category">Category</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("category", { required: !initialValues?.name })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="price">Price</label>
-        <div className="flex w-full flex-row">
-          <span className="rounded-xl rounded-r-none border bg-gray-200 p-2 text-gray-600">
-            $
-          </span>
-          <input
-            className="flex-1 rounded-xl rounded-l-none border p-2 focus:outline-none"
-            type="number"
-            {...register("price", { min: 0, required: !initialValues?.name })}
-          />
-        </div>
-      </div>
+      <Input
+        label="Category"
+        name="category"
+        register={register}
+        rules={{ required: !initialValues?.category }}
+      />
+      <Input
+        label="Price"
+        name="price"
+        type="number"
+        register={register}
+        rules={{ required: !initialValues?.price, min: 0 }}
+      />
 
       <div className="flex flex-row">
         <label
@@ -133,7 +122,7 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
           Reset
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 

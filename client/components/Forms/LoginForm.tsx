@@ -5,13 +5,15 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useToasts } from "@/lib/hooks";
+import Form from "../Form";
+import Input from "./Input";
 
 interface Props {}
 
-interface Inputs {
+export type Inputs = {
   email: string;
   password: string;
-}
+};
 
 const LoginForm = ({}: Props) => {
   const searchParams = useSearchParams();
@@ -21,6 +23,7 @@ const LoginForm = ({}: Props) => {
 
   const email = watch("email");
   const password = watch("password");
+  console.log({ email, password });
 
   const onSubmit = async (data: Inputs) => {
     const res = await signIn("credentials", {
@@ -38,31 +41,21 @@ const LoginForm = ({}: Props) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
-      onReset={() => reset()}
-    >
-      <div className="flex flex-col">
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("email", {
-            required: true,
-          })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("password", { required: true })}
-        />
-      </div>
+    <Form onSubmit={handleSubmit(onSubmit)} onReset={() => reset()}>
+      <Input
+        label="Email"
+        type="email"
+        name="email"
+        register={register}
+        rules={{ required: true }}
+      />
+      <Input
+        label="Password"
+        type="password"
+        name="password"
+        register={register}
+        rules={{ required: true }}
+      />
       <Button
         as={Link}
         href="/auth/register"
@@ -79,7 +72,7 @@ const LoginForm = ({}: Props) => {
           Reset
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 

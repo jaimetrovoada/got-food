@@ -6,13 +6,15 @@ import { Trash, UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
+import Form from "../Form";
+import Input from "./Input";
 
-interface Inputs {
+type Inputs = {
   name: string;
   description: string;
   address: string;
   logo?: File;
-}
+};
 interface Props {
   user: IUser;
   initialValues?: IRestaurant;
@@ -66,7 +68,7 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
   };
 
   return (
-    <form
+    <Form
       onSubmit={handleSubmit(onSubmit)}
       onReset={() => reset()}
       className={
@@ -75,32 +77,26 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
           : "flex flex-col gap-4 p-4"
       }
     >
-      <div className="flex flex-col">
-        <label htmlFor="name">Name</label>
-        <input
-          id="name"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("name", { required: !initialValues?.name })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="description">Description</label>
-        <input
-          id="description"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("description", {
-            required: !initialValues?.description,
-          })}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="address">Address</label>
-        <input
-          id="address"
-          className="rounded-xl border p-2 focus:outline-none"
-          {...register("address", { required: !initialValues?.address })}
-        />
-      </div>
+      <Input
+        name="name"
+        label="Name"
+        register={register}
+        rules={{ required: !initialValues?.name }}
+      />
+      <Input
+        name="description"
+        label="Description"
+        register={register}
+        rules={{
+          required: !initialValues?.description,
+        }}
+      />
+      <Input
+        name="address"
+        label="Address"
+        register={register}
+        rules={{ required: !initialValues?.address }}
+      />
       <div className="flex flex-row">
         <label
           htmlFor="logo"
@@ -140,7 +136,7 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
           </Button>
         )}
       </div>
-    </form>
+    </Form>
   );
 };
 

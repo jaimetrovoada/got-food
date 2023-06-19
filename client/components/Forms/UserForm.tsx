@@ -5,12 +5,14 @@ import { IUser } from "@/types";
 import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
+import Form from "../Form";
+import Input from "./Input";
 
-interface Inputs {
+type Inputs = {
   name?: string;
   email?: string;
   password?: string;
-}
+};
 interface Props {
   user: IUser;
 }
@@ -39,35 +41,18 @@ const UserForm = ({ user }: Props) => {
     }
   };
   return (
-    <form
+    <Form
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
     >
-      <div className="flex flex-col">
-        <label htmlFor="name">Name</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          id="name"
-          {...register("name")}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="email">Email</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          id="email"
-          {...register("email")}
-        />
-      </div>
-      <div className="flex flex-col">
-        <label htmlFor="password">Password</label>
-        <input
-          className="rounded-xl border p-2 focus:outline-none"
-          id="password"
-          type="password"
-          {...register("password")}
-        />
-      </div>
+      <Input name="name" label="Name" register={register} />
+      <Input name="email" label="Email" register={register} />
+      <Input
+        name="password"
+        label="Password"
+        type="password"
+        register={register}
+      />
       <div className="flex gap-4">
         <Button type="submit">Submit</Button>
         <Button type="reset" variant="secondary">
@@ -77,7 +62,7 @@ const UserForm = ({ user }: Props) => {
           <Trash className="stroke-red-600" />
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };
 
