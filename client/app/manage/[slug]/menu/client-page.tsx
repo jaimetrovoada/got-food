@@ -3,7 +3,6 @@ import Button from "@/components/Button";
 import CardWrapper from "@/components/CardWrapper";
 import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
-import { useToasts } from "@/lib/hooks";
 import restaurantsService from "@/lib/restaurantsService";
 import { IMenuItem, IUser } from "@/types";
 import { useRef, useState } from "react";
@@ -17,7 +16,6 @@ interface Props {
 }
 
 const MenuPage = ({ menu, user, slug }: Props) => {
-  const { setSuccessMsg, setErrorMsg } = useToasts();
   const [item, setItem] = useState<IMenuItem>(null);
 
   const handleDeleteItem = async (id: string) => {
@@ -27,11 +25,8 @@ const MenuPage = ({ menu, user, slug }: Props) => {
       id
     );
     if (err) {
-      setSuccessMsg("Item deleted");
-    } else {
       console.log({ err });
-      setErrorMsg("something went wrong");
-    }
+    } 
   };
 
   const modalRef = useRef<ModalHandler>(null);
