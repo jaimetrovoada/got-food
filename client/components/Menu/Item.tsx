@@ -11,10 +11,7 @@ interface Props {
 
 const Item = ({ item, addToCart }: Props) => {
   return (
-    <Card
-      key={item.id}
-      className="group flex flex-col gap-2 border border-gray-600/50 bg-neutral-950 p-2 shadow-lg hover:border-blue-800/50"
-    >
+    <Card key={item.id} className="group flex flex-col gap-2 p-2">
       <div className="flex flex-row gap-2">
         <div className="relative aspect-square w-1/3 overflow-hidden rounded-2xl">
           <Image

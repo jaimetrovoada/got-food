@@ -3,13 +3,7 @@ import React from "react";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "rounded" | "square";
-} ;
-
-const baseStyle = "bg-white border border-gray-600";
-const styles = {
-  rounded: `${baseStyle} rounded-2xl`,
-  square: `${baseStyle}`,
-};
+}
 
 const Card = ({
   variant = "rounded",
@@ -17,9 +11,17 @@ const Card = ({
   children,
   ...props
 }: Props) => {
-
   return (
-    <div className={getClasses(baseStyle, { [styles.rounded]: variant === "rounded", [styles.square]: variant === "square" }, className)} {...props}>
+    <div
+      className={getClasses(
+        "border border-gray-600/50 bg-neutral-950 shadow-lg hover:border-neutral-200/75",
+        {
+          "rounded-2xl": variant === "rounded",
+        },
+        className
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

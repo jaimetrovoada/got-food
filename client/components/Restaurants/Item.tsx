@@ -13,7 +13,7 @@ interface Props {
 
 const Item = ({ href, name, imageUrl, description, address }: Props) => {
   return (
-    <Card className="group flex flex-col items-start justify-between shadow-lg gap-2 border border-gray-600/50 bg-neutral-950">
+    <Card className="group flex flex-col items-start justify-between gap-2">
       {imageUrl && (
         <div className="relative h-40 w-full overflow-hidden rounded-t-2xl">
           <Image
@@ -28,7 +28,7 @@ const Item = ({ href, name, imageUrl, description, address }: Props) => {
         <h3 className="text-xl font-semibold leading-6 text-slate-100 group-hover:underline">
           <Link href={href}>{name}</Link>
         </h3>
-        <div className="flex w-fit items-center gap-1 p-2 text-gray-600 rounded-full bg-neutral-800/70 text-xs text-slate-300/70">
+        <div className="flex w-fit items-center gap-1 rounded-full bg-neutral-800/70 p-2 text-xs text-gray-600 text-slate-300/70">
           <MapPin size={12} />
           <span>{address}</span>
         </div>
