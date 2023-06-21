@@ -1,12 +1,12 @@
 "use client";
 
-import { RootState } from "@/lib/reducers/store";
 import React from "react";
-import { useSelector } from "react-redux";
 import Button from "./Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Container from "./Container";
+import Breadcrumb from "./Breadcrumb";
+import { getClasses } from "@/lib/helpers";
 
 interface Props {
   children: React.ReactNode;
@@ -33,27 +33,25 @@ const UserLayout = ({ children }: Props) => {
 
   return (
     <>
-      <Container>
-        <nav>
-          <ul className="flex gap-2">
-            {routes.map((route) => (
-              <li key={route.name}>
-                <Button
-                  as={Link}
-                  href={route.path}
-                  variant="custom"
-                  className={`${
-                    isActive(route.name)
-                      ? "underline"
-                      : "font-normal text-gray-700"
-                  }`}
-                >
-                  {route.name}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <Container className="flex flex-col gap-4 md:flex-row">
+        <ul className="flex w-1/4 flex-row space-y-1 md:flex-col md:pl-2">
+          {routes.map((route) => (
+            <li
+              key={route.name}
+              className={getClasses(
+                "rounded-lg px-4 py-2 text-gray-400 hover:bg-neutral-950/40 hover:text-gray-200",
+                {
+                  "bg-neutral-950 px-4 py-2 text-gray-200 hover:bg-neutral-950":
+                    isActive(route.name),
+                }
+              )}
+            >
+              <Button as={Link} href={route.path} variant="custom">
+                {route.name}
+              </Button>
+            </li>
+          ))}
+        </ul>
         {children}
       </Container>
     </>
