@@ -57,15 +57,7 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
   };
 
   return (
-    <Form
-      onSubmit={handleSubmit(onSubmit)}
-      onReset={() => reset()}
-      className={
-        initialValues
-          ? "flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
-          : "flex flex-col gap-4 p-4"
-      }
-    >
+    <Form onSubmit={handleSubmit(onSubmit)} onReset={() => reset()}>
       <Input
         name="name"
         label="Name"
