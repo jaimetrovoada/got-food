@@ -27,19 +27,8 @@ export interface IOrder {
 }
 
 export interface IOrderedItem {
-  item: IItem;
+  item: string;
   amount: number;
-  _id: string;
-}
-
-export interface IItem {
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  restaurant: string;
-  id: string;
 }
 
 export interface IRestaurant {

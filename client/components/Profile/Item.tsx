@@ -1,5 +1,8 @@
+"use client";
+import { getClasses } from "@/lib/helpers";
 import { IOrder } from "@/types";
 import React from "react";
+import { ChevronDown } from "react-feather";
 import Button from "../Button";
 import Card from "../Card";
 
@@ -15,32 +18,39 @@ const Item = ({ order }: Props) => {
 
   return (
     <Card className="flex flex-col p-2" variant="square">
-      <div className="flex justify-between">
-        <span className="font-bold">{order.restaurant.name}</span>
-        <span className="font-bold">${order.totalPrice}</span>
+      <div className="flex justify-between font-semibold text-slate-200">
+        <span>{order.restaurant.name}</span>
+        <span>${order.totalPrice}</span>
       </div>
-      <span className="text-gray-500">
+      <span className="text-slate-300">
         {dateString} - {time}
       </span>
       <div
-        className={`${
-          isExpanded ? "max-h-screen" : "max-h-0"
-        } overflow-hidden transition-all`}
+        className={getClasses("max-h-0 overflow-hidden transition-all", {
+          "max-h-screen py-4": isExpanded,
+        })}
       >
-        <ul className="list-inside list-disc">
+        <ul className="">
           {order.orderedItems.map((item) => (
-            <li key={item.item.image} className="list-item text-gray-700">
-              {item.item.name} - ${item.item.price} x {item.amount}
+            <li
+              key={item.item}
+              className="border-b border-b-gray-800 p-2 text-sm text-slate-300 hover:bg-zinc-900/20 lg:text-base"
+            >
+              {item.item} x {item.amount}
             </li>
           ))}
         </ul>
       </div>
       <Button
-        className="mx-auto text-gray-500"
-        variant="tertiary"
+        className="mx-auto text-slate-400"
+        variant="custom"
         onClick={() => setIsExpanded((prev) => !prev)}
       >
-        Details
+        <ChevronDown
+          className={getClasses("rotate-0 transition-all", {
+            "rotate-180": isExpanded,
+          })}
+        />{" "}
       </Button>
     </Card>
   );
