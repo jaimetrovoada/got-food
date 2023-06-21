@@ -35,10 +35,7 @@ const UserForm = ({ user }: Props) => {
     }
   };
   return (
-    <Form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-lg"
-    >
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Input name="name" label="Name" register={register} />
       <Input name="email" label="Email" register={register} />
       <Input
