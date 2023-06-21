@@ -18,7 +18,7 @@ const Page = async () => {
 
   return (
     <Container>
-      <UserRestaurantPage restaurants={restaurants} user={user} />;
+      <UserRestaurantPage restaurants={restaurants} user={user} />
     </Container>
   );
 };

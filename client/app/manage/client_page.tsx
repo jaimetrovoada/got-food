@@ -6,9 +6,8 @@ import { RestaurantItem as Item } from "@/components/Manage";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import { IUser, IUserRestaurants } from "@/types";
-import { Suspense, useRef } from "react";
+import { useRef } from "react";
 import { XCircle } from "react-feather";
-import Loader from "@/components/Manage/Loader";
 
 interface Props {
   restaurants: IUserRestaurants[];
@@ -35,27 +34,16 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
         <h3 className="text-center text-3xl font-bold">Your Restaurants</h3>
         <Button
           variant="custom"
-          className="w-full rounded-lg bg-blue-200/50 p-4 font-bold text-blue-600"
+          className="w-full rounded-lg bg-blue-600/20 p-4 font-bold text-slate-200 hover:bg-blue-600/40"
           onClick={() => modalRef.current?.show()}
         >
           Add Restaurant
         </Button>
 
         <div className="flex flex-col gap-4">
-          <Suspense
-            fallback={
-              <>
-                <Loader />
-                <Loader />
-                <Loader />
-                <Loader />
-              </>
-            }
-          >
-            {restaurants?.map((restaurant) => (
-              <Item key={restaurant.id} restaurant={restaurant} />
-            ))}
-          </Suspense>
+          {restaurants?.map((restaurant) => (
+            <Item key={restaurant.id} restaurant={restaurant} />
+          ))}
         </div>
       </CardWrapper>
     </section>
