@@ -4,7 +4,6 @@ import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Menu, Cart } from "@/components/Menu";
 import { getClasses } from "@/lib/helpers";
-import { useToasts } from "@/lib/hooks";
 import {
   addItemToCart,
   clearCartItems,
@@ -30,8 +29,6 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
   const dispatch = useDispatch();
 
   const [cartExpanded, setCartExpanded] = useState<boolean>(false);
-
-  const { setSuccessMsg, setErrorMsg } = useToasts();
 
   console.log({ cart });
 
@@ -83,10 +80,8 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
     );
     if (err) {
       console.log({ err });
-      setErrorMsg("Something went wrong, please try again");
     } else {
       dispatch(clearCartItems(restaurant?.id as string));
-      setSuccessMsg("Order Successful");
     }
   };
 
@@ -132,8 +127,7 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
                   {
                     "border-gray-800 bg-gray-800 font-bold text-gray-200":
                       category === cat,
-                    "border-gray-300 text-gray-300":
-                      category !== cat,
+                    "border-gray-300 text-gray-300": category !== cat,
                   }
                 )}
                 onClick={() => setCategory(cat)}
