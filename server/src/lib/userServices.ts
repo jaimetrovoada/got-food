@@ -38,7 +38,9 @@ export async function getOrders(id: string) {
       id: id,
     },
     relations: {
-      orders: true,
+      orders: {
+        restaurant: true,
+      },
     },
   });
 
