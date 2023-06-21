@@ -6,13 +6,22 @@ import { getUser } from "@/lib/auth";
 import { API } from "@/lib/constants";
 
 const getUserOrders = async () => {
+  try {
+    
   const user = await getUser();
+
   const res = await axios.get<IOrder[]>(`${API.users}/${user.id}/orders`);
-  return res.data;
+    console.log({res:res.data})
+  return [res.data, null] as [IOrder[], Error];
+  } catch (error) {
+    console.log({error})
+
+    return [null, error] as [null, Error];
+  }
 };
 
 const OrdersPage = async () => {
-  const orders = await getUserOrders();
+  const [orders, error] = await getUserOrders();
   console.log({ orders });
 
   if (!orders || orders.length === 0) {
