@@ -1,11 +1,11 @@
 "use client";
 
-import Avatar from "@/assets/avatar.svg";
 import { IUser, UserRole } from "@/types";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRef } from "react";
 import Button from "./Button";
+import Avatar from "./Avatar";
 
 interface Props {
   user: IUser;
@@ -57,11 +57,11 @@ const UserDropdown = ({ user }: Props) => {
         onClick={showMenu}
         variant="custom"
       >
-        <Avatar className="h-full w-full" />
+        <Avatar name={user?.name} />
       </Button>
       <div
         ref={menuRef}
-        className={`absolute right-0 -bottom-0 z-10
+        className={`absolute -bottom-0 right-0 z-10
          hidden w-full translate-y-full flex-row rounded-b-md bg-black opacity-0 shadow-lg transition-all`}
       >
         {menuList.map((item) => (
