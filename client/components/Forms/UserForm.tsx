@@ -1,6 +1,5 @@
 "use client";
 import authService from "@/lib/authService";
-import { useToasts } from "@/lib/hooks";
 import { IUser } from "@/types";
 import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,8 +16,6 @@ interface Props {
   user: IUser;
 }
 const UserForm = ({ user }: Props) => {
-  const { setSuccessMsg, setErrorMsg } = useToasts();
-
   const { register, handleSubmit } = useForm<Inputs>({
     values: {
       name: user.name || "",
@@ -35,9 +32,6 @@ const UserForm = ({ user }: Props) => {
     });
     if (err) {
       console.log(err);
-      setErrorMsg(err.message);
-    } else {
-      setSuccessMsg("User Updated");
     }
   };
   return (

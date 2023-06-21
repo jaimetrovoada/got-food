@@ -1,4 +1,3 @@
-import { useToasts } from "@/lib/hooks";
 import restaurantsService from "@/lib/restaurantsService";
 import { IUser } from "@/types";
 import { UploadCloud } from "react-feather";
@@ -28,8 +27,6 @@ interface MenuFormProps {
 }
 
 const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
-  const { setSuccessMsg, setErrorMsg } = useToasts();
-
   const { register, handleSubmit, watch, reset, setValue } = useForm<Inputs>({
     values: {
       name: initialValues?.name || "",
@@ -56,9 +53,6 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
 
     if (err) {
       console.log({ err });
-      setErrorMsg("something went wrong");
-    } else {
-      setSuccessMsg("Item added");
     }
   };
 

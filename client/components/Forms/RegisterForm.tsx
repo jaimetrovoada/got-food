@@ -5,7 +5,6 @@ import authService from "@/lib/authService";
 import Form from "../Form";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
-import { useToasts } from "@/lib/hooks";
 import { UserRole } from "@/types";
 
 type Inputs = {
@@ -18,7 +17,6 @@ interface Props {}
 
 const RegisterForm = ({}: Props) => {
   const router = useRouter();
-  const { setSuccessMsg, setErrorMsg } = useToasts();
 
   const { register, watch, handleSubmit, reset } = useForm<Inputs>({
     defaultValues: {
@@ -41,9 +39,7 @@ const RegisterForm = ({}: Props) => {
     });
     if (err) {
       console.log({ err });
-      setErrorMsg("Something went wrong, please try again");
     } else {
-      setSuccessMsg("Registration Complete");
       router.replace("/auth/login");
     }
   };

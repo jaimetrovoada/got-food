@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useToasts } from "@/lib/hooks";
 import Form from "../Form";
 import Input from "./Input";
 
@@ -17,7 +16,6 @@ export type Inputs = {
 
 const LoginForm = ({}: Props) => {
   const searchParams = useSearchParams();
-  const { setSuccessMsg, setErrorMsg } = useToasts();
 
   const { register, handleSubmit, watch, reset } = useForm<Inputs>();
 
@@ -26,18 +24,12 @@ const LoginForm = ({}: Props) => {
   console.log({ email, password });
 
   const onSubmit = async (data: Inputs) => {
-    const res = await signIn("credentials", {
+    await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: true,
       callbackUrl: searchParams.get("callbackUrl") || "/",
     });
-
-    if (res.ok) {
-      setSuccessMsg("Logged in");
-    } else {
-      setErrorMsg("something went wrong");
-    }
   };
 
   return (

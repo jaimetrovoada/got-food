@@ -1,5 +1,4 @@
 "use client";
-import { useToasts } from "@/lib/hooks";
 import restaurantsService from "@/lib/restaurantsService";
 import { IRestaurant, IUser } from "@/types";
 import { Trash, UploadCloud } from "react-feather";
@@ -21,7 +20,6 @@ interface Props {
 }
 const RestaurantForm = ({ user, initialValues = null }: Props) => {
   const router = useRouter();
-  const { setSuccessMsg, setErrorMsg } = useToasts();
 
   const { register, handleSubmit, watch, reset, setValue } = useForm<Inputs>({
     values: {
@@ -45,9 +43,7 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
 
     if (err) {
       console.log(err);
-      setErrorMsg("Something went wrong");
     } else {
-      setSuccessMsg("Restaurant deleted successfully");
       router.replace(`/users/${user.id}/restaurants`);
     }
   };
@@ -58,13 +54,6 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
       address: data.address,
       logo: data.logo,
     });
-
-    if (res === 201) {
-      setSuccessMsg("Restaurant created");
-    }
-    if (err) {
-      setErrorMsg("Something went wrong");
-    }
   };
 
   return (
