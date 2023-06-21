@@ -1,12 +1,13 @@
+import { getClasses } from "@/lib/helpers";
 import React from "react";
 
-interface Props {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-const ListItem = ({ children }: Props) => {
+const ListItem = ({ children, className }: Props) => {
   return (
-    <div className="group flex flex-row items-center gap-4 border-b border-gray-200 py-2 px-4 hover:bg-gray-50">
+    <div className={getClasses("group flex flex-row items-center justify-between gap-4 border-b border-b-gray-800 px-4 py-2 hover:bg-zinc-900/30", className)}>
       {children}
     </div>
   );
