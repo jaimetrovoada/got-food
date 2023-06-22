@@ -19,16 +19,7 @@ const UserRestaurantPage = ({ restaurants, user }: Props) => {
   return (
     <section className="mx-auto w-full max-w-screen-lg">
       <Modal ref={modalRef}>
-        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border border-gray-200 bg-white p-2 shadow-lg">
-          <Button
-            variant="tertiary"
-            onClick={() => modalRef?.current.hide()}
-            className="ml-auto text-red-700"
-          >
-            <XCircle />
-          </Button>
-          <RestaurantForm user={user} />
-        </div>
+        <RestaurantForm user={user} />
       </Modal>
       <CardWrapper>
         <h3 className="text-center text-3xl font-bold">Your Restaurants</h3>
