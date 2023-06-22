@@ -1,6 +1,7 @@
 import restaurantsService from "@/lib/restaurantsService";
 import { IOrder } from "@/types";
 import Button from "../Button";
+import CardWrapper from "../CardWrapper";
 
 interface Props {
   order: IOrder | null;
@@ -8,20 +9,20 @@ interface Props {
 }
 const Details = ({ order, restaurantId }: Props) => {
   return (
-    <aside className="hidden w-1/3 flex-col rounded-2xl border border-gray-600 bg-white shadow-lg transition-all md:flex">
-      <p className="border-b border-black/50 p-2 font-bold uppercase shadow-md">
+    <CardWrapper className="h-3/4 md:p-4">
+      <p className="border-b border-white/30 p-2 font-bold uppercase shadow-md">
         Details
       </p>
       {order ? (
         <>
           <div className="flex flex-1 flex-col gap-4 p-2">
-            <p>Order: #{order?.orderId}</p>
+            <p className="text-slate-300">Order: #{order?.orderId}</p>
             <div>
               <p>Items:</p>
               {order.orderedItems.map((item) => (
-                <ul className="list-inside list-disc" key={item._id}>
-                  <li className="list-item text-gray-700">
-                    {item.item.name} - {item.amount}
+                <ul className="" key={item.item}>
+                  <li className="border-b border-b-gray-800 p-2 text-sm text-slate-300 hover:bg-zinc-900/20 lg:text-base">
+                    {item.item} - {item.amount}
                   </li>
                 </ul>
               ))}
@@ -42,7 +43,7 @@ const Details = ({ order, restaurantId }: Props) => {
           <p>Click an order to see details!</p>
         </div>
       )}
-    </aside>
+    </CardWrapper>
   );
 };
 
