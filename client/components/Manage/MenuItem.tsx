@@ -14,26 +14,27 @@ interface Props {
 const Item = ({ item, editItem, deleteItem }: Props) => {
   return (
     <ListItem>
-      <div className="flex flex-row gap-2 rounded-l-2xl">
+      <div className="relative aspect-square w-20 overflow-hidden rounded-xl">
         <Image
           src={item.image}
           alt={`image of the dish - ${item.name}`}
-          width={50}
-          height={50}
-          className="h-auto w-auto rounded-l-2xl object-cover"
+          fill
+          className="object-cover"
         />
-        <div className="flex flex-col gap-2 p-2">
-          <p className="text-xl font-bold">{item.name}</p>
-          <p className="w-fit rounded-full bg-gray-50 px-2 py-1.5 text-xs font-medium capitalize text-gray-600 group-hover:bg-gray-100">
-            {item.category}
-          </p>
-        </div>
       </div>
-      <div className="flex flex-col gap-2">
+      <div>
+        <p className="mb-4 text-lg font-semibold capitalize leading-6 text-slate-100 group-hover:underline">
+          {item.name}
+        </p>
+        <p className="flex w-fit items-center gap-1 rounded-full bg-gray-800/50 px-2 py-1.5 text-xs capitalize text-gray-400">
+          {item.category}
+        </p>
+      </div>
+      <div className="ml-auto flex flex-col gap-2">
         <Button variant="custom" onClick={() => editItem(item)}>
           <Edit3 className="mr-2 stroke-blue-400" />
         </Button>
-        <Button variant="custom" onClick={(e) => deleteItem(item.id)}>
+        <Button variant="custom" onClick={() => deleteItem(item.id)}>
           <Trash className="stroke-red-400" />
         </Button>
       </div>

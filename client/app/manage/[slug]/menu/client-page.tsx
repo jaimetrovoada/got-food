@@ -26,7 +26,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
     );
     if (err) {
       console.log({ err });
-    } 
+    }
   };
 
   const modalRef = useRef<ModalHandler>(null);
@@ -57,7 +57,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
       <CardWrapper>
         <Button
           variant="custom"
-          className="w-full rounded-lg bg-blue-200/50 p-4 font-bold text-blue-600"
+          className="w-full rounded-lg bg-blue-600/20 p-4 font-bold text-slate-200 hover:bg-blue-600/40"
           onClick={() => {
             modalRef.current?.show();
             setItem(null);
