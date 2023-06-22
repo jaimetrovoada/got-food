@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API } from "./constants";
 import { IRestaurant, IMenuItem } from "@/types";
-import { RestaurantResponse } from "@shared/types";
+import { RestaurantResponse } from "@/types";
 
 const createRestaurant = async (
   token: string,

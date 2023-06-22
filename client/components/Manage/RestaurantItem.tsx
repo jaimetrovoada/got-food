@@ -4,7 +4,7 @@ import { MapPin, ArrowRightCircle } from "react-feather";
 import Button from "../Button";
 import Link from "next/link";
 import Image from "next/image";
-import { RestaurantResponse } from "@shared/types";
+import { RestaurantResponse } from "@/types";
 
 interface Props {
   restaurant: RestaurantResponse;

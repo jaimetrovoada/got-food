@@ -1,4 +1,4 @@
-import { RestaurantResponse } from "@shared/types";
+import { RestaurantResponse } from "@/types";
 import { Suspense } from "react";
 import Item from "./Item";
 import Loader from "./Loader";
