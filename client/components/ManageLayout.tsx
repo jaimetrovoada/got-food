@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Button from "./Button";
+import Container from "./Container";
+import SubNav from "./SubNav";
 
 interface Props {
   children: React.ReactNode;
@@ -17,16 +17,16 @@ const ManageLayout = ({ children, params, name }: Props) => {
   const currentRoute = router;
   const routes = [
     {
-      name: "Orders",
-      path: `/manage/${params.slug}/orders`,
+      name: "Details",
+      path: `/manage/${params.slug}/details`,
     },
     {
       name: "Menu",
       path: `/manage/${params.slug}/menu`,
     },
     {
-      name: "Details",
-      path: `/manage/${params.slug}/details`,
+      name: "Orders",
+      path: `/manage/${params.slug}/orders`,
     },
   ];
 
@@ -39,29 +39,10 @@ const ManageLayout = ({ children, params, name }: Props) => {
   };
 
   return (
-    <>
-      <nav className="container mx-auto p-4 xl:px-0">
-        <ul className="flex gap-2">
-          <span className="font-bold">{name}/</span>
-          {routes.map((route) => (
-            <li key={route.name}>
-              <Button
-                as={Link}
-                replace
-                href={route.path}
-                variant="custom"
-                className={`font-normal ${
-                  isActive(route.name) ? "underline" : "text-gray-600"
-                }`}
-              >
-                {route.name}
-              </Button>
-            </li>
-          ))}
-        </ul>
-      </nav>
+    <Container className="flex flex-col gap-4 md:flex-row">
+      <SubNav title={name} routes={routes} isActive={isActive} />
       {children}
-    </>
+    </Container>
   );
 };
 
