@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 import { Providers } from "./providers";
-import Layout from "@/components/Layout";
 import { Inter } from "next/font/google";
 import { getUser } from "@/lib/auth";
 import Header from "@/components/Header";
