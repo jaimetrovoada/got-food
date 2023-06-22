@@ -19,13 +19,15 @@ const Modal = forwardRef<ModalHandler, Props>(({ children }, ref) => {
     hide,
   }));
 
-  if (!showModal) null;
+  if (showModal === false) {
+    return null;
+  }
 
   return (
     <div
-      className={`fixed inset-0 z-20 flex h-screen w-screen items-center justify-center bg-gray-50/50 backdrop-blur-md ${
-        showModal ? "block" : "hidden"
-      }`}
+      className={
+        "fixed inset-0 z-20 flex h-screen w-screen items-center justify-center bg-neutral-900/50 backdrop-blur-md"
+      }
       onClick={(e) => {
         if (e.currentTarget != e.target) return;
         setShowModal(false);
