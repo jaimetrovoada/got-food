@@ -1,6 +1,21 @@
 import { getUser } from "./auth.service";
-import { IOrder } from "@/types";
+import { IOrder, IRestaurant } from "@/types";
 import { API } from "./constants";
+
+const getRestaurants = async (userId: string) => {
+  try {
+    const res = await fetch(`${API.users}/${userId}/restaurants`, {
+      cache: "no-store",
+    });
+
+    const restaurants: IRestaurant[] = await res.json();
+    return [restaurants, null] as [IRestaurant[], Error];
+  } catch (error) {
+    console.log({ error });
+
+    return [null, error] as [null, Error];
+  }
+};
 
 const getOrders = async () => {
   try {
@@ -9,10 +24,10 @@ const getOrders = async () => {
     const res = await fetch(`${API.users}/${user.id}/orders`, {
       cache: "no-store",
     });
-    const data: IOrder[] = await res.json();
+    const orders: IOrder[] = await res.json();
 
-    console.log({ res: data });
-    return [data, null] as [IOrder[], Error];
+    console.log({ orders });
+    return [orders, null] as [IOrder[], Error];
   } catch (error) {
     console.log({ error });
 
@@ -21,5 +36,6 @@ const getOrders = async () => {
 };
 
 export default {
+  getRestaurants,
   getOrders,
 };
