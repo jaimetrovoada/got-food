@@ -11,7 +11,7 @@ import {
 } from "@/lib/reducers/cartSlice";
 import { RootState } from "@/lib/reducers/store";
 import restaurantsService from "@/lib/restaurants.service";
-import { IMenuItem, IRestaurant, IUser, LoginResponse } from "@/types";
+import { IMenuItem, IRestaurant, LoginResponse } from "@/types";
 import React, { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,11 +72,13 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
     const [_, err] = await restaurantsService.placeOrder(
       restaurant.id,
       user.token,
-      cart.items.map((item) => {
-        return { item: item.id, amount: item.amount };
-      }),
-      cart.totalPrice,
-      tableNumber
+      {
+        items: cart.items.map((item) => {
+          return { item: item.id, amount: item.amount };
+        }),
+        totalPrice: cart.totalPrice,
+        tableNumber,
+      }
     );
     if (err) {
       console.log({ err });

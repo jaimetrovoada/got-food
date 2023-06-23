@@ -1,5 +1,6 @@
 import { API } from "./constants";
 import { IRestaurant, IMenuItem } from "@/types";
+import { getUser } from "./auth.service";
 
 const createRestaurant = async (
   token: string,
@@ -132,17 +133,17 @@ const placeOrder = async (
 
 const updateOrder = async (
   restaurantId: string,
-  token: string,
   orderId: string
 ) => {
   try {
+    const user = await getUser()
     const res = await fetch(
       `${API.restaurants}/${restaurantId}/order/${orderId}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${user.token}`,
         },
         body: JSON.stringify({
           status: "fullfilled",

@@ -4,10 +4,10 @@ import { MapPin, ArrowRightCircle } from "react-feather";
 import Button from "../Button";
 import Link from "next/link";
 import Image from "next/image";
-import { RestaurantResponse } from "@/types";
+import { IRestaurant } from "@/types";
 
 interface Props {
-  restaurant: RestaurantResponse;
+  restaurant: IRestaurant;
 }
 
 const RestaurantItem = ({ restaurant }: Props) => {

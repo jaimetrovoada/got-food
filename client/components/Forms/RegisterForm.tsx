@@ -5,13 +5,12 @@ import authService from "@/lib/auth.service";
 import Form from "../Form";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
-import { UserRole } from "@/types";
 
 type Inputs = {
   name: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: "business" | "customer";
 };
 interface Props {}
 
@@ -20,7 +19,7 @@ const RegisterForm = ({}: Props) => {
 
   const { register, watch, handleSubmit, reset } = useForm<Inputs>({
     defaultValues: {
-      role: UserRole.CUSTOMER,
+      role: "customer",
     },
   });
   const name = watch("name");
@@ -74,7 +73,7 @@ const RegisterForm = ({}: Props) => {
             type="radio"
             id="radio_yes"
             {...register("role", { required: true })}
-            value={UserRole.BUSINESS}
+            value={"business"}
           />
           <label htmlFor="role">Yes</label>
         </div>
@@ -83,7 +82,7 @@ const RegisterForm = ({}: Props) => {
             type="radio"
             id="radio_no"
             {...register("role", { required: true })}
-            value={UserRole.CUSTOMER}
+            value={"customer"}
           />
           <label htmlFor="role">No</label>
         </div>

@@ -1,10 +1,10 @@
-import { RestaurantResponse } from "@/types";
+import { IRestaurant } from "@/types";
 import { Suspense } from "react";
 import Item from "./Item";
 import Loader from "./Loader";
 
 interface Props {
-  restaurants: RestaurantResponse[];
+  restaurants: IRestaurant[];
 }
 
 const List = ({ restaurants }: Props) => {

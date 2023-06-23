@@ -43,10 +43,13 @@ export type OrderRequest = z.infer<typeof orderRequestValidator>;
 export type IOrder = OrderRequest & {
   id: string;
   user: string;
-  restaurant: string;
+  restaurant: {
+    name:string
+  };
   date: Date;
   orderedItems: {
     item: string;
     amount: number;
   }[];
+  orderId:string
 };
