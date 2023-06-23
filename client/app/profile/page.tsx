@@ -1,5 +1,5 @@
 import React from "react";
-import { getUser } from "@/lib/auth";
+import { getUser } from "@/lib/auth.service";
 import UserForm from "@/components/Forms/UserForm";
 
 const UserPage = async () => {
