@@ -16,7 +16,7 @@ export const restaurantRequestValidator = z.object({
   name: z.string(),
   description: z.string(),
   address: z.string(),
-  logo: z.string().url(),
+  logo: z.instanceof(File),
 });
 
 export const menuRequestValidator = z.object({
@@ -24,7 +24,7 @@ export const menuRequestValidator = z.object({
   description: z.string(),
   price: z.coerce.number(),
   category: z.string(),
-  image: z.string().url(),
+  image: z.instanceof(File),
 });
 
 export const orderRequestValidator = z.object({
