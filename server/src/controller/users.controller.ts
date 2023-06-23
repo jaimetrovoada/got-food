@@ -1,9 +1,11 @@
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { registerRequestValidator } from "../../shared/schemas";
+import {
+  registerRequestValidator,
+  loginRequestValidator,
+} from "../lib/schemas/";
 import { hashPassword } from "../lib/helpers";
-import { LoginSchema } from "../lib/schemas";
 import * as userService from "../lib/user.services";
 import config from "../utils/config";
 
@@ -79,7 +81,7 @@ export const loginUser = async (
   next: NextFunction
 ) => {
   try {
-    const validatedUser = LoginSchema.parse({
+    const validatedUser = loginRequestValidator.parse({
       email: req.body.email,
       password: req.body.password,
     });
