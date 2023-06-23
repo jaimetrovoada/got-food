@@ -1,5 +1,5 @@
 "use client";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import { IRestaurant, IUser } from "@/types";
 import { Trash, UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";

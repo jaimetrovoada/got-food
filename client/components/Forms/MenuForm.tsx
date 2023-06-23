@@ -1,4 +1,4 @@
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import { IUser } from "@/types";
 import { UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";

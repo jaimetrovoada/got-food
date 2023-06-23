@@ -1,4 +1,4 @@
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import { IOrder } from "@/types";
 import Button from "../Button";
 import CardWrapper from "../CardWrapper";

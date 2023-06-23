@@ -1,5 +1,5 @@
 import ManageLayout from "@/components/ManageLayout";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 
 interface Props {
   children: React.ReactNode;

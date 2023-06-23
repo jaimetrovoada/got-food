@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import { List, Slider } from "@/components/Restaurants";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 
 const Page = async () => {
   const restaurantsData = getRestaurants();

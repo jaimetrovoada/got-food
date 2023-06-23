@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import CardWrapper from "@/components/CardWrapper";
 import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, IUser } from "@/types";
 import { useRef, useState } from "react";
 import { XCircle } from "react-feather";

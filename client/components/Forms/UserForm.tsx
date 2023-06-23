@@ -1,5 +1,5 @@
 "use client";
-import authService from "@/lib/authService";
+import authService from "@/lib/auth.service";
 import { IUser } from "@/types";
 import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";

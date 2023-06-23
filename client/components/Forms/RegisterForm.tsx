@@ -1,7 +1,7 @@
 "use client";
 import Button from "../Button";
 import { useForm } from "react-hook-form";
-import authService from "@/lib/authService";
+import authService from "@/lib/auth.service";
 import Form from "../Form";
 import Input from "./Input";
 import { useRouter } from "next/navigation";

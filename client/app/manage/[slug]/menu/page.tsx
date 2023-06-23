@@ -1,5 +1,5 @@
 import { getUser } from "@/lib/auth";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import MenuPage from "./client-page";
 
 interface Props {

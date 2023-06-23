@@ -10,7 +10,7 @@ import {
   removeItemFromCart,
 } from "@/lib/reducers/cartSlice";
 import { RootState } from "@/lib/reducers/store";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, IRestaurant, IUser } from "@/types";
 import React, { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";

@@ -1,6 +1,6 @@
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import { getUser } from "@/lib/auth";
-import restaurantsService from "@/lib/restaurantsService";
+import restaurantsService from "@/lib/restaurants.service";
 
 interface Props {
   params: {
