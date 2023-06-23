@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { registerRequestValidator } from "../../shared/schemas";
 import { hashPassword } from "../lib/helpers";
 import { LoginSchema } from "../lib/schemas";
-import * as userService from "../lib/userServices";
+import * as userService from "../lib/user.services";
 import config from "../utils/config";
 
 export const getUser = async (

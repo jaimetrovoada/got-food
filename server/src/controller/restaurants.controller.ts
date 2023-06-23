@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { uploadToFirebase } from "../lib/helpers";
-import * as menuServices from "../lib/menuServices";
-import * as orderServices from "../lib/orderServices";
-import * as restaurantServices from "../lib/restaurantServices";
+import * as menuServices from "../lib/menu.services";
+import * as orderServices from "../lib/order.services";
+import * as restaurantServices from "../lib/restaurant.services";
 
 export const getRestaurants = async (
   req: Request,
