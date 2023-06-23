@@ -1,24 +1,62 @@
 import axios from "axios";
-import { UserRole } from "@/types";
+import { LoginResponse, LoginRequest } from "@/types";
 import { API } from "./constants";
+import { NextAuthOptions, getServerSession } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-  restaurants: string[];
-}
-interface LoginRes {
-  user: User;
-  token: string;
-}
+export const nextAuthOptions: NextAuthOptions = {
+  debug: process.env.NODE_ENV !== "production",
+  theme: {
+    colorScheme: "auto", // "auto" | "dark" | "light"
+  },
+  pages: {
+    signIn: "/auth/login",
+  },
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const [res, err] = await authService.login(credentials);
+        if (err) {
+          return null;
+        }
 
-const login = async (credentials: Record<"email" | "password", string>) => {
+        const user = res;
+        return user;
+      },
+    }),
+  ],
+  callbacks: {
+    async session({ session, token }) {
+      session.user = token.user;
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user as LoginResponse;
+      }
+      return token;
+    },
+  },
+};
+
+export const getUser = async () => {
+  const session = await getServerSession(nextAuthOptions);
+
+  return session?.user;
+};
+
+const login = async (credentials: LoginRequest) => {
   try {
-    const res = await axios.post<LoginRes>(API.login, credentials);
+    const res = await axios.post<LoginResponse>(API.login, credentials);
+    console.log({ res: res.data });
 
-    return [res.data, null] as [LoginRes, null];
+    return [res.data, null] as [LoginResponse, null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
