@@ -4,14 +4,14 @@ import CardWrapper from "@/components/CardWrapper";
 import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import restaurantsService from "@/lib/restaurants.service";
-import { IMenuItem, IUser } from "@/types";
+import { IMenuItem, LoginResponse } from "@/types";
 import { useRef, useState } from "react";
 import { XCircle } from "react-feather";
 import { MenuItem as Item } from "@/components/Manage";
 
 interface Props {
   menu: IMenuItem[];
-  user: IUser;
+  user: LoginResponse;
   slug: string;
 }
 
@@ -47,11 +47,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
           >
             <XCircle />
           </Button>
-          {item ? (
-            <MenuForm user={user} slug={slug} initialValues={item} />
-          ) : (
-            <MenuForm user={user} slug={slug} />
-          )}
+          <MenuForm user={user} slug={slug} initialValues={item} />
         </div>
       </Modal>
       <CardWrapper>

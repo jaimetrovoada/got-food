@@ -1,5 +1,5 @@
 import restaurantsService from "@/lib/restaurants.service";
-import { IUser } from "@/types";
+import { IMenuItem, LoginResponse } from "@/types";
 import { UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
@@ -15,15 +15,9 @@ type Inputs = {
 };
 
 interface MenuFormProps {
-  user: IUser;
+  user: LoginResponse;
   slug: string;
-  initialValues?: {
-    name: string;
-    description: string;
-    price: number;
-    category: string;
-    image?: string;
-  };
+  initialValues?: IMenuItem | null;
 }
 
 const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {

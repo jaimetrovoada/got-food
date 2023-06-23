@@ -8,7 +8,7 @@ interface Props {
   };
 }
 
-async function getMenu(slug) {
+async function getMenu(slug: string) {
   const [menu, err] = await restaurantsService.getMenu(slug);
 
   if (err) {
