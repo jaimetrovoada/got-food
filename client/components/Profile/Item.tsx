@@ -13,7 +13,7 @@ const Item = ({ order }: Props) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
 
   const date = new Date(order.date);
-  const dateString = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+  const dateString = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   const time = `${date.getHours()}:${date.getMinutes()}`;
 
   return (
