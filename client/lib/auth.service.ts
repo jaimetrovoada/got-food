@@ -1,4 +1,4 @@
-import { LoginResponse, LoginRequest } from "@/types";
+import { LoginResponse, LoginRequest, RegisterRequest } from "@/types";
 import { API } from "./constants";
 import { NextAuthOptions, getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -67,12 +67,7 @@ const login = async (credentials: LoginRequest) => {
   }
 };
 
-const register = async (payload: {
-  name: string;
-  email: string;
-  password: string;
-  role: "customer" | "business";
-}) => {
+const register = async (payload: RegisterRequest) => {
   try {
     const res = await fetch(API.register, {
       method: "POST",
@@ -91,13 +86,7 @@ const register = async (payload: {
 const updateUser = async (
   token: string,
   id: string,
-  payload: {
-    name: string;
-    email: string;
-    password: string;
-    role: string;
-  }
-) => {
+  payload: RegisterRequest) => {
   try {
     const res = await fetch(`${API.users}/${id}`, {
       method: "PUT",

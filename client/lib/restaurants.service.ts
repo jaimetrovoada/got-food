@@ -1,16 +1,10 @@
 import { API } from "./constants";
-import { IRestaurant, IMenuItem, OrderRequest } from "@/types";
+import { IRestaurant, IMenuItem, OrderRequest, RestaurantRequest } from "@/types";
 import { getUser } from "./auth.service";
 
 const createRestaurant = async (
   token: string,
-  payload: {
-    name: string;
-    description: string;
-    address: string;
-    logo: File | undefined;
-  }
-) => {
+  payload: RestaurantRequest) => {
   console.log({ token, payload });
   try {
     const res = await fetch(API.restaurants, {
