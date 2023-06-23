@@ -67,7 +67,7 @@ export async function stream(id: string) {
 
 export async function create(
   user: User,
-  restaurant: Restaurant,
+  restaurantId: string,
   body: {
     tableNumber: number;
     totalPrice: number;
@@ -78,14 +78,17 @@ export async function create(
     }[];
   }
 ) {
-  const order = new Order();
-  order.tableNumber = body.tableNumber;
-  order.totalPrice = body.totalPrice;
-  order.status = body.status;
-  order.orderedItems = body.orderedItems;
-  order.orderId = await createOrderId(restaurant.id);
-  order.restaurant = restaurant;
-  order.user = user;
+  const order = orderRepository.create({
+    tableNumber: body.tableNumber,
+    totalPrice: body.totalPrice,
+    status: body.status,
+    orderedItems: body.orderedItems,
+    orderId: await createOrderId(restaurantId),
+    user: user,
+    restaurant: {
+      id: restaurantId,
+    },
+  });
 
   const res = await orderRepository.save(order);
 

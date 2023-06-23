@@ -3,6 +3,7 @@ import { uploadToFirebase } from "../lib/helpers";
 import * as menuServices from "../lib/menu.services";
 import * as orderServices from "../lib/order.services";
 import * as restaurantServices from "../lib/restaurant.services";
+import logger from "../utils/logger";
 
 export const getRestaurants = async (
   req: Request,
@@ -177,9 +178,9 @@ export const createOrder = async (
 ) => {
   const { user } = req;
   try {
-    const restaurant = await restaurantServices.get(req.params.id);
+    const restaurantId = req.params.id;
 
-    const result = orderServices.create(user, restaurant, req.body);
+    const result = orderServices.create(user, restaurantId, req.body);
 
     return res.status(201).json(result);
   } catch (err) {
