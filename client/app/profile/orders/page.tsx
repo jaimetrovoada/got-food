@@ -1,27 +1,9 @@
 import React from "react";
-import { IOrder } from "@/types";
 import { Item } from "@/components/Profile";
-import axios from "axios";
-import { getUser } from "@/lib/auth";
-import { API } from "@/lib/constants";
-
-const getUserOrders = async () => {
-  try {
-    
-  const user = await getUser();
-
-  const res = await axios.get<IOrder[]>(`${API.users}/${user.id}/orders`);
-    console.log({res:res.data})
-  return [res.data, null] as [IOrder[], Error];
-  } catch (error) {
-    console.log({error})
-
-    return [null, error] as [null, Error];
-  }
-};
+import userService from "@/lib/user.service";
 
 const OrdersPage = async () => {
-  const [orders, error] = await getUserOrders();
+  const [orders, error] = await userService.getOrders();
   console.log({ orders });
 
   if (!orders || orders.length === 0) {
