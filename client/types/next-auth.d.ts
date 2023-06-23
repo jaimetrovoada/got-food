@@ -1,15 +1,15 @@
 import NextAuth from "next-auth";
 import "next-auth/jwt";
-import { IUser } from ".";
+import { LoginResponse } from ".";
 
 declare module "next-auth" {
   interface Session {
-    user: IUser;
+    user: LoginResponse;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    user: IUser;
+    user: LoginResponse;
   }
 }
