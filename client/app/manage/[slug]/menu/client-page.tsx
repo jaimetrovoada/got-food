@@ -6,7 +6,6 @@ import Modal, { ModalHandler } from "@/components/Modal";
 import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, LoginResponse } from "@/types";
 import { useRef, useState } from "react";
-import { XCircle } from "react-feather";
 import { MenuItem as Item } from "@/components/Manage";
 
 interface Props {
@@ -39,16 +38,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
   return (
     <section className="mx-auto w-full max-w-screen-md overflow-hidden pb-10">
       <Modal ref={modalRef}>
-        <div className="z-50 flex w-full max-w-screen-md flex-col rounded-2xl border border-gray-200 bg-white p-2 shadow-lg">
-          <Button
-            variant="tertiary"
-            onClick={() => modalRef?.current.hide()}
-            className="ml-auto text-red-700"
-          >
-            <XCircle />
-          </Button>
-          <MenuForm user={user} slug={slug} initialValues={item} />
-        </div>
+        <MenuForm user={user} slug={slug} initialValues={item} />
       </Modal>
       <CardWrapper>
         <Button
