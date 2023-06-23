@@ -1,6 +1,6 @@
 "use client";
 
-import { IUser, UserRole } from "@/types";
+import { LoginResponse } from "@/types";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRef } from "react";
@@ -8,7 +8,7 @@ import Button from "./Button";
 import Avatar from "./Avatar";
 
 interface Props {
-  user: IUser;
+  user: LoginResponse;
 }
 
 const UserDropdown = ({ user }: Props) => {
@@ -25,7 +25,7 @@ const UserDropdown = ({ user }: Props) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const menuList =
-    user?.role === UserRole.BUSINESS
+    user?.role === "business"
       ? [
           {
             name: "Profile",

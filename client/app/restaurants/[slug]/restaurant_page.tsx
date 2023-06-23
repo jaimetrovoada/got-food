@@ -11,7 +11,7 @@ import {
 } from "@/lib/reducers/cartSlice";
 import { RootState } from "@/lib/reducers/store";
 import restaurantsService from "@/lib/restaurants.service";
-import { IMenuItem, IRestaurant, IUser } from "@/types";
+import { IMenuItem, IRestaurant, IUser, LoginResponse } from "@/types";
 import React, { useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 interface Props {
   restaurant: IRestaurant;
   menu: IMenuItem[];
-  user: IUser;
+  user: LoginResponse;
 }
 
 const Restaurant = ({ menu, restaurant, user }: Props) => {
