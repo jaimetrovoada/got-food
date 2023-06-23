@@ -1,4 +1,3 @@
-import axios from "axios";
 import { API } from "./constants";
 import { IRestaurant, IMenuItem } from "@/types";
 
@@ -13,12 +12,15 @@ const createRestaurant = async (
 ) => {
   console.log({ token, payload });
   try {
-    const res = await axios.post(API.restaurants, payload, {
+    const res = await fetch(API.restaurants, {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
+      body: JSON.stringify(payload),
     });
+
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -27,8 +29,10 @@ const createRestaurant = async (
 
 const getRestaurants = async () => {
   try {
-    const res = await axios.get<IRestaurant[]>(API.restaurants);
-    return [res.data, null] as [IRestaurant[], null];
+    const res = await fetch(API.restaurants, { cache: "no-store" });
+    const restaurants: IRestaurant[] = await res.json();
+
+    return [restaurants, null] as [IRestaurant[], null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -36,10 +40,12 @@ const getRestaurants = async () => {
 
 const getRestaurant = async (restaurantId: string) => {
   try {
-    const res = await axios.get<IRestaurant>(
-      `${API.restaurants}/${restaurantId}`
-    );
-    return [res.data, null] as [IRestaurant, null];
+    const res = await fetch(`${API.restaurants}/${restaurantId}`, {
+      cache: "no-store",
+    });
+    const restaurant: IRestaurant = await res.json();
+
+    return [restaurant, null] as [IRestaurant, null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -47,10 +53,12 @@ const getRestaurant = async (restaurantId: string) => {
 
 const getMenu = async (restaurantId: string) => {
   try {
-    const res = await axios.get<IMenuItem[]>(
-      `${API.restaurants}/${restaurantId}/menu`
-    );
-    return [res.data, null] as [IMenuItem[], null];
+    const res = await fetch(`${API.restaurants}/${restaurantId}/menu`, {
+      cache: "no-store",
+    });
+    const menu: IMenuItem[] = await res.json();
+
+    return [menu, null] as [IMenuItem[], null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -58,8 +66,10 @@ const getMenu = async (restaurantId: string) => {
 
 const getTrendingRestaurants = async () => {
   try {
-    const res = await axios.get<IRestaurant[]>(`${API.trending}`);
-    return [res.data, null] as [IRestaurant[], null];
+    const res = await fetch(`${API.trending}`, { cache: "no-store" });
+    const trending: IRestaurant[] = await res.json();
+
+    return [trending, null] as [IRestaurant[], null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -77,16 +87,14 @@ const addMenuItem = async (
   }
 ) => {
   try {
-    const res = await axios.post(
-      `${API.restaurants}/${restaurantId}/menu`,
-      payload,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    const res = await fetch(`${API.restaurants}/${restaurantId}/menu`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+      body: JSON.stringify(payload),
+    });
 
     return [res.status, null] as [number, null];
   } catch (err) {
@@ -97,28 +105,24 @@ const addMenuItem = async (
 const placeOrder = async (
   restaurantId: string,
   token: string,
-  items: {
-    item: string;
-    amount: number;
-  }[],
-  totalPrice: number,
-  tableNumber: number
+  payload: {
+    items: {
+      item: string;
+      amount: number;
+    }[];
+    totalPrice: number;
+    tableNumber: number;
+  }
 ) => {
   try {
-    const res = await axios.post(
-      `${API.restaurants}/${restaurantId}/order`,
-      {
-        tableNumber,
-        items,
-        totalPrice,
-        status: "pending",
+    const res = await fetch(`${API.restaurants}/${restaurantId}/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+      body: JSON.stringify(payload),
+    });
 
     return [res.status, null] as [number, null];
   } catch (err) {
@@ -126,14 +130,26 @@ const placeOrder = async (
   }
 };
 
-const updateOrder = async (restaurantId: string, orderId: string) => {
+const updateOrder = async (
+  restaurantId: string,
+  token: string,
+  orderId: string
+) => {
   try {
-    const res = await axios.put(
+    const res = await fetch(
       `${API.restaurants}/${restaurantId}/order/${orderId}`,
       {
-        status: "fullfilled",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          status: "fullfilled",
+        }),
       }
     );
+
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -146,14 +162,16 @@ const deleteMenuItem = async (
   itemId: string
 ) => {
   try {
-    const res = await axios.delete(
+    const res = await fetch(
       `${API.restaurants}/${restaurantId}/menu/${itemId}`,
       {
+        method: "DELETE",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      });
+
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -162,11 +180,13 @@ const deleteMenuItem = async (
 
 const deleteRestaurant = async (token: string, restaurantId: string) => {
   try {
-    const res = await axios.delete(`${API.restaurants}/${restaurantId}`, {
+    const res = await fetch(`${API.restaurants}/${restaurantId}`, {
+      method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
+
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];

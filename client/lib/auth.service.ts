@@ -1,4 +1,3 @@
-import axios from "axios";
 import { LoginResponse, LoginRequest } from "@/types";
 import { API } from "./constants";
 import { NextAuthOptions, getServerSession } from "next-auth";
@@ -53,10 +52,16 @@ export const getUser = async () => {
 
 const login = async (credentials: LoginRequest) => {
   try {
-    const res = await axios.post<LoginResponse>(API.login, credentials);
-    console.log({ res: res.data });
+    const res = await fetch(API.login, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    });
+    const data = await res.json();
 
-    return [res.data, null] as [LoginResponse, null];
+    return [data, null] as [LoginResponse, null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -69,7 +74,14 @@ const register = async (payload: {
   role: "customer" | "business";
 }) => {
   try {
-    const res = await axios.post(API.register, payload);
+    const res = await fetch(API.register, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
     return [res.status, null] as [number, null];
   } catch (err) {
     return [null, err] as [null, Error];
@@ -87,10 +99,13 @@ const updateUser = async (
   }
 ) => {
   try {
-    const res = await axios.put(`${API.users}/${id}`, payload, {
+    const res = await fetch(`${API.users}/${id}`, {
+      method: "PUT",
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify(payload),
     });
 
     return [res.status, null] as [number, null];
