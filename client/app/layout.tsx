@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { Inter } from "next/font/google";
-import { getUser } from "@/lib/auth";
+import { getUser } from "@/lib/auth.service";
 import Header from "@/components/Header";
 
 // If loading a variable font, you don't need to specify the font weight
