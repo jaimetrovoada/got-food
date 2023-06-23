@@ -1,7 +1,7 @@
 import restaurantsService from "@/lib/restaurants.service";
 import Restaurant from "./restaurant_page";
 import { Metadata } from "next";
-import { getUser } from "@/lib/auth";
+import { getUser } from "@/lib/auth.service";
 
 type Props = {
   params: {
