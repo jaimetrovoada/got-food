@@ -20,7 +20,7 @@ export class Order {
   @Column({
     type: "enum",
     enum: ["pending", "completed"],
-    default: "completed",
+    default: "pending",
   })
   status: OrderStatus;
 
