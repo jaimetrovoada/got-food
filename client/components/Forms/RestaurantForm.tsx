@@ -1,6 +1,6 @@
 "use client";
 import restaurantsService from "@/lib/restaurants.service";
-import { IRestaurant, IUser } from "@/types";
+import { IRestaurant, LoginResponse } from "@/types";
 import { Trash, UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
@@ -15,7 +15,7 @@ type Inputs = {
   logo?: File;
 };
 interface Props {
-  user: IUser;
+  user: LoginResponse;
   initialValues?: IRestaurant;
 }
 const RestaurantForm = ({ user, initialValues = null }: Props) => {

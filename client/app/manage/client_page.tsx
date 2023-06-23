@@ -5,13 +5,12 @@ import CardWrapper from "@/components/CardWrapper";
 import { RestaurantItem as Item } from "@/components/Manage";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import Modal, { ModalHandler } from "@/components/Modal";
-import { IUser, IUserRestaurants } from "@/types";
+import { IRestaurant, LoginResponse } from "@/types";
 import { useRef } from "react";
-import { XCircle } from "react-feather";
 
 interface Props {
-  restaurants: IUserRestaurants[];
-  user: IUser;
+  restaurants: IRestaurant[];
+  user: LoginResponse;
 }
 const UserRestaurantPage = ({ restaurants, user }: Props) => {
   const modalRef = useRef<ModalHandler>(null);
