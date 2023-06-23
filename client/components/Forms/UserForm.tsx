@@ -1,6 +1,6 @@
 "use client";
 import authService from "@/lib/auth.service";
-import { IUser } from "@/types";
+import { LoginResponse } from "@/types";
 import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
@@ -13,7 +13,7 @@ type Inputs = {
   password?: string;
 };
 interface Props {
-  user: IUser;
+  user: LoginResponse;
 }
 const UserForm = ({ user }: Props) => {
   const { register, handleSubmit } = useForm<Inputs>({
