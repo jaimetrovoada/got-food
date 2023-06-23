@@ -1,5 +1,5 @@
 import { API } from "./constants";
-import { IRestaurant, IMenuItem } from "@/types";
+import { IRestaurant, IMenuItem, OrderRequest } from "@/types";
 import { getUser } from "./auth.service";
 
 const createRestaurant = async (
@@ -106,14 +106,7 @@ const addMenuItem = async (
 const placeOrder = async (
   restaurantId: string,
   token: string,
-  payload: {
-    items: {
-      item: string;
-      amount: number;
-    }[];
-    totalPrice: number;
-    tableNumber: number;
-  }
+  payload: OrderRequest
 ) => {
   try {
     const res = await fetch(`${API.restaurants}/${restaurantId}/order`, {
@@ -131,12 +124,9 @@ const placeOrder = async (
   }
 };
 
-const updateOrder = async (
-  restaurantId: string,
-  orderId: string
-) => {
+const updateOrder = async (restaurantId: string, orderId: string) => {
   try {
-    const user = await getUser()
+    const user = await getUser();
     const res = await fetch(
       `${API.restaurants}/${restaurantId}/order/${orderId}`,
       {
@@ -171,7 +161,8 @@ const deleteMenuItem = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-      });
+      }
+    );
 
     return [res.status, null] as [number, null];
   } catch (err) {
