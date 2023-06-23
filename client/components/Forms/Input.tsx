@@ -1,4 +1,3 @@
-import React, { forwardRef } from "react";
 import { getClasses } from "@/lib/helpers";
 import { Path, UseFormRegister, RegisterOptions } from "react-hook-form";
 
@@ -31,6 +30,7 @@ const Input = <TFormValues extends Record<string, unknown>>({
       <input
         {...props}
         {...register(name, rules)}
+        id={name}
         className={getClasses(
           "rounded border border-gray-400/40 bg-zinc-900 p-2 placeholder:capitalize",
           className
