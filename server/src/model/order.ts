@@ -30,9 +30,13 @@ export class Order {
   @Column()
   orderId: string;
 
-  @ManyToOne(() => Restaurant, (restaurant) => restaurant.orders)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.orders, {
+    onDelete: "CASCADE",
+  })
   restaurant: Restaurant;
 
-  @ManyToOne(() => User, (user) => user.orders)
+  @ManyToOne(() => User, (user) => user.orders, {
+    onDelete: "CASCADE",
+  })
   user: User;
 }

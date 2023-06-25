@@ -32,7 +32,9 @@ export class Restaurant {
   })
   menuItems: Menu[];
 
-  @ManyToOne(() => User, (user) => user.restaurants)
+  @ManyToOne(() => User, (user) => user.restaurants, {
+    onDelete: "CASCADE",
+  })
   owner: User;
 
   @OneToMany(() => Order, (order) => order.restaurant, {
