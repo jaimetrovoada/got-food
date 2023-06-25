@@ -30,12 +30,14 @@ export type IRestaurant = RestaurantRequest & {
   id: string;
   menu: IMenuItem[];
   orders: IOrder[];
+  logo: string;
 };
 
 export type MenuRequest = z.infer<typeof menuRequestValidator>;
 
 export type IMenuItem = MenuRequest & {
   id: string;
+  image: string;
 };
 
 export type OrderRequest = z.infer<typeof orderRequestValidator>;
@@ -44,12 +46,12 @@ export type IOrder = OrderRequest & {
   id: string;
   user: string;
   restaurant: {
-    name:string
+    name: string;
   };
   date: Date;
   orderedItems: {
     item: string;
     amount: number;
   }[];
-  orderId:string
+  orderId: string;
 };
