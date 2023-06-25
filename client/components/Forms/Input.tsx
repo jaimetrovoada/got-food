@@ -1,5 +1,10 @@
 import { getClasses } from "@/lib/helpers";
-import { Path, UseFormRegister, RegisterOptions } from "react-hook-form";
+import {
+  Path,
+  UseFormRegister,
+  RegisterOptions,
+  FieldError,
+} from "react-hook-form";
 
 type Props<TFormValues> = {
   variant?: "row" | "col";
@@ -7,6 +12,7 @@ type Props<TFormValues> = {
   register: UseFormRegister<TFormValues>;
   rules?: RegisterOptions;
   name: Path<TFormValues>;
+  error?: FieldError;
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "name">;
 
 const Input = <TFormValues extends Record<string, unknown>>({
@@ -16,17 +22,17 @@ const Input = <TFormValues extends Record<string, unknown>>({
   variant = "col",
   register,
   rules,
+  error,
   ...props
 }: Props<TFormValues>) => {
   return (
-    <label
-      htmlFor={name}
+    <div
       className={getClasses("flex", {
         "flex-col": variant === "col",
         "flex-row items-center gap-2": variant === "row",
       })}
     >
-      {label}
+      <label htmlFor={name}>{label}</label>
       <input
         {...props}
         {...register(name, rules)}
@@ -36,7 +42,8 @@ const Input = <TFormValues extends Record<string, unknown>>({
           className
         )}
       />
-    </label>
+      {error && <p className="text-xs text-red-600">{label} is required</p>}
+    </div>
   );
 };
 
