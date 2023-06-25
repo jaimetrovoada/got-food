@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod";
 
 export const registerRequestValidator = z.object({
   name: z.string(),
@@ -13,10 +13,10 @@ export const loginRequestValidator = z.object({
 });
 
 export const restaurantRequestValidator = z.object({
-  name: z.string(),
-  description: z.string(),
-  address: z.string(),
-  logo: z.instanceof(File),
+  name: z.string().nonempty(),
+  description: z.string().nonempty(),
+  address: z.string().nonempty(),
+  logo: z.custom<File>((v) => v instanceof File),
 });
 
 export const menuRequestValidator = z.object({
