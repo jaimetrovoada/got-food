@@ -48,7 +48,7 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
     if (err) {
       console.log(err);
     } else {
-      router.replace(`/users/${user.id}/restaurants`);
+      router.replace(`/manage`);
     }
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
