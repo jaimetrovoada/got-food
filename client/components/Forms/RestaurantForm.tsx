@@ -97,6 +97,7 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
         </Button>
         {initialValues && (
           <Button
+            type="button"
             onClick={handleDeleteRestaurant}
             variant="custom"
             className="ml-auto"
