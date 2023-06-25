@@ -1,19 +1,28 @@
 import { API } from "./constants";
-import { IRestaurant, IMenuItem, OrderRequest, RestaurantRequest } from "@/types";
+import {
+  IRestaurant,
+  IMenuItem,
+  OrderRequest,
+  RestaurantRequest,
+} from "@/types";
 import { getUser } from "./auth.service";
 
-const createRestaurant = async (
-  token: string,
-  payload: RestaurantRequest) => {
+const createRestaurant = async (token: string, payload: RestaurantRequest) => {
   console.log({ token, payload });
+
+  const formData = new FormData();
+  formData.append("logo", payload.logo);
+  formData.append("name", payload.name);
+  formData.append("address", payload.address);
+  formData.append("description", payload.description);
+
   try {
     const res = await fetch(API.restaurants, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     return [res.status, null] as [number, null];
