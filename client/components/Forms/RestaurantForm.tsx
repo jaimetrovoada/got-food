@@ -1,39 +1,43 @@
 "use client";
 import restaurantsService from "@/lib/restaurants.service";
 import { IRestaurant, LoginResponse } from "@/types";
-import { Trash, UploadCloud } from "react-feather";
+import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
 import { useRouter } from "next/navigation";
 import Form from "../Form";
 import Input from "./Input";
+import ImageInput from "./ImageInput";
 
 type Inputs = {
   name: string;
   description: string;
   address: string;
-  logo?: File;
+  logo: FileList;
 };
 interface Props {
   user: LoginResponse;
-  initialValues?: IRestaurant;
+  initialValues?: IRestaurant | null;
 }
-const RestaurantForm = ({ user, initialValues = null }: Props) => {
+const RestaurantForm = ({ user, initialValues }: Props) => {
   const router = useRouter();
 
-  const { register, handleSubmit, watch, reset, setValue } = useForm<Inputs>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>({
     values: {
-      name: initialValues?.name || "",
-      description: initialValues?.description || "",
-      address: initialValues?.address || "",
+      name: initialValues?.name || undefined,
+      description: initialValues?.description || null,
+      address: initialValues?.address || null,
+      logo: null,
     },
   });
 
-  const name = watch("name");
-  const description = watch("description");
-  const address = watch("address");
   const logo = watch("logo");
-  console.log({ logo });
 
   const handleDeleteRestaurant = async () => {
     const [_, err] = await restaurantsService.deleteRestaurant(
@@ -48,60 +52,44 @@ const RestaurantForm = ({ user, initialValues = null }: Props) => {
     }
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const [res, err] = await restaurantsService.createRestaurant(user.token, {
+    console.log("submit", { data });
+    const [_, err] = await restaurantsService.createRestaurant(user.token, {
       name: data.name,
       description: data.description,
       address: data.address,
-      logo: data.logo,
+      logo: data.logo[0],
     });
+    if (err) {
+      console.log(err);
+    } else {
+      router.refresh();
+    }
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} onReset={() => reset()}>
-      <Input
-        name="name"
-        label="Name"
-        register={register}
-        rules={{ required: !initialValues?.name }}
-      />
+      <Input name="name" label="Name" register={register} error={errors.name} />
       <Input
         name="description"
         label="Description"
         register={register}
-        rules={{
-          required: !initialValues?.description,
-        }}
+        rules={{ required: !initialValues }}
+        error={errors.description}
       />
       <Input
         name="address"
         label="Address"
         register={register}
-        rules={{ required: !initialValues?.address }}
+        rules={{ required: !initialValues }}
+        error={errors.address}
       />
-      <div className="flex flex-row">
-        <label
-          htmlFor="logo"
-          className={`flex w-fit cursor-pointer flex-row gap-2 rounded-lg border ${
-            logo
-              ? "border-green-600 text-green-600"
-              : "border-blue-600 text-blue-600"
-          } p-2 font-bold shadow-lg`}
-        >
-          <UploadCloud />
-          <span>{logo ? "Selected" : "Upload Image"}</span>
-        </label>
-        <input
-          id="logo"
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          multiple={false}
-          className="hidden"
-          {...register("logo", { required: !initialValues?.logo })}
-          onChange={(e) => {
-            setValue("logo", e.target.files[0]);
-          }}
-        />
-      </div>
+      <ImageInput
+        name="logo"
+        register={register}
+        rules={{ required: !initialValues }}
+        error={errors.logo}
+        isSelected={!!logo || !!initialValues}
+      />
       <div className="flex gap-4">
         <Button type="submit">Submit</Button>
         <Button type="reset" variant="secondary">

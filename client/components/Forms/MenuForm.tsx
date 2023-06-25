@@ -1,17 +1,17 @@
 import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, LoginResponse } from "@/types";
-import { UploadCloud } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
 import Form from "../Form";
 import Input from "./Input";
+import ImageInput from "./ImageInput";
 
 type Inputs = {
   name: string;
   description: string;
   price: number;
   category: string;
-  image?: File;
+  image: File;
 };
 
 interface MenuFormProps {
@@ -21,19 +21,22 @@ interface MenuFormProps {
 }
 
 const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
-  const { register, handleSubmit, watch, reset, setValue } = useForm<Inputs>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>({
     values: {
-      name: initialValues?.name || "",
-      description: initialValues?.description || "",
+      name: initialValues?.name || null,
+      description: initialValues?.description || null,
       price: initialValues?.price || 0,
-      category: initialValues?.category || "",
+      category: initialValues?.category || null,
+      image: null,
     },
   });
 
-  const name = watch("name");
-  const description = watch("description");
-  const price = watch("price");
-  const category = watch("category");
   const image = watch("image");
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -56,54 +59,37 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
         label="Name"
         name="name"
         register={register}
-        rules={{ required: !initialValues?.name }}
+        rules={{ required: !initialValues }}
       />
 
       <Input
         label="Description"
         name="description"
         register={register}
-        rules={{ required: !initialValues?.description }}
+        rules={{ required: !initialValues }}
       />
 
       <Input
         label="Category"
         name="category"
         register={register}
-        rules={{ required: !initialValues?.category }}
+        rules={{ required: !initialValues }}
       />
       <Input
         label="Price"
         name="price"
         type="number"
         register={register}
-        rules={{ required: !initialValues?.price, min: 0 }}
+        rules={{ required: !initialValues, min: 0 }}
       />
 
-      <div className="flex flex-row">
-        <label
-          htmlFor="image"
-          className={`flex w-fit cursor-pointer flex-row gap-2 rounded-lg border ${
-            image
-              ? "border-green-600 text-green-600"
-              : "border-blue-600 text-blue-600"
-          } p-2 font-bold shadow-lg`}
-        >
-          <UploadCloud />
-          <span>{image ? "Selected" : "Upload Image"}</span>
-        </label>
-        <input
-          id="image"
-          type="file"
-          accept="image/png,image/jpeg,image/webp"
-          multiple={false}
-          className="hidden"
-          {...(register("image"), { required: !initialValues?.name })}
-          onChange={(e) => {
-            setValue("image", e.target.files[0]);
-          }}
-        />
-      </div>
+      <ImageInput
+        name="image"
+        register={register}
+        rules={{ required: !initialValues }}
+        error={errors.image}
+        isSelected={!!image || !!initialValues}
+      />
       <div className="flex gap-4">
         <Button type="submit">Submit</Button>
         <Button type="reset" variant="secondary">
