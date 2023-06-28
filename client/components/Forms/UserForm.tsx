@@ -1,6 +1,9 @@
 "use client";
 import authService from "@/lib/auth.service";
+import userService from "@/lib/user.service";
 import { LoginResponse } from "@/types";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Trash } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Button from "../Button";
@@ -16,6 +19,8 @@ interface Props {
   user: LoginResponse;
 }
 const UserForm = ({ user }: Props) => {
+  const router = useRouter();
+
   const { register, handleSubmit } = useForm<Inputs>({
     values: {
       name: user.name || "",
@@ -34,6 +39,19 @@ const UserForm = ({ user }: Props) => {
       console.log(err);
     }
   };
+
+  const handleDelete = async () => {
+    const [res, error] = await userService.deleteUser(user.token, user.id);
+    if (res?.ok) {
+      signOut();
+      router.replace("/");
+    }
+
+    if (error) {
+      console.log({ error });
+    }
+  };
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Input name="name" label="Name" register={register} />
@@ -49,7 +67,12 @@ const UserForm = ({ user }: Props) => {
         <Button type="reset" variant="secondary">
           Reset
         </Button>
-        <Button onClick={null} variant="custom" className="ml-auto">
+        <Button
+          type="button"
+          onClick={handleDelete}
+          variant="custom"
+          className="ml-auto"
+        >
           <Trash className="stroke-red-600" />
         </Button>
       </div>

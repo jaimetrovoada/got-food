@@ -35,7 +35,31 @@ const getOrders = async () => {
   }
 };
 
+const deleteUser = async (token: string, userId: string) => {
+  try {
+    const res = await fetch(`${API.users}/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // const body = await res.json();
+    const data = {
+      ok: res.ok,
+      status: res.status,
+    };
+    console.log({ data, res });
+
+    return [data, null] as [typeof data, null];
+  } catch (error) {
+    console.log({ error });
+    return [null, error] as [null, Error];
+  }
+};
+
 export default {
   getRestaurants,
   getOrders,
+  deleteUser,
 };
