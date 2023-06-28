@@ -27,8 +27,6 @@ const RegisterForm = ({}: Props) => {
   const password = watch("password");
   const role = watch("role");
 
-  console.log({ name, email, password, role });
-
   const onSubmit = async (data: Inputs) => {
     const [_, err] = await authService.register({
       role: data.role,
