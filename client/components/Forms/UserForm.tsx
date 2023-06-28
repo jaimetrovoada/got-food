@@ -60,6 +60,7 @@ const UserForm = ({ user }: Props) => {
         name="password"
         label="Password"
         type="password"
+        autoComplete="new-password"
         register={register}
       />
       <div className="flex gap-4">

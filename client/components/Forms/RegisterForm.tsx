@@ -60,6 +60,7 @@ const RegisterForm = ({}: Props) => {
         type="password"
         name="password"
         label="Password"
+        autoComplete="new-password"
         register={register}
         rules={{ required: true }}
       />

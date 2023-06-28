@@ -63,6 +63,7 @@ const LoginForm = ({}: Props) => {
         label="Password"
         type="password"
         name="password"
+        autoComplete="password"
         register={register}
         rules={{ required: true }}
       />
