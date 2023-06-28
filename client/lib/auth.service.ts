@@ -20,18 +20,28 @@ export const nextAuthOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         const [res, err] = await authService.login(credentials);
-        if (err) {
+
+        if (res.status === 401) {
+          throw new Error("Invalid Password");
+        }
+
+        if (res.status === 404) {
+          throw new Error("User Not Found");
+        }
+        if (err || !res.ok) {
           return null;
         }
 
-        const user = res;
+        const user = res.body;
         return user;
       },
     }),
   ],
   callbacks: {
     async session({ session, token }) {
-      session.user = token.user;
+      if (token) {
+        session.user = token.user;
+      }
 
       return session;
     },
@@ -59,9 +69,13 @@ const login = async (credentials: LoginRequest) => {
       },
       body: JSON.stringify(credentials),
     });
-    const data = await res.json();
+    const data = {
+      ok: res.ok,
+      status: res.status,
+      body: await res.json(),
+    };
 
-    return [data, null] as [LoginResponse, null];
+    return [data, null] as [typeof data, null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
@@ -86,7 +100,8 @@ const register = async (payload: RegisterRequest) => {
 const updateUser = async (
   token: string,
   id: string,
-  payload: RegisterRequest) => {
+  payload: RegisterRequest
+) => {
   try {
     const res = await fetch(`${API.users}/${id}`, {
       method: "PUT",

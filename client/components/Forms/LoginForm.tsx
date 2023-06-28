@@ -3,9 +3,10 @@ import Button from "../Button";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Form from "../Form";
 import Input from "./Input";
+import { useState } from "react";
 
 interface Props {}
 
@@ -16,20 +17,37 @@ export type Inputs = {
 
 const LoginForm = ({}: Props) => {
   const searchParams = useSearchParams();
+  const [error, setError] = useState<string>(undefined);
+
+  const router = useRouter();
 
   const { register, handleSubmit, watch, reset } = useForm<Inputs>();
 
   const email = watch("email");
   const password = watch("password");
-  console.log({ email, password });
 
   const onSubmit = async (data: Inputs) => {
-    await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: true,
-      callbackUrl: searchParams.get("callbackUrl") || "/",
-    });
+    try {
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+        callbackUrl: searchParams.get("callbackUrl") || "/",
+      });
+      console.log({ res });
+      if (res?.error) {
+        setError(res.error);
+        setTimeout(() => {
+          setError(undefined);
+        }, 5000);
+      }
+
+      if (!res.error) {
+        router.replace(res.url || "/");
+      }
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   return (
@@ -48,6 +66,7 @@ const LoginForm = ({}: Props) => {
         register={register}
         rules={{ required: true }}
       />
+      {error && <p className="text-xs capitalize text-red-500">{error}</p>}
       <Button
         as={Link}
         href="/auth/register"
