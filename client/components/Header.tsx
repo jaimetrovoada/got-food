@@ -1,19 +1,21 @@
 import Link from "next/link";
-import UserDropdown from "./UserDropdown";
-import { LoginResponse } from "@/types";
+import { Menu } from "react-feather";
+import Button from "./Button";
 
 interface Props {
-  user: LoginResponse;
+  toggleMenu: () => void;
 }
 
-const Header = ({ user }: Props) => {
+const Header = ({ toggleMenu }: Props) => {
   return (
-    <header className="relative border-gray-700 bg-black">
-      <nav className="container mx-auto flex flex-row items-center justify-between px-4 py-2 xl:px-0">
+    <header className="">
+      <nav className="container mx-auto flex flex-row items-center gap-2 px-4 py-2 xl:px-0">
+        <Button variant="custom" onClick={toggleMenu} className="lg:hidden">
+          <Menu />
+        </Button>
         <Link href="/" className="text-3xl font-bold uppercase">
           got food?
         </Link>
-        <UserDropdown user={user} />
       </nav>
     </header>
   );

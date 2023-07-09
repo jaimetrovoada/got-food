@@ -6,12 +6,12 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 const Container = ({ children, className, ...props }: Props) => {
   return (
-    <main
-      className={getClasses("container mx-auto flex-1 p-4 lg:px-0", className)}
+    <section
+      className={getClasses("px-4 flex-1 p-4", className)}
       {...props}
     >
       {children}
-    </main>
+    </section>
   );
 };
 

@@ -5,7 +5,7 @@ interface Props {
 }
 const Avatar = ({ name }: Props) => {
   return (
-    <div className="relative aspect-square w-10 h-10">
+    <div className="relative aspect-square h-10 w-10 overflow-hidden">
       <Image
         src={`https://source.boringavatars.com/beam/120/${name}?colors=264653,2a9d8f,e9c46a,f4a261,e76f51`}
         alt="avatar"

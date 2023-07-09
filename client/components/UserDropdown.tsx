@@ -51,7 +51,7 @@ const UserDropdown = ({ user }: Props) => {
     );
   }
   return (
-    <div className="h-10 w-10">
+    <div className="relative">
       <Button
         className="h-10 w-10 rounded-full border border-black/50 p-0"
         onClick={showMenu}
@@ -61,15 +61,14 @@ const UserDropdown = ({ user }: Props) => {
       </Button>
       <div
         ref={menuRef}
-        className={`absolute -bottom-0 right-0 z-10
-         hidden w-full translate-y-full flex-row rounded-b-md bg-black opacity-0 shadow-lg transition-all`}
+        className="absolute -bottom-0 right-0 z-10 hidden w-auto translate-y-full flex-col gap-1 rounded-b-md opacity-0 shadow-lg transition-all lg:right-1/2 lg:translate-x-1/2"
       >
         {menuList.map((item) => (
           <Button
             as={Link}
             href={item.link}
             variant="custom"
-            className="flex-1 rounded-xl p-2 text-center font-semibold text-slate-200 hover:bg-zinc-900/50"
+            className="rounded-xl border border-gray-600/50 bg-neutral-950 p-2 text-center font-semibold text-slate-200 shadow-lg hover:border-neutral-200/75"
             key={item.name}
           >
             {item.name}
@@ -78,7 +77,7 @@ const UserDropdown = ({ user }: Props) => {
         <Button
           onClick={() => signOut()}
           variant="custom"
-          className="flex-1 rounded-xl p-2 text-center font-semibold text-slate-200 hover:bg-zinc-900/50"
+          className="rounded-xl border border-gray-600/50 bg-neutral-950 p-2 text-center font-semibold text-slate-200 shadow-lg hover:border-neutral-200/75"
         >
           Logout
         </Button>
