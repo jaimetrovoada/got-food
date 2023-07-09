@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import { getUser } from "@/lib/auth.service";
 import userService from "@/lib/user.service";
@@ -26,12 +27,9 @@ export default async function RootLayout({
           " flex h-dynamic flex-col overflow-hidden bg-zinc-900 text-slate-200"
         }
       >
-        <header className="">
-          <nav className="container mx-auto flex flex-row items-center gap-2 px-4 py-2 xl:px-0">
-            <h1 className="text-3xl font-bold uppercase">got food?</h1>
-          </nav>
-        </header>
-        {children}
+        <Providers>
+          <AppUi user={user} restaurants={res}>{children}</AppUi>
+        </Providers>
       </body>
     </html>
   );

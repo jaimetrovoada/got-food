@@ -10,7 +10,7 @@ const Page = async () => {
     trendingRestaurantsData,
   ]);
   return (
-    <Container className="flex flex-col gap-8 pt-4">
+    <Container className="flex flex-col gap-8">
       {trendingRestaurants ? (
         <div>
           <p className="mb-4 text-3xl font-bold capitalize">
