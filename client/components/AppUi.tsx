@@ -5,16 +5,16 @@ import SideMenu from "./SideMenu";
 import { useState } from "react";
 
 interface Props {
-  user?: LoginResponse;
-  restaurants?: IRestaurant[];
+  user: LoginResponse | undefined;
+  restaurants: IRestaurant[] | undefined;
   children?: React.ReactNode;
 }
 const AppUi = ({ user, restaurants, children }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(prev => !prev);
-  }
+    setIsOpen((prev) => !prev);
+  };
 
   return (
     <>
