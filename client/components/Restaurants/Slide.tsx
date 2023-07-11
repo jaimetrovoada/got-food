@@ -37,7 +37,7 @@ const TrendingSlide = ({ restaurant }: Props) => {
 
 TrendingSlide.Skeleton = function TrendingSlideSkeleton() {
   return (
-    <Skeleton className="flex w-full flex-none snap-center snap-always flex-col rounded-2xl md:w-1/2 xl:w-1/3" />
+    <Skeleton className="flex h-28 w-full flex-none snap-center snap-always flex-col rounded-2xl md:w-1/2 xl:w-1/3" />
   );
 };
 
