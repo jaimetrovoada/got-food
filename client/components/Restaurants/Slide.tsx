@@ -22,7 +22,7 @@ const TrendingSlide = ({ restaurant }: Props) => {
   return (
     <div
       style={style(restaurant)}
-      className="flex w-full flex-none snap-center snap-always flex-col rounded-2xl bg-hero-pattern bg-cover bg-center bg-no-repeat md:w-1/2 xl:w-1/3"
+      className="flex w-full flex-none snap-center snap-always flex-col overflow-hidden rounded-2xl bg-hero-pattern bg-cover bg-center bg-no-repeat md:w-1/2 xl:w-1/3"
     >
       <Button as={Link} variant="custom" href={`/restaurants/${restaurant.id}`}>
         <div className="ml-auto flex flex-col gap-2 px-4 py-8 text-right">
