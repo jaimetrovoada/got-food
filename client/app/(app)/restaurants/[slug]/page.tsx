@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Page = async ({ params }: Props) => {
-  const user = await getUser();
+  const [user, _] = await getUser();
   const { restaurant, menu } = await getRestaurant(params);
   return <Restaurant restaurant={restaurant} menu={menu} user={user} />;
 };

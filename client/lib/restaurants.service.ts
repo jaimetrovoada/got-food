@@ -129,7 +129,7 @@ const placeOrder = async (
 
 const updateOrder = async (restaurantId: string, orderId: string) => {
   try {
-    const user = await getUser();
+    const [user, _] = await getUser();
     const res = await fetch(
       `${API.restaurants}/${restaurantId}/order/${orderId}`,
       {

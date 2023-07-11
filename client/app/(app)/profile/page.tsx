@@ -3,7 +3,7 @@ import { getUser } from "@/lib/auth.service";
 import UserForm from "@/components/Forms/UserForm";
 
 const UserPage = async () => {
-  const user = await getUser();
+  const [user, _] = await getUser();
 
   return (
     <section className="mx-auto w-full max-w-screen-sm">
