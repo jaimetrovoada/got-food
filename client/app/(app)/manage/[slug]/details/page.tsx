@@ -19,7 +19,7 @@ async function getRestaurant(slug: string) {
 
 const Page = async ({ params }: Props) => {
   const slug = params?.slug as string;
-  const [user, _] = await getUser();
+  const user = await getUser();
 
   const restaurant = await getRestaurant(slug);
 

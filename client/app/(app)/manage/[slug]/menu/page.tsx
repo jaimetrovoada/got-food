@@ -18,7 +18,7 @@ async function getMenu(slug: string) {
 }
 
 const Page = async ({ params }: Props) => {
-  const [user, _] = await getUser();
+  const user = await getUser();
 
   const slug = params?.slug as string;
 

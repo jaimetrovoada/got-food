@@ -21,7 +21,7 @@ const getRestaurants = async (userId: string) => {
 
 const getOrders = async () => {
   try {
-    const [user, _] = await getUser();
+    const user = await getUser();
 
     const res = await fetch(`${API.users}/${user.id}/orders`, {
       cache: "no-store",

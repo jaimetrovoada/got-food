@@ -4,7 +4,7 @@ import userService from "@/lib/user.service";
 import Container from "@/components/Container";
 
 const Page = async () => {
-  const [user, err] = await getUser();
+  const user = await getUser();
   const [restaurants, _] = await userService.getRestaurants(user?.id);
 
   return (

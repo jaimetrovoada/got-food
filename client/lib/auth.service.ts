@@ -49,14 +49,9 @@ export const nextAuthOptions: NextAuthOptions = {
 };
 
 export const getUser = async () => {
-  try {
-    const session = await getServerSession(nextAuthOptions);
+  const session = await getServerSession(nextAuthOptions);
 
-    return [session?.user, null] as [typeof session.user, null];
-  } catch (error) {
-    console.log({ error });
-    return [null, error] as [null, Error];
-  }
+  return session?.user;
 };
 
 const login = async (credentials: LoginRequest) => {

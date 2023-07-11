@@ -17,10 +17,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, err] = await getUser();
-  if (err) {
-    throw err;
-  }
+  const user = await getUser();
+
   return (
     <html lang="en" className="overflow-hidden">
       <body
