@@ -17,6 +17,10 @@ export type LoginResponse = {
   email: string;
   role: z.infer<typeof registerRequestValidator.shape.role>;
   token: string;
+  restaurants: {
+    name: string;
+    id: string;
+  };
 };
 
 export type IUser = LoginResponse & {

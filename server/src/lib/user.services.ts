@@ -14,6 +14,8 @@ export async function get(id: string) {
 export async function getUserWithPassword(email: string) {
   const user = await userRepository
     .createQueryBuilder("user")
+    .leftJoinAndSelect("user.restaurants", "restaurant")
+    .select(["restaurant.id", "restaurant.name", "user"])
     .where("user.email = :email", { email: email })
     .addSelect("user.passwordHash")
     .getOne();

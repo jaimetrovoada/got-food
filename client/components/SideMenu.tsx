@@ -9,7 +9,10 @@ import { usePathname } from "next/navigation";
 
 interface Props {
   user: LoginResponse | undefined;
-  restaurants: IRestaurant[] | undefined;
+  restaurants: {
+    id: string;
+    name: string;
+  }[];
   isOpen: boolean;
 }
 
@@ -49,10 +52,7 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
   return (
     <aside
       className={getClasses(
-        "flex w-auto flex-col gap-1 p-4 pl-0 [grid-area:sidebar]",
-        {
-          "hidden w-0": !isOpen,
-        }
+        "flex  flex-col gap-1 p-4 pl-0 [grid-area:sidebar]"
       )}
     >
       <div className="flex max-h-full flex-1 flex-col gap-1 overflow-auto">

@@ -6,10 +6,9 @@ import { useState } from "react";
 
 interface Props {
   user: LoginResponse | undefined;
-  restaurants: IRestaurant[] | undefined;
   children?: React.ReactNode;
 }
-const AppUi = ({ user, restaurants, children }: Props) => {
+const AppUi = ({ user, children }: Props) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
@@ -19,7 +18,7 @@ const AppUi = ({ user, restaurants, children }: Props) => {
   return (
     <>
       <Header toggleMenu={toggleMenu} />
-      <SideMenu user={user} restaurants={restaurants} isOpen={isOpen} />
+      <SideMenu user={user} restaurants={user.restaurants} isOpen={isOpen} />
       {children}
     </>
   );
