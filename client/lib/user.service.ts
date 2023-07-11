@@ -4,6 +4,8 @@ import { API } from "./constants";
 
 const getRestaurants = async (userId: string) => {
   try {
+    if (!userId) return [null, null] as [null, null];
+
     const res = await fetch(`${API.users}/${userId}/restaurants`, {
       cache: "no-store",
     });
@@ -19,7 +21,7 @@ const getRestaurants = async (userId: string) => {
 
 const getOrders = async () => {
   try {
-    const user = await getUser();
+    const [user, _] = await getUser();
 
     const res = await fetch(`${API.users}/${user.id}/orders`, {
       cache: "no-store",

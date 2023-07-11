@@ -17,8 +17,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
-  const [res, err] = await userService.getRestaurants(user.id);
+  const [user, sessionError] = await getUser();
+  const [res, err] = await userService.getRestaurants(user?.id);
+  if (sessionError) {
+    throw sessionError;
+  }
+  if (err) {
+    throw err;
+  }
   return (
     <html lang="en">
       <body
@@ -28,7 +34,9 @@ export default async function RootLayout({
         }
       >
         <Providers>
-          <AppUi user={user} restaurants={res}>{children}</AppUi>
+          <AppUi user={user} restaurants={res}>
+            {children}
+          </AppUi>
         </Providers>
       </body>
     </html>
