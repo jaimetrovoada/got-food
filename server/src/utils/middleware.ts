@@ -5,6 +5,7 @@ import logger from "./logger";
 import { ZodError } from "zod";
 import config from "./config";
 import { AppDataSource } from "../data-source";
+import { EntityNotFoundError, QueryFailedError } from "typeorm";
 
 const userRepository = AppDataSource.getRepository(User);
 const userExtractor = async (
@@ -61,6 +62,14 @@ const errorHandler = (
   if (error instanceof ZodError) {
     const messages = error.errors.map((err) => err.message);
     return res.status(400).send({ error: messages });
+  }
+
+  if (error instanceof QueryFailedError) {
+    return res.status(500).json({ error: error.message });
+  }
+
+  if (error instanceof EntityNotFoundError) {
+    return res.status(404).json({ error: error.message });
   }
 
   return res.status(500).json(error);
