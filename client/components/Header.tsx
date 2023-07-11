@@ -10,7 +10,7 @@ const Header = ({ toggleMenu }: Props) => {
   return (
     <header className="">
       <nav className="container mx-auto flex flex-row items-center gap-2 px-4 py-2 xl:px-0">
-        <Button variant="custom" onClick={toggleMenu} className="lg:hidden">
+        <Button variant="custom" onClick={toggleMenu}>
           <Menu />
         </Button>
         <Link href="/" className="text-3xl font-bold uppercase">

@@ -10,7 +10,7 @@ interface Props {
   children?: React.ReactNode;
 }
 const AppUi = ({ user, restaurants, children }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);

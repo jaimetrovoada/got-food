@@ -48,12 +48,9 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
 
   return (
     <div
-      className={getClasses(
-        "flex w-auto flex-col gap-1 p-4 lg:flex lg:w-auto",
-        {
-          "hidden w-0": !isOpen,
-        }
-      )}
+      className={getClasses("flex w-auto flex-col gap-1 p-4 pl-0", {
+        "hidden w-0": !isOpen,
+      })}
     >
       <div className="flex max-h-full flex-1 flex-col gap-1 overflow-auto">
         {menuList.map((item) => (
