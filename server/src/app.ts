@@ -29,7 +29,7 @@ const corsConfig: CorsOptions = {
 
 app.use(cors(corsConfig));
 app.use(express.json());
-app.use(morgan("tiny"));
+app.use(morgan("common"));
 
 app.use("/api/restaurants", routes.restaurantRouter);
 app.use("/api/users", routes.userRouter);

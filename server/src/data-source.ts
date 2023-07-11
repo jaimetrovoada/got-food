@@ -13,5 +13,5 @@ export const AppDataSource = new DataSource({
   url: config.DATABASE_URL,
   entities: [Order, Menu, Restaurant, User],
   synchronize: true,
-  logging: true,
+  logging: ["error", "info", "log"],
 });
