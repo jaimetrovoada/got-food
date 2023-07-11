@@ -19,10 +19,8 @@ const AppUi = ({ user, restaurants, children }: Props) => {
   return (
     <>
       <Header toggleMenu={toggleMenu} />
-      <main className="container mx-auto flex flex-1 flex-row overflow-hidden">
-        <SideMenu user={user} restaurants={restaurants} isOpen={isOpen} />
-        {children}
-      </main>
+      <SideMenu user={user} restaurants={restaurants} isOpen={isOpen} />
+      {children}
     </>
   );
 };

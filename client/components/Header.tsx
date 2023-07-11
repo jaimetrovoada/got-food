@@ -8,8 +8,8 @@ interface Props {
 
 const Header = ({ toggleMenu }: Props) => {
   return (
-    <header className="">
-      <nav className="container mx-auto flex flex-row items-center gap-2 px-4 py-2 xl:px-0">
+    <header className="[grid-area:header]">
+      <nav className="flex flex-row items-center gap-2 px-4 py-2 xl:px-0">
         <Button variant="custom" onClick={toggleMenu}>
           <Menu />
         </Button>

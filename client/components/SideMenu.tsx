@@ -47,10 +47,13 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
   };
 
   return (
-    <div
-      className={getClasses("flex w-auto flex-col gap-1 p-4 pl-0", {
-        "hidden w-0": !isOpen,
-      })}
+    <aside
+      className={getClasses(
+        "flex w-auto flex-col gap-1 p-4 pl-0 [grid-area:sidebar]",
+        {
+          "hidden w-0": !isOpen,
+        }
+      )}
     >
       <div className="flex max-h-full flex-1 flex-col gap-1 overflow-auto">
         {menuList.map((item) => (
@@ -113,7 +116,7 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
           </Button>
         )}
       </div>
-    </div>
+    </aside>
   );
 };
 

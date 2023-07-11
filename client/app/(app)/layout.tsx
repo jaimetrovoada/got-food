@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { getUser } from "@/lib/auth.service";
 import userService from "@/lib/user.service";
 import AppUi from "@/components/AppUi";
+import { getClasses } from "@/lib/helpers";
 
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
@@ -26,12 +27,12 @@ export default async function RootLayout({
     throw err;
   }
   return (
-    <html lang="en">
+    <html lang="en" className="overflow-y-hidden">
       <body
-        className={
-          inter.className +
-          " flex h-dynamic flex-col overflow-hidden bg-zinc-900 text-slate-200"
-        }
+        className={getClasses(
+          "container mx-auto h-dynamic overflow-y-hidden bg-zinc-900 text-slate-200",
+          inter.className
+        )}
       >
         <Providers>
           <AppUi user={user} restaurants={res}>

@@ -6,12 +6,15 @@ interface Props extends React.HTMLAttributes<HTMLDivElement> {
 
 const Container = ({ children, className, ...props }: Props) => {
   return (
-    <section
-      className={getClasses("px-4 flex-1 p-4", className)}
+    <main
+      className={getClasses(
+        "overflow-y-auto p-4 px-4 [grid-area:main]",
+        className
+      )}
       {...props}
     >
       {children}
-    </section>
+    </main>
   );
 };
 

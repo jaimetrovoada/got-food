@@ -15,3 +15,11 @@ html {
     -moz-appearance: textfield !important;
   }
 }
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 1fr 1fr;
+  grid-template-areas:
+    "header header header"
+    "sidebar main main";
+}
