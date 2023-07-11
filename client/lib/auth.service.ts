@@ -1,6 +1,7 @@
 import { LoginResponse, LoginRequest, RegisterRequest } from "@/types";
 import { API } from "./constants";
-import { NextAuthOptions, getServerSession } from "next-auth";
+import { NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const nextAuthOptions: NextAuthOptions = {
