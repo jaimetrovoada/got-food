@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import { getUser } from "@/lib/auth.service";
-import userService from "@/lib/user.service";
 import AppUi from "@/components/AppUi";
 import { getClasses } from "@/lib/helpers";
 
@@ -19,15 +18,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const [user, err] = await getUser();
-  console.log({ user });
   if (err) {
     throw err;
   }
   return (
-    <html lang="en" className="overflow-y-hidden">
+    <html lang="en" className="overflow-hidden">
       <body
         className={getClasses(
-          "container mx-auto h-dynamic overflow-y-hidden bg-zinc-900 text-slate-200",
+          "container mx-auto h-dynamic overflow-hidden bg-zinc-900 text-slate-200",
           inter.className
         )}
       >
