@@ -52,7 +52,10 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
   return (
     <aside
       className={getClasses(
-        "flex  flex-col gap-1 p-4 pl-0 [grid-area:sidebar]"
+        "flex flex-col gap-1 p-4 pl-0 [grid-area:sidebar]",
+        {
+          hidden: !isOpen,
+        }
       )}
     >
       <div className="flex max-h-full flex-1 flex-col gap-1 overflow-auto">
