@@ -41,3 +41,5 @@ export const metadata = {
   title: "Got Food",
   description: "got food app - no hassle food ordering",
 };
+
+export const dynamic = "force-dynamic";
