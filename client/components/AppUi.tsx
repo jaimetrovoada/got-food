@@ -18,7 +18,7 @@ const AppUi = ({ user, children }: Props) => {
   return (
     <>
       <Header toggleMenu={toggleMenu} />
-      <SideMenu user={user} restaurants={user.restaurants} isOpen={isOpen} />
+      <SideMenu user={user} restaurants={user?.restaurants} isOpen={isOpen} />
       {children}
     </>
   );

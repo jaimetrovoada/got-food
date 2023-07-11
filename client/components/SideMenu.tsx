@@ -1,4 +1,4 @@
-import { IRestaurant, LoginResponse } from "@/types";
+import { LoginResponse } from "@/types";
 import Button from "./Button";
 import Link from "next/link";
 import { signOut, signIn } from "next-auth/react";
@@ -9,10 +9,12 @@ import { usePathname } from "next/navigation";
 
 interface Props {
   user: LoginResponse | undefined;
-  restaurants: {
-    id: string;
-    name: string;
-  }[];
+  restaurants:
+    | {
+        id: string;
+        name: string;
+      }[]
+    | undefined;
   isOpen: boolean;
 }
 
@@ -28,13 +30,15 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
     },
   ];
 
-  const myRestaurantsList = restaurants?.map((restaurant) => {
-    return {
-      name: restaurant.name,
-      id: restaurant.id,
-      link: `/manage/${restaurant.id}/details`,
-    };
-  });
+  const myRestaurantsList = restaurants
+    ? restaurants.map((restaurant) => {
+        return {
+          name: restaurant.name,
+          id: restaurant.id,
+          link: `/manage/${restaurant.id}/details`,
+        };
+      })
+    : null;
 
   const currentRoute = usePathname();
   const isActive = (route: string) => {
@@ -89,7 +93,7 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
                 </Button>
                 <ChevronDown className="transition duration-300 group-open:-rotate-180" />
               </summary>
-              {myRestaurantsList.map((item) => (
+              {myRestaurantsList?.map((item) => (
                 <div className="flex-flex-col gap-1 p-2" key={item.name}>
                   <Item
                     key={item.name}
