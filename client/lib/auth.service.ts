@@ -21,18 +21,11 @@ export const nextAuthOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         const [res, err] = await authService.login(credentials);
 
-        if (res.status === 401) {
-          throw new Error("Invalid Password");
+        if (err) {
+          throw err;
         }
 
-        if (res.status === 404) {
-          throw new Error("User Not Found");
-        }
-        if (err || !res.ok) {
-          return null;
-        }
-
-        const user = res.body;
+        const user = res;
         return user;
       },
     }),
@@ -74,13 +67,20 @@ const login = async (credentials: LoginRequest) => {
       },
       body: JSON.stringify(credentials),
     });
-    const data = {
-      ok: res.ok,
-      status: res.status,
-      body: await res.json(),
-    };
+    if (!res.ok) {
+      if (res.status === 401) {
+        throw new Error("Invalid Password");
+      }
 
-    return [data, null] as [typeof data, null];
+      if (res.status === 404) {
+        throw new Error("User Not Found");
+      }
+      throw new Error("LoginFailed");
+    }
+
+    const body = await res.json();
+
+    return [body, null] as [LoginResponse, null];
   } catch (err) {
     return [null, err] as [null, Error];
   }
