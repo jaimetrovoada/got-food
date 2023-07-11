@@ -1,8 +1,10 @@
-import { AppDataSource } from "../data-source";
 import { User } from "../model/user";
 import { hashPassword } from "./helpers";
-
-const userRepository = AppDataSource.getRepository(User);
+import {
+  userRepository,
+  restaurantRepository,
+  orderRepository,
+} from "../model/repos";
 
 export async function get(id: string) {
   const user = await userRepository.findOneBy({ id: id });
@@ -20,31 +22,27 @@ export async function getUserWithPassword(email: string) {
 }
 
 export async function getRestaurants(id: string) {
-  const user = await userRepository.findOne({
+  const restaurants = await restaurantRepository.find({
     where: {
-      id: id,
-    },
-    relations: {
-      restaurants: true,
-    },
-  });
-
-  return user.restaurants;
-}
-
-export async function getOrders(id: string) {
-  const user = await userRepository.findOne({
-    where: {
-      id: id,
-    },
-    relations: {
-      orders: {
-        restaurant: true,
+      owner: {
+        id: id,
       },
     },
   });
 
-  return user.orders;
+  return restaurants;
+}
+
+export async function getOrders(id: string) {
+  const orders = await orderRepository.find({
+    where: {
+      user: {
+        id: id,
+      },
+    },
+  });
+
+  return orders;
 }
 
 export async function create({

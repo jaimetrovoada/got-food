@@ -1,10 +1,5 @@
-import { AppDataSource } from "../data-source";
-import { Order } from "../model/order";
-import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
-
-const orderRepository = AppDataSource.getRepository(Order);
-const restaurantRepository = AppDataSource.getRepository(Restaurant);
+import { orderRepository } from "../model/repos";
 
 async function createOrderId(restaurantId: string): Promise<string> {
   const today = new Date();
@@ -41,16 +36,15 @@ async function createOrderId(restaurantId: string): Promise<string> {
 }
 
 export async function get(id: string) {
-  const restaurant = await restaurantRepository.findOne({
+  const orders = await orderRepository.find({
     where: {
-      id: id,
-    },
-    relations: {
-      orders: true,
+      restaurant: {
+        id: id,
+      },
     },
   });
 
-  return restaurant.orders;
+  return orders;
 }
 
 export async function stream(id: string) {

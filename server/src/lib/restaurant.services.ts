@@ -1,9 +1,6 @@
-import { string } from "zod";
-import { AppDataSource } from "../data-source";
 import { Restaurant } from "../model/restaurant";
 import { User } from "../model/user";
-
-const restaurantRepository = AppDataSource.getRepository(Restaurant);
+import { restaurantRepository } from "../model/repos";
 
 export async function get(id: string) {
   const restaurant = await restaurantRepository.findOneBy({ id });

@@ -1,19 +1,17 @@
-import { AppDataSource } from "../data-source";
 import { Menu } from "../model/menu";
 import { Restaurant } from "../model/restaurant";
-
-const menuRepository = AppDataSource.getRepository(Menu);
-const restaurantRepository = AppDataSource.getRepository(Restaurant);
+import { menuRepository } from "../model/repos";
 
 export async function get(id: string) {
-  const restaurant = await restaurantRepository.findOne({
+  const menuItems = await menuRepository.find({
     where: {
-      id: id,
+      restaurant: {
+        id: id,
+      },
     },
-    relations: ["menuItems"],
   });
 
-  return restaurant.menuItems;
+  return menuItems;
 }
 
 export async function create(
