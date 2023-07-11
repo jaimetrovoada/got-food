@@ -1,14 +1,12 @@
 import Container from "@/components/Container";
-import { List, Slider } from "@/components/Restaurants";
+import { List, Slider, Item, Slide } from "@/components/Restaurants";
 import restaurantsService from "@/lib/restaurants.service";
 
 const Page = async () => {
-  const restaurantsData = getRestaurants();
-  const trendingRestaurantsData = getGetTrending();
-  const [restaurants, trendingRestaurants] = await Promise.all([
-    restaurantsData,
-    trendingRestaurantsData,
-  ]);
+  const [restaurants, err] = await restaurantsService.getRestaurants();
+  const [trendingRestaurants, errTrending] =
+    await restaurantsService.getTrendingRestaurants();
+
   return (
     <Container className="flex flex-col gap-8">
       {trendingRestaurants ? (
@@ -16,13 +14,28 @@ const Page = async () => {
           <p className="mb-4 text-3xl font-bold capitalize">
             what&apos;s trending
           </p>
-          <Slider trending={trendingRestaurants} />
+          <Slider>
+            {trendingRestaurants.map((restaurant) => (
+              <Slide key={restaurant.id} restaurant={restaurant} />
+            ))}
+          </Slider>
         </div>
       ) : null}
       {restaurants ? (
         <div>
           <p className="mb-4 text-3xl font-bold">All</p>
-          <List restaurants={restaurants} />
+          <List>
+            {restaurants.map((restaurant) => (
+              <Item
+                href={`/restaurants/${restaurant.id}`}
+                key={restaurant.id}
+                name={restaurant.name}
+                imageUrl={restaurant.logo}
+                description={restaurant.description}
+                address={restaurant.address}
+              />
+            ))}
+          </List>
         </div>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center">
@@ -34,22 +47,3 @@ const Page = async () => {
 };
 
 export default Page;
-
-async function getRestaurants() {
-  const [res, err] = await restaurantsService.getRestaurants();
-
-  if (err) {
-    return null;
-  }
-
-  return res;
-}
-async function getGetTrending() {
-  const [restaurant, err] = await restaurantsService.getTrendingRestaurants();
-
-  if (err) {
-    return null;
-  }
-
-  return restaurant;
-}

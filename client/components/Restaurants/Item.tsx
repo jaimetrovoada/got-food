@@ -2,6 +2,7 @@ import { MapPin } from "react-feather";
 import Card from "../Card";
 import Link from "next/link";
 import Image from "next/image";
+import Skeleton from "../Skeleton";
 
 interface Props {
   href: string;
@@ -35,6 +36,22 @@ const Item = ({ href, name, imageUrl, description, address }: Props) => {
         <p className="line-clamp-3 px-3 capitalize text-slate-300/75">
           {description}
         </p>
+      </div>
+    </Card>
+  );
+};
+
+Item.Skeleton = function ItemSkeleton() {
+  return (
+    <Card className="group flex flex-col items-start justify-between shadow-lg">
+      <Skeleton className="h-40 w-full rounded-t-2xl" />
+      <div className="flex w-full flex-col gap-4 px-4 py-2">
+        <Skeleton className="h-4 w-1/3 rounded-2xl" />
+
+        <div className="flex flex-col gap-4 px-3">
+          <Skeleton className="h-4 w-1/4 rounded-2xl" />
+          <Skeleton className="h-12 w-full rounded-2xl" />
+        </div>
       </div>
     </Card>
   );
