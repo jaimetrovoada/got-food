@@ -20,7 +20,7 @@ export type LoginResponse = {
   restaurants: {
     name: string;
     id: string;
-  };
+  }[];
 };
 
 export type IUser = LoginResponse & {
