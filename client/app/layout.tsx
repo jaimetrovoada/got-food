@@ -1,8 +1,5 @@
 import "@/styles/globals.css";
 import { Inter } from "next/font/google";
-import { getUser } from "@/lib/auth.service";
-import userService from "@/lib/user.service";
-import AppUi from "@/components/AppUi";
 
 // If loading a variable font, you don't need to specify the font weight
 const inter = Inter({
@@ -16,8 +13,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
-  const [res, err] = await userService.getRestaurants(user.id);
   return (
     <html lang="en">
       <body
