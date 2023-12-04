@@ -88,6 +88,7 @@ const register = async (payload: RegisterRequest) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify(payload),
     });
