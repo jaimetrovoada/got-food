@@ -24,7 +24,7 @@ admin.initializeApp({
 export const bucket = admin.storage().bucket();
 
 const corsConfig: CorsOptions = {
-  origin: ["http://localhost:3000", "https://got-food-five.vercel.app/"],
+  origin: config.FRONTEND_URL,
 };
 
 app.use(cors(corsConfig));

@@ -11,6 +11,7 @@ const config = {
   FIREBASE_BUCKET: process.env.FIREBASE_BUCKET,
   DATABASE_URL: process.env.DATABASE_URL,
   DATABASE_SSL: process.env.DATABSE_SSL,
+  FRONTEND_URL: process.env.FRONTEND_URL,
 };
 
 export default config;
