@@ -12,7 +12,7 @@ import {
 import { RootState } from "@/lib/reducers/store";
 import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, IRestaurant, LoginResponse } from "@/types";
-import React, { useRef, useState } from "react";
+import React, { ElementRef, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -87,7 +87,7 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
     }
   };
 
-  const buttonsContainerRef = useRef<HTMLDivElement>(null);
+  const buttonsContainerRef = useRef<ElementRef<"div">>(null);
 
   const scrollRight = () => {
     if (buttonsContainerRef.current) {

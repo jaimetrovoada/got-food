@@ -7,7 +7,7 @@ import {
 import Modal, { ModalHandler } from "@/components/Modal";
 import { useRestaurantOrders } from "@/lib/hooks";
 import { IOrder } from "@/types";
-import { useRef, useState } from "react";
+import { ElementRef, useRef, useState } from "react";
 
 interface Props {
   params: {
@@ -19,7 +19,7 @@ const Page = ({ params }: Props) => {
   const slug = params.slug;
   const orders = useRestaurantOrders(slug);
   const [activeOrder, setActiveOrder] = useState<IOrder>();
-  const modalRef = useRef<ModalHandler>(null);
+  const modalRef = useRef<ElementRef<typeof Modal>>(null);
 
   const showDetails = (order: IOrder) => {
     setActiveOrder(order);

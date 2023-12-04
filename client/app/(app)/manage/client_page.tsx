@@ -6,14 +6,14 @@ import { RestaurantItem as Item } from "@/components/Manage";
 import RestaurantForm from "@/components/Forms/RestaurantForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import { IRestaurant, LoginResponse } from "@/types";
-import { useRef } from "react";
+import { ElementRef, useRef } from "react";
 
 interface Props {
   restaurants: IRestaurant[];
   user: LoginResponse;
 }
 const UserRestaurantPage = ({ restaurants, user }: Props) => {
-  const modalRef = useRef<ModalHandler>(null);
+  const modalRef = useRef<ElementRef<typeof Modal>>(null);
 
   return (
     <section className="mx-auto w-full max-w-screen-lg">

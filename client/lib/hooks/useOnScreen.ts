@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 
 export default function useOnScreen() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<ElementRef<"div">>(null);
 
   const [isIntersecting, setIntersecting] = useState(false);
   const observer = useRef(null);

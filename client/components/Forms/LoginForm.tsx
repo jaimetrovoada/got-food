@@ -43,7 +43,7 @@ const LoginForm = ({}: Props) => {
       }
 
       if (!res.error) {
-        router.replace(res.url || "/");
+        router.push(res.url || "/");
       }
     } catch (error) {
       console.log({ error });

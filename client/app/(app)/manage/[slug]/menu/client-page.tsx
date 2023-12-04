@@ -5,7 +5,7 @@ import MenuForm from "@/components/Forms/MenuForm";
 import Modal, { ModalHandler } from "@/components/Modal";
 import restaurantsService from "@/lib/restaurants.service";
 import { IMenuItem, LoginResponse } from "@/types";
-import { useRef, useState } from "react";
+import { ElementRef, useRef, useState } from "react";
 import { MenuItem as Item } from "@/components/Manage";
 
 interface Props {
@@ -28,7 +28,7 @@ const MenuPage = ({ menu, user, slug }: Props) => {
     }
   };
 
-  const modalRef = useRef<ModalHandler>(null);
+  const modalRef = useRef<ElementRef<typeof Modal>>(null);
 
   const handleEditItem = (item: IMenuItem) => {
     setItem(item);

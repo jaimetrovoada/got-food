@@ -3,7 +3,7 @@
 import { LoginResponse } from "@/types";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { useRef } from "react";
+import { ElementRef, useRef } from "react";
 import Button from "./Button";
 import Avatar from "./Avatar";
 
@@ -22,7 +22,7 @@ const UserDropdown = ({ user }: Props) => {
     }, 100);
   };
 
-  const menuRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<ElementRef<"div">>(null);
 
   const menuList =
     user?.role === "business"
