@@ -4,6 +4,7 @@ import {
   IMenuItem,
   OrderRequest,
   RestaurantRequest,
+  MenuRequest,
 } from "@/types";
 import { getUser } from "./auth.service";
 
@@ -82,22 +83,22 @@ const getTrendingRestaurants = async () => {
 const addMenuItem = async (
   token: string,
   restaurantId: string,
-  payload: {
-    name: string;
-    description: string;
-    price: number;
-    category: string;
-    image: File | undefined;
-  }
+  payload: MenuRequest
 ) => {
   try {
+    const formData = new FormData();
+    formData.append("name", payload.name);
+    formData.append("description", payload.description);
+    formData.append("price", payload.price.toString());
+    formData.append("category", payload.category);
+    formData.append("image", payload.image);
+
     const res = await fetch(`${API.restaurants}/${restaurantId}/menu`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     return [res.status, null] as [number, null];

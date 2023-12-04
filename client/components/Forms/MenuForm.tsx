@@ -11,7 +11,7 @@ type Inputs = {
   description: string;
   price: number;
   category: string;
-  image: File;
+  image: FileList;
 };
 
 interface MenuFormProps {
@@ -45,7 +45,7 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
       description: data.description,
       price: Number(data.price),
       category: data.category,
-      image: data.image,
+      image: data.image[0],
     });
 
     if (err) {
