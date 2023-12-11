@@ -58,6 +58,10 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
     );
   };
 
+  if (currentRoute === "/") {
+    return null
+  }
+
   return (
     <aside
       className={getClasses(
