@@ -16,9 +16,6 @@ const Page = async () => {
           restaurant&apos;s growth!
         </p>
         <div className="mt-6 flex flex-row justify-center gap-4">
-          <Button as={Link} href="/auth/register">
-            Sign Up
-          </Button>
           <Button as={Link} href="/restaurants" variant="secondary">
             Explore
           </Button>
