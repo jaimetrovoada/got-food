@@ -6,6 +6,9 @@ import Form from "../Form";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Loader } from "lucide-react";
+import { wait } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
 
 type Inputs = {
   name: string;
@@ -18,11 +21,13 @@ interface Props {}
 const RegisterForm = ({}: Props) => {
   const router = useRouter();
 
-  const { register, watch, handleSubmit, reset } = useForm<Inputs>({
+  const { register, watch, handleSubmit, reset , formState} = useForm<Inputs>({
     defaultValues: {
       role: "customer",
     },
   });
+  const {toast} = useToast()
+
   const name = watch("name");
   const email = watch("email");
   const password = watch("password");
@@ -37,7 +42,16 @@ const RegisterForm = ({}: Props) => {
     });
     if (err) {
       console.log({ err });
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     } else {
+      toast({
+        title: "Success",
+        description: "Account created successfully",
+      });
       router.replace("/auth/login");
     }
   };
@@ -96,11 +110,14 @@ const RegisterForm = ({}: Props) => {
         Already have an Account
       </Button>
       <div className="flex gap-4">
-        <Button type="submit" disabled={!email || !password || !name || !role}>
-          Submit
-        </Button>
-        <Button useResetStyles variant="secondary" onClick={() => reset()}>
-          Reset
+        <Button type="submit" disabled={!email || !password || !name || !role || formState.isSubmitting}>
+          {
+            formState.isSubmitting ? (
+              <Loader className="h-4 w-4 animate-spin" />
+            ) : (
+              "Register"
+            )
+          }
         </Button>
       </div>
     </Form>

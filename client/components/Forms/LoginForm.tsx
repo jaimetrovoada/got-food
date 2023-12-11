@@ -7,6 +7,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Form from "../Form";
 import Input from "./Input";
 import { useState } from "react";
+import { wait } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
+import { Loader } from "lucide-react";
 
 interface Props {}
 
@@ -17,14 +20,15 @@ export type Inputs = {
 
 const LoginForm = ({}: Props) => {
   const searchParams = useSearchParams();
-  const [error, setError] = useState<string>(undefined);
 
   const router = useRouter();
 
-  const { register, handleSubmit, watch, reset } = useForm<Inputs>();
+  const { register, handleSubmit, watch, reset, formState} = useForm<Inputs>();
 
   const email = watch("email");
   const password = watch("password");
+
+  const { toast } = useToast()
 
   const onSubmit = async (data: Inputs) => {
     try {
@@ -36,17 +40,27 @@ const LoginForm = ({}: Props) => {
       });
       console.log({ res });
       if (res?.error) {
-        setError(res.error);
-        setTimeout(() => {
-          setError(undefined);
-        }, 5000);
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
       }
 
       if (!res.error) {
+        toast({
+          title: "Success",
+          description: "Logged in successfully",
+        });
         router.push(res.url || "/");
       }
     } catch (error) {
       console.log({ error });
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     }
   };
 
@@ -67,7 +81,6 @@ const LoginForm = ({}: Props) => {
         register={register}
         rules={{ required: true }}
       />
-      {error && <p className="text-xs capitalize text-red-500">{error}</p>}
       <Button
         as={Link}
         href="/auth/register"
@@ -77,11 +90,10 @@ const LoginForm = ({}: Props) => {
         Create Account
       </Button>
       <div className="flex gap-4">
-        <Button type="submit" disabled={!email || !password}>
-          Submit
-        </Button>
-        <Button type="reset" variant="secondary">
-          Reset
+        <Button type="submit" disabled={!email || !password || formState.isSubmitting}>
+          {
+            formState.isSubmitting ? <Loader className="mr-2 h-4 w-4 animate-spin"/> : "Login"
+          }
         </Button>
       </div>
     </Form>
