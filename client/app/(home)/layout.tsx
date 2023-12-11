@@ -18,7 +18,7 @@ export default async function RootLayout({
       <body
         className={
           inter.className +
-          " flex h-dynamic flex-col overflow-hidden bg-zinc-900 text-slate-200"
+          " flex h-screen flex-col overflow-hidden bg-zinc-900 text-slate-200"
         }
       >
         <header className="">

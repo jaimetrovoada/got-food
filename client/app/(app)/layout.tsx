@@ -23,7 +23,7 @@ export default async function RootLayout({
     <html lang="en" className="overflow-hidden">
       <body
         className={getClasses(
-          "container mx-auto h-dynamic overflow-hidden bg-zinc-900 text-slate-200",
+          "container mx-auto h-screen overflow-hidden bg-zinc-900 text-slate-200",
           inter.className
         )}
       >
