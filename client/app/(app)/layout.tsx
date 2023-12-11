@@ -1,4 +1,4 @@
-import "@/styles/globals.css";
+import "@/app/globals.css";
 import { Providers } from "./providers";
 import { Inter } from "next/font/google";
 import { getUser } from "@/lib/auth.service";

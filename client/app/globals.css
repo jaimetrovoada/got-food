@@ -74,3 +74,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 200px 1fr;
+  grid-template-areas:
+    "header header header"
+    "sidebar main main";
+}
