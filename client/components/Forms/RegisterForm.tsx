@@ -5,6 +5,7 @@ import authService from "@/lib/auth.service";
 import Form from "../Form";
 import Input from "./Input";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Inputs = {
   name: string;
@@ -86,6 +87,14 @@ const RegisterForm = ({}: Props) => {
           <label htmlFor="role">No</label>
         </div>
       </fieldset>
+      <Button
+        as={Link}
+        href="/auth/login"
+        variant="tertiary"
+        className="font-normal"
+      >
+        Already have an Account
+      </Button>
       <div className="flex gap-4">
         <Button type="submit" disabled={!email || !password || !name || !role}>
           Submit
