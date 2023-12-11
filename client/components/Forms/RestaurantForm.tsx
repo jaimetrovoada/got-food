@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import Form from "../Form";
 import Input from "./Input";
 import ImageInput from "./ImageInput";
+import { Loader } from "lucide-react";
+import { useToast } from "../ui/use-toast";
 
 type Inputs = {
   name: string;
@@ -27,7 +29,7 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     values: {
       name: initialValues?.name || undefined,
@@ -51,6 +53,7 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
       router.replace(`/manage`);
     }
   };
+  const { toast } = useToast();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log("submit", { data });
     const [_, err] = await restaurantsService.createRestaurant(user.token, {
@@ -61,7 +64,16 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
     });
     if (err) {
       console.log(err);
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
     } else {
+      toast({
+        title: "Success",
+        description: "Restaurant created successfully",
+      });
       router.refresh();
     }
   };
@@ -91,9 +103,8 @@ const RestaurantForm = ({ user, initialValues }: Props) => {
         isSelected={!!logo || !!initialValues}
       />
       <div className="flex gap-4">
-        <Button type="submit">Submit</Button>
-        <Button type="reset" variant="secondary">
-          Reset
+        <Button type="submit">
+          {isSubmitting ? <Loader className="h-4 w-4 animate-spin" /> : "Save"}
         </Button>
         {initialValues && (
           <Button

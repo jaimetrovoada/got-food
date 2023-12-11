@@ -4,6 +4,7 @@ import { ArrowUp, Minus } from "react-feather";
 import { useForm } from "react-hook-form";
 import Button from "../Button";
 import Input from "../Forms/Input";
+import { Loader } from "lucide-react";
 
 interface Props {
   cartExpanded: boolean;
@@ -25,7 +26,7 @@ const Cart = ({
   handleCheckout,
   removeFromCart,
 }: Props) => {
-  const { register, reset, watch } = useForm<Inputs>({
+  const { register, reset, watch, formState } = useForm<Inputs>({
     defaultValues: {
       table: 0,
     },
@@ -65,7 +66,7 @@ const Cart = ({
                 type="number"
                 className="w-10 p-0 px-1"
               />
-              <ul className="flex-1 list-inside list-disc overflow-y-auto py-4 scrollbar">
+              <ul className="scrollbar flex-1 list-inside list-disc overflow-y-auto py-4">
                 {cart.items.map((item) => (
                   <li key={item.name} className="list-item text-slate-300">
                     {item.name} - {item.amount}x
@@ -100,7 +101,11 @@ const Cart = ({
                   }}
                   disabled={checkoutDisabled}
                 >
-                  Checkout
+                  {formState.isSubmitting ? (
+                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    "Checkout"
+                  )}
                 </Button>
               </div>
             </div>

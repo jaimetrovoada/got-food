@@ -3,6 +3,7 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import { Menu, Cart } from "@/components/Menu";
+import { useToast } from "@/components/ui/use-toast";
 import { getClasses } from "@/lib/helpers";
 import {
   addItemToCart,
@@ -43,6 +44,7 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
   );
 
   const [category, setCategory] = React.useState<string>(categories[0]);
+  const { toast } = useToast()
 
   const addToCart = (price: number, name: string, id: string) => {
     dispatch(
@@ -82,8 +84,17 @@ const Restaurant = ({ menu, restaurant, user }: Props) => {
     );
     if (err) {
       console.log({ err });
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
     } else {
       dispatch(clearCartItems(restaurant?.id as string));
+      toast({
+        title: "Success",
+        description: "Order placed successfully",
+      });
     }
   };
 

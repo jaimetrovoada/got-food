@@ -5,6 +5,8 @@ import Button from "../Button";
 import Form from "../Form";
 import Input from "./Input";
 import ImageInput from "./ImageInput";
+import { Loader } from "lucide-react";
+import { useToast } from "../ui/use-toast";
 
 type Inputs = {
   name: string;
@@ -26,7 +28,7 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
     handleSubmit,
     watch,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     values: {
       name: initialValues?.name || null,
@@ -38,6 +40,7 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
   });
 
   const image = watch("image");
+  const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const [_, err] = await restaurantsService.addMenuItem(user.token, slug, {
@@ -50,7 +53,17 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
 
     if (err) {
       console.log({ err });
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+      return;
     }
+    toast({
+      title: "Success",
+      description: "Menu item created successfully",
+    });
   };
 
   return (
@@ -91,10 +104,11 @@ const MenuForm = ({ user, initialValues, slug }: MenuFormProps) => {
         isSelected={!!image || !!initialValues}
       />
       <div className="flex gap-4">
-        <Button type="submit">Submit</Button>
-        <Button type="reset" variant="secondary">
-          Reset
-        </Button>
+        <Button type="submit">{
+          isSubmitting
+            ? <Loader className="mr-2 h-4 w-4 animate-spin" />
+            : "Submit"
+        }</Button>
       </div>
     </Form>
   );
