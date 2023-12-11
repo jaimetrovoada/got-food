@@ -19,7 +19,7 @@ interface Props {
 }
 
 const SideMenu = ({ user, restaurants, isOpen }: Props) => {
-  const menuList = [
+  const menuList = user ? [
     {
       name: "Explore",
       link: `/restaurants`,
@@ -28,7 +28,12 @@ const SideMenu = ({ user, restaurants, isOpen }: Props) => {
       name: "Profile",
       link: `/profile`,
     },
-  ];
+  ] : [
+    {
+      name: "Explore",
+      link: `/restaurants`,
+    },
+    ];
 
   const myRestaurantsList = restaurants
     ? restaurants.map((restaurant) => {
