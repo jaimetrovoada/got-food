@@ -3,6 +3,7 @@ import { IRestaurant, LoginResponse } from "@/types";
 import Header from "./Header";
 import SideMenu from "./SideMenu";
 import { useState } from "react";
+import { Toaster } from "./ui/toaster";
 
 interface Props {
   user: LoginResponse | undefined;
@@ -20,6 +21,7 @@ const AppUi = ({ user, children }: Props) => {
       <Header toggleMenu={toggleMenu} />
       <SideMenu user={user} restaurants={user?.restaurants} isOpen={isOpen} />
       {children}
+      <Toaster />
     </>
   );
 };
