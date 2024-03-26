@@ -1,0 +1,148 @@
+{
+  "users": [
+    {
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "password",
+      "role": "customer"
+    },
+    {
+      "name": "Tom Smith",
+      "email": "tom.smith@example.com",
+      "password": "password",
+      "role": "customer"
+    },
+    {
+      "name": "Tony Stark",
+      "email": "tony.stark@example.com",
+      "password": "password",
+      "role": "customer"
+    },
+    {
+      "name": "LeBron James",
+      "email": "lebron.james@example.com",
+      "password": "password",
+      "role": "customer"
+    },
+    {
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "password": "password",
+      "role": "business",
+      "restaurants": [
+        {
+          "name": "Burger Haven",
+          "description": "Fresh and Fast Burgers",
+          "address": "456 Burger Avenue, Burger Town",
+          "logo": "https://static.vecteezy.com/system/resources/previews/009/100/350/non_2x/burger-restaurant-logo-template-with-isolated-background-vector.jpg",
+          "menus": [
+            {
+              "name": "Cheeseburger",
+              "description": "Juicy and Delicious Cheeseburger",
+              "price": 15,
+              "category": "Burger",
+              "image": "https://www.foodandwine.com/thmb/DI29Houjc_ccAtFKly0BbVsusHc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/crispy-comte-cheesburgers-FT-RECIPE0921-6166c6552b7148e8a8561f7765ddf20b.jpg"
+            },
+            {
+              "name": "Crispy Bacon Burger",
+              "description": "Crispy Bacon and Cheese",
+              "price": 20,
+              "category": "Burger",
+              "image": "https://www.seriouseats.com/thmb/e16lLOoVEix_JZTv7iNyAuWkPn8=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__recipes__images__2014__09__20140918-jamie-olivers-comfort-food-insanity-burger-david-loftus-f7d9042bdc2a468fbbd50b10d467dafd.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Carl Stein",
+      "email": "carl.stein@example.com",
+      "password": "password",
+      "role": "business",
+      "restaurants": [
+        {
+          "name": "Piece of Italy",
+          "description": "Italian Pizza and pasta",
+          "address": "456 Italy Avenue, Italian Town",
+          "logo": "https://static.vecteezy.com/system/resources/previews/011/157/900/non_2x/pizzeria-emblem-on-blackboard-pizza-logo-template-emblem-for-cafe-restaurant-or-food-delivery-service-free-vector.jpg",
+          "menus": [
+            {
+              "name": "Roman Pizza",
+              "description": "The best pizza in the world",
+              "price": 15,
+              "category": "Pizza",
+              "image": "https://www.southernliving.com/thmb/3x3cJaiOvQ8-3YxtMQX0vvh1hQw=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/2652401_QFSSL_SupremePizza_00072-d910a935ba7d448e8c7545a963ed7101.jpg"
+            },
+            {
+              "name": "Carbonara",
+              "description": "The best pasta in the world",
+              "price": 20,
+              "category": "Pasta",
+              "image": "https://images.aws.nestle.recipes/resized/432d4cbae30cd055066e6fa44cf0897c_Overhead_Pasta_Can_2020_HERO_448_448.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Junji Ito",
+      "email": "junji.ito@example.com",
+      "password": "password",
+      "role": "business",
+      "restaurants": [
+        {
+          "name": "Samurai Clam",
+          "description": "Authentic Japanese food",
+          "address": "456 Ramen Avenue, Japanese Town",
+          "logo": "https://t3.ftcdn.net/jpg/02/77/80/68/360_F_277806897_uNSz5SULUpdpmFuH2RuS0DIIEzJTaCUL.jpg",
+          "menus": [
+            {
+              "name": "Odon Ramen",
+              "description": "The best ramen in the world",
+              "price": 15,
+              "category": "Ramen",
+              "image": "https://www.justonecookbook.com/wp-content/uploads/2023/04/Spicy-Shoyu-Ramen-8055-I.jpg"
+            },
+            {
+              "name": "Sushi",
+              "description": "The best sushi in the world",
+              "price": 20,
+              "category": "Sushi",
+              "image": "https://www.justonecookbook.com/wp-content/uploads/2020/01/Sushi-Rolls-Maki-Sushi-%E2%80%93-Hosomaki-1106-II.jpg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Travis Scott",
+      "email": "travis.scott@example.com",
+      "password": "password",
+      "role": "business",
+      "restaurants": [
+        {
+          "name": "Ragers",
+          "description": "Ragers only",
+          "address": "456 Utopia Avenue, Astroworld Town",
+          "logo": "https://media.istockphoto.com/id/1439837576/vector/cup-of-cocktail-line-art-logo-vector-illustration-design.jpg?s=612x612&w=0&k=20&c=1rNSc1LfBwgTXOfrbC5kvMgYOF7UFE9WYz6BddfDUU8=",
+          "menus": [
+            {
+              "name": "Psych Burger",
+              "description": "Juicy and Delicious Cheeseburger",
+              "price": 15,
+              "category": "Burger",
+              "image": "https://www.foodandwine.com/thmb/DI29Houjc_ccAtFKly0BbVsusHc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/crispy-comte-cheesburgers-FT-RECIPE0921-6166c6552b7148e8a8561f7765ddf20b.jpg"
+            },
+            {
+              "name": "Mr Rager",
+              "description": "A drink to elevate your spirits",
+              "price": 20,
+              "category": "Cocktail",
+              "image": "cocktail.jpg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
