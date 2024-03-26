@@ -9,6 +9,42 @@ import (
 	"context"
 )
 
+const createUser = `-- name: CreateUser :one
+INSERT INTO "user" (
+  "name",
+  "email",
+  "passwordHash",
+  "role"
+) VALUES (
+  $1, $2, $3, $4
+) RETURNING id, name, email, "passwordHash", role
+`
+
+type CreateUserParams struct {
+	Name         string       `json:"name"`
+	Email        string       `json:"email"`
+	PasswordHash string       `json:"passwordHash"`
+	Role         UserRoleEnum `json:"role"`
+}
+
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
+	row := q.db.QueryRow(ctx, createUser,
+		arg.Name,
+		arg.Email,
+		arg.PasswordHash,
+		arg.Role,
+	)
+	var i User
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Email,
+		&i.PasswordHash,
+		&i.Role,
+	)
+	return i, err
+}
+
 const getUserByEmail = `-- name: GetUserByEmail :one
 SELECT id, name, email, "passwordHash", role FROM "user"
 WHERE "email" = $1
